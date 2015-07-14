@@ -35,11 +35,14 @@ ActiveRecord::Schema.define(version: 20150714215652) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.integer  "price",      null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",        null: false
+    t.string   "description"
+    t.integer  "price",       null: false
+    t.string   "photo_url",   null: false
+    t.integer  "inventory",   null: false
+    t.integer  "user_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "reviews", force: :cascade do |t|
