@@ -47,6 +47,7 @@ group :development, :test do
   gem 'binding_of_caller'
 
   gem 'simplecov', require: false
+  gem 'rspec-rails', '~> 3.0'
 
   gem 'pry'
 end
