@@ -1,0 +1,7 @@
+<h1>Welcome to CosMade!</h1>
+
+<%= render partial: "shared/all_items",
+  locals: {
+    items: @products,
+    headers: ["Name", "Description", "Price", "Photo"]
+  } %>
