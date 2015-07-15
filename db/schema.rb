@@ -20,12 +20,9 @@ ActiveRecord::Schema.define(version: 20150715171650) do
   end
 
   create_table "categories_products", id: false, force: :cascade do |t|
-    t.integer "categories_id"
-    t.integer "products_id"
+    t.integer "category_id"
+    t.integer "product_id"
   end
-
-  add_index "categories_products", ["categories_id"], name: "index_categories_products_on_categories_id"
-  add_index "categories_products", ["products_id"], name: "index_categories_products_on_products_id"
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "quantity",   null: false

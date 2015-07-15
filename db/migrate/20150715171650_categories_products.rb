@@ -17,8 +17,8 @@ class CategoriesProducts < ActiveRecord::Migration
     end
 
     create_table :categories_products, id: false do |t|
-      t.belongs_to :categories, index: true
-      t.belongs_to :products, index: true
+      t.integer :category_id
+      t.integer :product_id
     end
   end
 end
