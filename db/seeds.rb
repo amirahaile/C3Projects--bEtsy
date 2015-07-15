@@ -99,3 +99,11 @@ orders = [
 orders.each do |order|
   Order.create(order)
 end
+
+categories = [
+  { name: "Pet" }, { name: "Adult" }, { name: "Child" }
+]
+
+categories.each do |category|
+  Category.create(category)
+end
