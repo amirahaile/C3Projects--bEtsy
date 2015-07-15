@@ -1,0 +1,29 @@
+<!-- SHOPPING CART PAGE -->
+
+<!-- list of order items -->
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Qty</th>
+    <th>Total</th>
+  </tr>
+  <% @order_items.each do |item| %>
+  <tr>
+    <% product = Product.find(item.product_id) %>
+    <td> <%= product.name %> </td>
+    <td> <%= number_to_currency(product.price) %> </td>
+    <td>
+      <%= button_to "-", options = { action: "qty_decrease", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+      <%= item.quantity %>
+      <%= button_to "+", options = { action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+    </td>
+    <td> <%= number_to_currency(product.price * item.quantity) %> </td>
+    <td> <%= button_to("Remove from Cart", order_item_path, id: item.id, method: :delete, class: "btn btn-default") %> </td>
+  </tr>
+  <% end %>
+</table>
+
+<!-- ability to remove each item -->
+<!-- ability to change quantity of each item -->
+<!-- checkout button -->
