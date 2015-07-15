@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
+  post 'orders/:id/qty_decrease' => 'orders#qty_decrease'
+  post 'orders/:id/qty_increase' => 'orders#qty_increase'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
@@ -54,6 +57,6 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  # Adding all now for testing purposes; will prune routes later. 
+  # Adding all now for testing purposes; will prune routes later.
   resources :users, :products, :orders, :order_items, :reviews
 end
