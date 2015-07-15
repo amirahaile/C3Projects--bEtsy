@@ -53,4 +53,7 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  # Adding all now for testing purposes; will prune routes later. 
+  resources :users, :products, :orders, :order_items, :reviews
 end
