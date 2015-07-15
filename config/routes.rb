@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  # Adding all now for testing purposes; will prune routes later. 
+  # Adding all now for testing purposes; will prune routes later.
+  root 'products#index'
   resources :users, :products, :orders, :order_items, :reviews
 end

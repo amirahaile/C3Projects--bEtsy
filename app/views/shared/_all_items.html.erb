@@ -1,0 +1,26 @@
+<table>
+  <tr>
+    <% headers.each do |header| %>
+    <th>
+      <%= header %>
+    </th>
+    <% end %>
+  </tr>
+
+  <% items.each do |item| %>
+    <tr>
+      <td>
+        <%= item.name %>
+      </td>
+      <td>
+        <%= item.description %>
+      </td>
+      <td>
+        <%= item.price %>
+      </td>
+      <td>
+        <%= image_tag(item.photo_url, alt: "Image of #{item.name}", height: 200 ) %>
+      </td>
+    </tr>
+  <% end %>
+</table>
