@@ -9,6 +9,7 @@ class CreateOrders < ActiveRecord::Migration
       t.string :zipcode, null: false
       t.string :card_last_4, null: false
       t.datetime :card_exp, null: false
+      t.string :status, null: false, default: "pending"
       t.timestamps null: false
     end
   end
