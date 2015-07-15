@@ -1,0 +1,20 @@
+<!-- SHOPPING CART PAGE -->
+
+<!-- list of order items -->
+<table class="table">
+  <tr>
+    <th>
+      Name
+    </th>
+  </tr>
+  <% @order_items.each do |item| %>
+  <tr>
+    <% product = Product.find(item.product_id) %>
+    <td> <%= product.name %> </td>
+  </tr>
+  <% end %>
+</table>
+
+<!-- ability to remove each item -->
+<!-- ability to change quantity of each item -->
+<!-- checkout button -->
