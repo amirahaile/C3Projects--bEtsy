@@ -15,70 +15,70 @@ class Order < ActiveRecord::Base
                                        message: "%{value} is not a valid status" }
 
   # Callbacks
-  before_validation :capitalize_city!, :state_conversion!
+  # before_validation :capitalize_city!, :state_conversion!
 
-  def capitalize_city!
-    return unless self.city == city.capitalize
+  # def capitalize_city!
+  #   return unless self.city == city.capitalize
+  #
+  #   self.city.capitalize!
+  # end
 
-    self.city.capitalize!
-  end
+  # states = {
+  #   "AL" => "Alabama",
+  #   "AK" => "Alaska",
+  #   "AZ" => "Arizona",
+  #   "AR" => "Arkansas",
+  #   "CA" => "California",
+  #   "CO" => "Colorado",
+  #   "CT" => "Connecticut",
+  #   "DE" => "Delaware",
+  #   "FL" => "Florida",
+  #   "GA" => "Georgia",
+  #   "HI" => "Hawaii",
+  #   "ID" => "Idaho",
+  #   "IL" => "Illinois",
+  #   "IN" => "Indiana",
+  #   "IA" => "Iowa",
+  #   "KS" => "Kansas",
+  #   "KY" => "Kentucky",
+  #   "LA" => "Louisiana",
+  #   "ME" => "Maine",
+  #   "MD" => "Maryland",
+  #   "MA" => "Massachusetts",
+  #   "MI" => "Michigan",
+  #   "MN" => "Minnesota",
+  #   "MS" => "Mississippi",
+  #   "MO" => "Missouri",
+  #   "MT" => "Montana",
+  #   "NE" => "Nebraska",
+  #   "NV" => "Nevada",
+  #   "NH" => "New Hampshire",
+  #   "NJ" => "New Jersey",
+  #   "NM" => "New Mexico",
+  #   "NY" => "New York",
+  #   "NC" => "North Carolina",
+  #   "ND" => "North Dakota",
+  #   "OH" => "Ohio",
+  #   "OK" => "Oklahoma",
+  #   "OR" => "Oregon",
+  #   "PA" => "Pennsylvania",
+  #   "RI" => "Rhode Island",
+  #   "SC" => "South Carolina",
+  #   "SD" => "South Dakota",
+  #   "TN" => "Tennessee",
+  #   "TX" => "Texas",
+  #   "UT" => "Utah",
+  #   "VT" => "Vermont",
+  #   "VA" => "Virginia",
+  #   "WA" => "Washington",
+  #   "WV" => "West Virginia",
+  #   "WI" => "Wisconsin",
+  #   "WY" => "Wyoming"
+  # }
 
-  states = {
-    "AL" => "Alabama",
-    "AK" => "Alaska",
-    "AZ" => "Arizona",
-    "AR" => "Arkansas",
-    "CA" => "California",
-    "CO" => "Colorado",
-    "CT" => "Connecticut",
-    "DE" => "Delaware",
-    "FL" => "Florida",
-    "GA" => "Georgia",
-    "HI" => "Hawaii",
-    "ID" => "Idaho",
-    "IL" => "Illinois",
-    "IN" => "Indiana",
-    "IA" => "Iowa",
-    "KS" => "Kansas",
-    "KY" => "Kentucky",
-    "LA" => "Louisiana",
-    "ME" => "Maine",
-    "MD" => "Maryland",
-    "MA" => "Massachusetts",
-    "MI" => "Michigan",
-    "MN" => "Minnesota",
-    "MS" => "Mississippi",
-    "MO" => "Missouri",
-    "MT" => "Montana",
-    "NE" => "Nebraska",
-    "NV" => "Nevada",
-    "NH" => "New Hampshire",
-    "NJ" => "New Jersey",
-    "NM" => "New Mexico",
-    "NY" => "New York",
-    "NC" => "North Carolina",
-    "ND" => "North Dakota",
-    "OH" => "Ohio",
-    "OK" => "Oklahoma",
-    "OR" => "Oregon",
-    "PA" => "Pennsylvania",
-    "RI" => "Rhode Island",
-    "SC" => "South Carolina",
-    "SD" => "South Dakota",
-    "TN" => "Tennessee",
-    "TX" => "Texas",
-    "UT" => "Utah",
-    "VT" => "Vermont",
-    "VA" => "Virginia",
-    "WA" => "Washington",
-    "WV" => "West Virginia",
-    "WI" => "Wisconsin",
-    "WY" => "Wyoming"
-  }
-
-  def state_conversion!
-    return if self.state.states.keys.includes?(self.state)
-
-    # STUFF GOES HERE
-  end
+  # def state_conversion!
+  #   return if self.state.states.keys.includes?(self.state)
+  #
+  #   # STUFF GOES HERE
+  # end
 end
