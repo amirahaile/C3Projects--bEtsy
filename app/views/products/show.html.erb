@@ -1,1 +1,21 @@
-<h1><%= @product.name %></h1>
+<h1><%= @product.name %><small><%= @product.price %></small></h1>
+
+<%= image_tag(@product.photo_url, alt: "Image of #{@product.name}", height: 200) %>
+<%= @product.description %>
+
+<p>Merchant: <%= @product.user.username %></p>
+<p>
+  Categories: <% @product.categories.each do |cat| %>
+  <%= cat.name %>
+  <% end %>
+</p>
+
+<!-- <%= link_to %> -->
+
+<h3>REVIEWS</h3>
+<% @product.reviews.each do |review| %>
+  <h4>Rating: <%= review.rating %></h4>
+  <p>
+    <%= review.description %>
+  </p>
+<% end %>

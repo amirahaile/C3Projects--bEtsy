@@ -7,7 +7,11 @@
       <h3><%= item.name %> <small><%= number_to_currency(item.price) %></small></h3>
       <p><%= item.description %></p>
       <p>Merchant: <%= item.user.username %></p>
-      <p>Categories: <%= item.categories.each { |cat| cat.name } %></p>
+      <p>
+        Categories: <% item.categories.each do |cat| %>
+        <%= cat.name %>
+        <% end %>
+      </p>
     </div>
   <% end %>
 </div>
