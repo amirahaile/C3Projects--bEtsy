@@ -2,6 +2,7 @@ class Product < ActiveRecord::Base
   # Associations ------------------
   has_and_belongs_to_many :categories
   has_many :order_items
+  belongs_to :user
 
   # Validations ------------------
   required_attributes = [ :name, :price, :photo_url, :inventory,
