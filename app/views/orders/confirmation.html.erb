@@ -1,10 +1,70 @@
+<% subtotal = 0 %>
+
+<h4>Order Placed: <%= @order_items.order.updated_at.strftime("%m/%d/%Y at %R") %></h4>
+<h4>Order Status: <%= @order_items.order.status %></h4>
+
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Qty</th>
+    <th>Total</th>
+  </tr>
+  <% @order_items.each do |item| %>
+  <tr>
+    <% product = Product.find(item.product_id) %>
+    <td> <%= link_to  product.name, product_path(product) %> </td>
+    <td> <%= number_to_currency(product.price) %> </td>
+    <td>
+      <%= item.quantity %>
+    </td>
+    <td> <%= number_to_currency(product.price * item.quantity) %> </td>
+
+		<% subtotal += (product.price * item.quantity) %>
+  </tr>
+  <% end %>
+
+	<tr>
+		<td colspan="2">
+		</td>
+		<td>
+			Subtotal:
+		</td>
+		<td>
+			<%= number_to_currency(subtotal) %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		</td>
+		<td>
+			Tax:
+		</td>
+		<td>
+			<% tax = subtotal * 0.095 %>
+			<%= number_to_currency(tax) %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		</td>
+		<td>
+			Total:
+		</td>
+		<td>
+			<%= number_to_currency(subtotal + tax) %>
+		</td>
+	</tr>
+</table>
+
+
 
 
 
 
 After purchasing an order, I can view a confirmation screen including:
-Each item in the order with a quantity and line-item subtotal
-A link to the item description page
+<!-- Each item in the order with a quantity and line-item subtotal -->
+<!-- A link to the item description page -->
 Order total price
 DateTime the order was placed
 The current status of the order
