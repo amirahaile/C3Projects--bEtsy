@@ -12,10 +12,6 @@ RSpec.describe Order, type: :model do
     fields =
       [:email, :address1, :city, :state, :zipcode,
        :card_last_4, :card_exp, :status]
-      # "email" => :email,
-      # "address1" => :address1,
-      #
-      # }
 
     fields.each do |field|
       it "requires #{field}" do

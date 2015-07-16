@@ -79,6 +79,6 @@ class Order < ActiveRecord::Base
   def state_conversion!
     return if self.state.states.keys.includes?(self.state)
 
-
+    # STUFF GOES HERE
   end
 end
