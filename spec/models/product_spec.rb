@@ -110,6 +110,5 @@ RSpec.describe Product, type: :model do
     #   expect(@product_a).to respond_to user
     # end
 
-
   end
 end
