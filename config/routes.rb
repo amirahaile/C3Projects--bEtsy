@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post 'order_items/:id/qty_increase' => 'order_items#qty_increase', as: 'order_items_increase'
   post 'order_items/:id/qty_decrease' => 'order_items#qty_decrease', as: 'order_items_decrease'
 
+  get 'orders/:id/payment' => 'orders#payment', as: 'order_payment'
+  post 'orders/:id/payment' => 'orders#payment'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
