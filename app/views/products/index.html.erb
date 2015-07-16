@@ -1,13 +1,13 @@
-<h1>Welcome to CosMade!</h1>
+<%= render partial: 'shared/header'%>
 
 <div class="row">
   <% @products.each do |item| %>
     <div class="col-sm-4">
       <%= image_tag(item.photo_url, alt: "Image of #{item.name}", height: 200 ) %>
-      <h3><%= item.name %><small><%= item.description %></small></h3>
-      <%= number_to_currency(item.price) %>
-      <p>Merchant: <%= item.users.name %></p>
-      <p>Categories: <%= item.categories %></p>
+      <h3><%= item.name %> <small><%= number_to_currency(item.price) %></small></h3>
+      <p><%= item.description %></p>
+      <p>Merchant: <%= item.user.username %></p>
+      <p>Categories: <%= item.categories.each { |cat| cat.name } %></p>
     </div>
   <% end %>
 </div>
