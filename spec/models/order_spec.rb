@@ -33,6 +33,10 @@ RSpec.describe Order, type: :model do
         expect(card_last_4).to be_valid
       end
 
+      it "only contains characters 0-9" do
+        # STILL EDITING
+      end
+
       ["hihi", "345", 959, 12.3, 12.34].each do |invalid_card|
         it "doesn't validate #{invalid_card} for card_last_4" do
           new_order = Order.new(card_last_4: invalid_card)
@@ -42,6 +46,8 @@ RSpec.describe Order, type: :model do
         end
       end
     end
+
+    # Test status and default should be "pending"!
 
   end
 end
