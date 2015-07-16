@@ -8,7 +8,7 @@ class CategoriesProducts < ActiveRecord::Migration
     create_table :products do |t|
       t.string :name, null: false
       t.string :description
-      t.decimal :price, null: false, scale: 2
+      t.decimal :price, null: false, scale: 2, precision: 7
       t.string :photo_url, null: false
       t.integer :inventory, null: false
       t.string :active, null: false, default: true
