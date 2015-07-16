@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :find_order, only: [:show, :payment]
+  before_action :find_order, except: [:new, :create]
 
   def find_order
     @order = Order.find(params[:id])
@@ -29,8 +29,14 @@ class OrdersController < ApplicationController
     @order.card_last_4 = params[:order][:card_number.split(//\)][-1, 4].join(",")
     @order.card_exp = params[:order][:card_exp]
     @order.status = "paid"
-    @order.save
+    @order.save # move and account for whether the order is canceled
   end
+
+  def confirmation
+    @order_items = @order.order_items
+  end
+
+  private
 
   def update_inventory(order)
     order.order_items.each do |order_item|
