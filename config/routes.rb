@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
-  post 'orders/:id/qty_decrease' => 'orders#qty_decrease'
-  post 'orders/:id/qty_increase' => 'orders#qty_increase'
+  post 'order_items/:id/qty_increase' => 'order_items#qty_increase', as: 'order_items_increase'
+  post 'order_items/:id/qty_decrease' => 'order_items#qty_decrease', as: 'order_items_decrease'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
