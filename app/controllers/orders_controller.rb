@@ -18,6 +18,8 @@ class OrdersController < ApplicationController
   end
 
   def payment
+    # check for appropriate amount of inventory before accepting payment
+    update_inventory(@order)
     @order.email = params[:order][:email]
     @order.address1 = params[:order][:address1]
     @order.address2 = params[:order][:address2]
@@ -28,13 +30,16 @@ class OrdersController < ApplicationController
     @order.card_exp = params[:order][:card_exp]
     @order.status = "paid"
     @order.save
-    update_inventory(@order)
   end
 
   def update_inventory(order)
     order.order_items.each do |order_item|
-      order_item.product.inventory -= order_item.quantity
-      order_item.product.update!
+      if order_item.product.inventory >= order_item.quantity
+        order_item.product.inventory -= order_item.quantity
+        order_item.product.update!
+      else
+        redirect_to :back rescue redirect_to order_path(@order), flash.now[:error] = "#{order_item.product} only has #{order_item.quantity} item in stock."
+      end
     end
   end
 end
