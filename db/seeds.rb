@@ -61,14 +61,14 @@ products = [
     photo_url: "adult_taco.jpeg",
     inventory: 45,
     active: true,
-    user_id: "tacoparty"},
+    user_id: 1 },
   { name: "Mr. T Costume for Dog",
     description: "Your dog will pity the fool with this totally awesome costume!",
     price: 25.00,
     photo_url: "pity-the-fool-dog.jpeg",
     inventory: 58,
     active: true,
-    user_id: "indubitably"}
+    user_id: 2 }
 ]
 
 products.each do |product|
