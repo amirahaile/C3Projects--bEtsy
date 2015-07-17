@@ -1,4 +1,4 @@
-<h3>Log In Here!</h3>
+<h3>Sign Up Here!</h3>
 
 <% if flash.now[:error] %>
   <div>
@@ -9,6 +9,9 @@
 <%= form_for(:session, url: login_path) do |f| %>
   <%= f.label :username %>
   <%= f.text_field :username %>
+  
+  <%= f.label :email %>
+  <%= f.text_field :email %>
 
   <%= f.label :password %>
   <%= f.password_field :password %>
