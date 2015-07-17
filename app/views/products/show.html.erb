@@ -15,7 +15,15 @@
 
   <h3>REVIEWS</h3>
   <% @product.reviews.each do |review| %>
-    <h4>Rating: <%= review.rating %></h4>
+    <h4>Rating:
+      <% (review.rating).times do %>
+        <span class='glyphicon glyphicon-star'></span>
+      <% end %>
+      <% (5 - review.rating).times do %>
+        <span class='glyphicon glyphicon-star-empty'></span>
+      <% end %>
+    </h4>
+
     <p>
       <%= review.description %>
     </p>
