@@ -40,7 +40,7 @@ RSpec.describe Order, type: :model do
         it "doesn't validate #{invalid_card} for card_last_4" do
           new_order = valid_order
           new_order.card_last_4 = invalid_card
-          # binding.pry
+
           expect(new_order).to_not be_valid
           expect(new_order.errors.keys).to include(:card_last_4)
         end
@@ -50,6 +50,24 @@ RSpec.describe Order, type: :model do
     context "status field" do
       it "defaults pending" do
         expect(invalid_order.status).to eq("pending")
+      end
+
+      ["pending", "paid", "complete", "cancelled"].each do |valid_status|
+        it "only contains valid statuses" do
+          new_order = valid_order
+          new_order.status = valid_status
+          expect(new_order).to be_valid
+        end
+      end
+
+      ["not awesome", "345", 959, 12.3, 12.34].each do |invalid_status|
+        it "doesn't validate #{invalid_status} for status" do
+          new_order = valid_order
+          new_order.status = invalid_status
+
+          expect(new_order).to_not be_valid
+          expect(new_order.errors.keys).to include(:status)
+        end
       end
     end
 

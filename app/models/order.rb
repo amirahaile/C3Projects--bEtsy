@@ -8,7 +8,7 @@ class Order < ActiveRecord::Base
   validates_length_of :state, is: 2, message: "must be state abbreviation" # must be two (capital) characters? ex. WA
   validates_length_of :card_last_4, is: 4
   validates_length_of :zipcode, within: 5..10
-  validates_format_of :card_last_4, with: /[0-9]+/, message: "only numbers allowed"
+  validates_format_of :card_last_4, with: /[0-9]{4}/, message: "only numbers allowed"
   validates_inclusion_of :status, in: %w(pending paid cancelled complete),
                                   message: "%{value} is not a valid status"
 
