@@ -1,0 +1,37 @@
+<!-- make it so it display over the top of the screen -->
+<% if flash.now[:error] %>
+  <div>
+    <%= flash.now[:error] %>
+  </div>
+<% end %>
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">CosMade</a>
+		</div>
+
+
+		<div class="collapse navbar-collapse navbar-right float-right">
+			<% if @user == nil %>
+				<%= form_for(:session, url: login_path, class: "navbar-form  form-inline")  do |f| %>
+					<div class="form-group col-sm-4">
+						<%= f.label :username %>
+						<%= f.text_field :username %>
+					</div>
+
+					<div class="form-group col-sm-4">
+							<%= f.label :password %>
+							<%= f.password_field :password %>
+					</div>
+
+					<%= f.submit "Log In", class: "btn btn-primary col-sm-2 login" %>
+				<% end %>
+
+			<% else %>
+				Hello, <%= @username %>!
+				<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-danger' %>
+			<% end %>
+		</div>
+	</div>
+</nav>

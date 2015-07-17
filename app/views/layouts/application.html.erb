@@ -20,34 +20,8 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="/">CosMade</a>
-        </div>
 
-
-        <div class="collapse navbar-collapse navbar-right">
-
-            <!-- not sure if User.new is right, just needed the form to show -->
-            <%= form_for @login = User.new, class: "navbar-form  form-inline"  do |f| %>
-              <%= f.submit "Log In", class: "btn btn-primary col-sm-2 float-right login" %>
-
-              <div class="form-group col-sm-4 float-right">
-                  <%= f.label :password %>
-                  <%= f.text_field :password %>
-              </div>
-
-              <div class="form-group col-sm-4 float-right">
-                <%= f.label :username %>
-                <%= f.text_field :username %>
-              </div>
-            <% end %>
-
-            <!-- change to log out button when signed-in -->
-        </div>
-      </div>
-    </nav>
+    <%= render partial: "shared/login_bar" %>
 
     <div class="container-fluid col-sm-11 center">
       <%= yield %>

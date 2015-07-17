@@ -99,16 +99,13 @@ RSpec.describe Product, type: :model do
     # OTHERS:
     # active is boolean & defaults to true?
 
-    # product belongs to a user
-    # Testing association - do we need to add the shoulda-matchers gem?
-    # it "Product must belong to a User" do
-    #   user = User.new
-    #   user.products << @product_a
-    #   expect(@product_a).to belong_to user
-    #
-    #   # OR
-    #   expect(@product_a).to respond_to user
-    # end
+    # Testing association 
+    it "Product must belong to a User" do
+      user = User.create(username: "a_user", email: "user@user.com", password: "userstuff999")
+      user.products << @product_a
+      expect(@product_a.user_id).to eq(user.id)
+      expect(user.products).to include(@product_a)
+    end
 
   end
 end
