@@ -54,6 +54,14 @@ order_items.each do |item|
   OrderItem.create(item)
 end
 
+categories = [
+  { name: "Pet" }, { name: "Adult" }, { name: "Child" }
+]
+
+categories.each do |category|
+  Category.create(category)
+end
+
 products = [
   { name: "Taco Costume",
     description: "High-quality, one-size-fits-all adult hard-shelled taco costume (beef).",
@@ -61,14 +69,16 @@ products = [
     photo_url: "adult_taco.jpeg",
     inventory: 45,
     active: true,
-    user_id: 1 },
+    user_id: 1,
+    category_ids: 2 },
   { name: "Mr. T Costume for Dog",
     description: "Your dog will pity the fool with this totally awesome costume!",
     price: 25.00,
     photo_url: "pity-the-fool-dog.jpeg",
     inventory: 58,
     active: true,
-    user_id: 2 }
+    user_id: 2,
+    category_ids: [1, 3] }
 ]
 
 products.each do |product|
@@ -98,12 +108,4 @@ orders = [
 
 orders.each do |order|
   Order.create(order)
-end
-
-categories = [
-  { name: "Pet" }, { name: "Adult" }, { name: "Child" }
-]
-
-categories.each do |category|
-  Category.create(category)
 end
