@@ -22,10 +22,10 @@ RSpec.shared_examples "a controller" do
     expect { assigns(:object).to eq(@object) }
   end
 
-  # it  "renders the #show template" do
-  #   get :show, id: @object
-  #   expect(subject).to render_template :show
-  # end
+  it  "renders the #show template" do
+    get :show, id: @object
+    expect(subject).to render_template :show
+  end
 end
 
 
