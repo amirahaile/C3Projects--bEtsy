@@ -26,7 +26,7 @@ class OrdersController < ApplicationController
     @order.city = params[:order][:city]
     @order.state = params[:order][:state]
     @order.zipcode = params[:order][:zipcode]
-    @order.card_last_4 = params[:order][:card_number.split(//\)][-1, 4].join(",")
+    @order.card_last_4 = params[:order][:card_number.split(//)][-1, 4].join(",")
     @order.card_exp = params[:order][:card_exp]
     @order.status = "paid"
     @order.save # move and account for whether the order is canceled
