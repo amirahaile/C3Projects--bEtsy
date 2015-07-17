@@ -5,6 +5,11 @@ class OrderItemsController < ApplicationController
     @order_item = OrderItem.find(params[:id])
   end
 
+  # def create
+    # @order_item = OrderItem.create!(quantity: :qty, order_id: :id, product_id: params[:id])
+    # redirect_to order_path
+  # end
+
   def destroy
     @order_item.destroy
     @order_item.save
