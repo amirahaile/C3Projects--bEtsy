@@ -4,6 +4,12 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
+  root 'products#index'
+  resources :users, :products, :orders, :order_items, :reviews
+
+  get    "/login",  to: 'sessions#new',     as: 'login'
+  post   "/login",  to: 'sessions#create'
+  delete "/logout", to: 'sessions#destroy', as: 'logout'
 
   post 'order_items/:id/qty_increase' => 'order_items#qty_increase', as: 'order_items_increase'
   post 'order_items/:id/qty_decrease' => 'order_items#qty_decrease', as: 'order_items_decrease'
@@ -60,6 +66,5 @@ Rails.application.routes.draw do
   #   end
 
   # Adding all now for testing purposes; will prune routes later.
-  root 'products#index'
-  resources :users, :products, :orders, :order_items, :reviews
+
 end

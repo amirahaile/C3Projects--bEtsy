@@ -1,10 +1,14 @@
 class ProductsController < ApplicationController
+  before_action :require_login, only: [:new, :create, :edit, :update, :destroy]
+
   def self.model
     Product
   end
 
   def index
     @products = Product.all
+    @user = User.find_by(id: session[:user_id])
+    @username = @user ? @user.username : "Guest"
   end
 
   def show
