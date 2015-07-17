@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <h1>CosMade <small>The best handmade costume dealer on the interwebs!</small></h1>
-  Welcome, <%= @user %>
+  Welcome, <%= @username %>
   <% if @user != nil %>
     <%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-danger' %>
   <% else %>
