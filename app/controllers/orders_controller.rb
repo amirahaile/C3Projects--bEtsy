@@ -13,11 +13,12 @@ class OrdersController < ApplicationController
   end
 
   def find_or_create
-    @order = Order.where(params[:id]).first_or_create
-    @order_item = OrderItem.create!(product_id: (Product.find(params[:id]).id)
-    @order.order_items << @order_item
-    @order.save
-    redirect_to #order_cart_path
+    @order = Order.where(params[:id]).first_or_create do |order|
+      @order_item = OrderItem.create!(product_id: (Product.find(params[:id]).id)
+      order.order_items << @order_item
+      order.save
+    end
+    # redirect_to #order_cart_path
   end
 
   def show
