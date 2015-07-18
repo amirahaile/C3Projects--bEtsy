@@ -15,7 +15,10 @@ class Product < ActiveRecord::Base
   validates :name, uniqueness: true
   validates :price, numericality: { greater_than: 0 }
   validates :inventory, numericality: { only_integer: true, greater_than: 0 }
-  validates_associated :user
+
+  # don't know why, but this validation incites a rollback (failing to save
+  # product objects) because of some constraint violation with 
+  # validates_associated :user
 
   # WORKING ON FOR PRODUCTS#INDEX: (DOES NOT WORK)
   # scope :by_category, (category) -> { where(Product.all.categories.includes?(category)) }
