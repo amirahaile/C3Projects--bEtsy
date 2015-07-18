@@ -31,7 +31,9 @@ RSpec.describe OrderItemsController, type: :controller do
       @orderItem2.reload
 
       expect(@orderItem2.quantity).to eq original_qty - 1
+    end
 
+  end
   describe "DELETE #destroy" do
     before(:each) do
       @order = Order.create!(email: "email.com", address1: "Some place", city: "somewhere", state: "WA", zipcode: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
