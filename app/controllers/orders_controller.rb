@@ -14,7 +14,7 @@ class OrdersController < ApplicationController
 
   def find_or_create
     @order = Order.where(params[:id]).first_or_create do |order|
-      @order_item = OrderItem.create!(product_id: (Product.find(params[:id]).id)
+      @order_item = OrderItem.create!(product_id: (Product.find(params[:id]).id))
       order.order_items << @order_item
       order.save
     end
@@ -25,19 +25,31 @@ class OrdersController < ApplicationController
     @order_items = @order.order_items
   end
 
+  # same as :show; any way to conslidate?
   def payment
+    @order_items = @order.order_items
+  end
+
+  def update
     # check for appropriate amount of inventory before accepting payment
     update_inventory(@order)
-    @order.email = params[:order][:email]
-    @order.address1 = params[:order][:address1]
-    @order.address2 = params[:order][:address2]
-    @order.city = params[:order][:city]
-    @order.state = params[:order][:state]
-    @order.zipcode = params[:order][:zipcode]
-    @order.card_last_4 = params[:order][:card_number.split(//)][-1, 4].join(",")
-    @order.card_exp = params[:order][:card_exp]
-    @order.status = "paid"
-    @order.save # move and account for whether the order is canceled
+
+    if @enough_inventory
+      @order.email = params[:order][:email]
+      @order.address1 = params[:order][:address1]
+      @order.address2 = params[:order][:address2]
+      @order.city = params[:order][:city]
+      @order.state = params[:order][:state]
+      @order.zipcode = params[:order][:zipcode]
+      @order.card_last_4 = params[:order][:card_number][-4, 4]
+      @order.card_exp = params[:order][:card_exp]
+      @order.status = "paid"
+      @order.save # move and account for whether the order is canceled
+      redirect_to order_confirmation_path(@order)
+    else
+      redirect_to :back rescue redirect_to order_path(@order)
+      flash.now[:error] = "#{order_item.product} only has #{order_item.quantity} item in stock."
+    end
   end
 
   def confirmation
@@ -48,11 +60,14 @@ class OrdersController < ApplicationController
 
   def update_inventory(order)
     order.order_items.each do |order_item|
-      if order_item.product.inventory >= order_item.quantity
-        order_item.product.inventory -= order_item.quantity
-        order_item.product.update!
+      product = Product.find(order_item.product_id)
+      @enough_inventory = true
+
+      if product.inventory >= order_item.quantity
+        product.inventory -= order_item.quantity
+        product.save
       else
-        redirect_to :back rescue redirect_to order_path(@order), flash.now[:error] = "#{order_item.product} only has #{order_item.quantity} item in stock."
+        @enough_inventory = false
       end
     end
   end
