@@ -11,11 +11,14 @@ Rails.application.routes.draw do
   post   "/login",  to: 'sessions#create'
   delete "/logout", to: 'sessions#destroy', as: 'logout'
 
-  post 'order_items/:id/qty_increase' => 'order_items#qty_increase', as: 'order_items_increase'
-  post 'order_items/:id/qty_decrease' => 'order_items#qty_decrease', as: 'order_items_decrease'
+  post 'order_items/:id/qty_increase', to: 'order_items#qty_increase', as: 'order_items_increase'
+  post 'order_items/:id/qty_decrease', to: 'order_items#qty_decrease', as: 'order_items_decrease'
 
-  get 'orders/:id/payment' => 'orders#payment', as: 'order_payment'
-  post 'orders/:id/payment' => 'orders#payment'
+  get  'orders/:id/payment', to: 'orders#payment', as: 'order_payment'
+  put 'orders/:id/payment', to: 'orders#payment'
+
+  get 'orders/:id/confirmation', to: 'orders#confirmation', as: 'order_confirmation'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
