@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150715171650) do
     t.string   "city"
     t.string   "state"
     t.string   "zipcode"
+    t.string   "card_number"
     t.string   "card_last_4"
     t.datetime "card_exp"
     t.string   "status",      default: "pending", null: false
