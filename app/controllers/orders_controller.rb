@@ -25,8 +25,9 @@ class OrdersController < ApplicationController
   end
 
   def payment
-    # check for appropriate amount of inventory before accepting payment
+    # check for requested amount of inventory & update before completing payment
     update_inventory(@order)
+
     @order.email = params[:order][:email]
     @order.address1 = params[:order][:address1]
     @order.address2 = params[:order][:address2]
@@ -36,6 +37,7 @@ class OrdersController < ApplicationController
     @order.card_last_4 = params[:order][:card_number.split(//)][-1, 4].join(",")
     @order.card_exp = params[:order][:card_exp]
     @order.status = "paid"
+
     @order.save # move and account for whether the order is canceled
   end
 
@@ -48,6 +50,7 @@ class OrdersController < ApplicationController
   def update_inventory(order)
     order.order_items.each do |order_item|
       if order_item.product.inventory >= order_item.quantity
+        # remove item from inventory
         order_item.product.inventory -= order_item.quantity
         order_item.product.update!
       else
