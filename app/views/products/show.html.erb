@@ -28,6 +28,6 @@
       <%= review.description %>
     </p>
   <% end %>
-  <%= link_to "Write Review", new_review_path(:product_id => @product.id), { method: :get, class: "btn btn-default" } %>
+  <%= link_to "Write Review", new_product_review_path(@product), { method: :get, class: "btn btn-default" } %>
 
 </div>

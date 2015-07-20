@@ -5,13 +5,14 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
   root 'products#index'
-  resources :users, :orders, :order_items, :reviews
+  resources :users, :orders, :order_items
 
   resources :products do
     collection do
       get 'by_vendor', to: "products#by_vendor", as: 'by_vendor'
       get 'by_category', to: "products#by_category", as: 'by_category'
     end
+    resources :reviews
   end
 
   get    "/login",  to: 'sessions#new',     as: 'login'
