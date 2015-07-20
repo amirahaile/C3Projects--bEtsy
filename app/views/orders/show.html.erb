@@ -24,6 +24,4 @@
   <% end %>
 </table>
 
-<!-- ability to remove each item -->
-<!-- ability to change quantity of each item -->
-<!-- checkout button -->
+<%= button_to("Checkout", "/orders/#{@order.id}/payment", method: :put, id: @order, class: "btn btn-primary") %> </td>
