@@ -15,7 +15,6 @@ class Product < ActiveRecord::Base
   validates :name, uniqueness: true
   validates :price, numericality: { greater_than: 0 }
   validates :inventory, numericality: { only_integer: true, greater_than: 0 }
-  validates_associated :user
 
   scope :by_vendor, -> (vendor) { where(user_id: vendor) }
   scope :by_category, -> (category) { joins(:categories).where("categories.id = ?", category) }

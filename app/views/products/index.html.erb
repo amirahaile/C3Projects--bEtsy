@@ -1,6 +1,22 @@
 <%= render partial: 'shared/header'%>
 
 <div class="row">
+
+  Sort By: <%= form_for(:product, url: by_vendor_products_path, method: :get)  do |f| %>
+    <%= f.label "Merchant: " %>
+    <%= f.collection_select(:user_id, User.all, :id, :username, prompt: "View All" ) %>
+    <%= f.submit "Go", class: "btn btn-primary" %>
+  <% end %>
+
+  <%= form_for(:product, url: by_category_products_path, method: :get)  do |f| %>
+    <%= f.label "Category: " %>
+    <%= f.collection_select(:category_id, Category.all, :id, :name, prompt: "View All" ) %>
+    <%= f.submit "Go", class: "btn btn-primary" %>
+  <% end %>
+
+</div>
+
+<div class="row">
   <% @products.each do |item| %>
     <div class="col-sm-4">
 

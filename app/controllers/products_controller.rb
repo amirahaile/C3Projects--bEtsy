@@ -15,6 +15,26 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
+  def by_vendor
+    if params[:product][:user_id].empty?
+      @products = Product.all
+    else
+      @user = User.find(params[:product][:user_id])
+      @products = Product.by_vendor(@user)
+    end
+    render :index
+  end
+
+  def by_category
+    if params[:product][:category_id].empty?
+      @products = Product.all
+    else
+      @category = Category.find(params[:product][:category_id])
+      @products = Product.by_category(@category)
+    end
+    render :index
+  end
+
   def new
   end
 
