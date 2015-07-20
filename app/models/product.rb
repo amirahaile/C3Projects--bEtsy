@@ -21,9 +21,7 @@ class Product < ActiveRecord::Base
   # product objects) because of some constraint violation with
   # validates_associated :user
 
-  # WORKING ON FOR PRODUCTS#INDEX: (DOES NOT WORK)
-  # scope :by_category, (category) -> { where(Product.all.categories.includes?(category)) }
-  scope :by_vendor, -> (vendor) { where(vendor: vendor) }
-  scope :by_category, -> (category) { where(categories: category) }
+  scope :by_vendor, -> (vendor) { where(user_id: vendor) }
+  scope :by_category, -> (category) { joins(:categories).where("categories.id = ?", category) }
 
 end
