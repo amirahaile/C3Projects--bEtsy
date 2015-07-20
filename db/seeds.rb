@@ -109,3 +109,6 @@ orders = [
 orders.each do |order|
   Order.create(order)
 end
+
+order = Order.new(id: 6)
+order.save(validate: false)

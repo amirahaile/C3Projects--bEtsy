@@ -7,19 +7,21 @@ class OrdersController < ApplicationController
 
   # connect products order item controller to instantiate an order item
   # and then to the order controller to shovel into the order
-  def new
-    @order = Order.new
+  # def new
+    # @order = Order.new
     # triggered by the 'add to cart' button on Products#show
-  end
+  # end
 
-  def find_or_create
-    @order = Order.where(params[:id]).first_or_create do |order|
-      @order_item = OrderItem.create!(product_id: (Product.find(params[:id]).id)
-      order.order_items << @order_item
-      order.save
-    end
-    # redirect_to #order_cart_path
-  end
+  # def find_or_create
+    # @order = Order.find(id: params[:session][:id])
+
+    # if @order
+      # session[:id] = @order.id
+      # redirect_to order_path, method: :get
+    # else
+      #
+    # end
+  # end
 
   def show
     @order_items = @order.order_items
