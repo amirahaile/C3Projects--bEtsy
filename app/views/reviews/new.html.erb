@@ -1,0 +1,27 @@
+<h3>New Review</h3>
+
+<%= form_for @review, method: :post do |f| %>
+
+  <fieldset>
+    <%= f.label :rating_1, "1" %>
+    <%= f.radio_button :rating, "1" %>
+    <%= f.label :rating_2, "2" %>
+    <%= f.radio_button :rating, "2" %>
+    <%= f.label :rating_3, "3" %>
+    <%= f.radio_button :rating, "3" %>
+    <%= f.label :rating_4, "4" %>
+    <%= f.radio_button :rating, "4" %>
+    <%= f.label :rating_5, "5" %>
+    <%= f.radio_button :rating, "5" %>
+  </fieldset>
+
+  <fieldset>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </fieldset>
+
+  <%= f.hidden_field :product_id, value: @review.product_id %>
+
+  <%= f.submit "Submit", class: "btn btn-default" %>
+  
+<% end %>

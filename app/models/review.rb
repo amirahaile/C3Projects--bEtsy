@@ -13,4 +13,13 @@ class Review < ActiveRecord::Base
   scope :ratings_by_3, -> { where(rating: 3) }
   scope :ratings_by_4, -> { where(rating: 4) }
   scope :ratings_by_5, -> { where(rating: 5) }
+
+  # Callbacks
+  before_validation :integerize_rating!, only: [:rating]
+
+  def integerize_rating!
+    return if self.rating == rating.to_i
+
+    self.rating = self.rating.to_i
+  end
 end
