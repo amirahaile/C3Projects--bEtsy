@@ -16,11 +16,6 @@ class Product < ActiveRecord::Base
   validates :price, numericality: { greater_than: 0 }
   validates :inventory, numericality: { only_integer: true, greater_than: 0 }
 
-
-  # don't know why, but this validation incites a rollback (failing to save
-  # product objects) because of some constraint violation with
-  # validates_associated :user
-
   scope :by_vendor, -> (vendor) { where(user_id: vendor) }
   scope :by_category, -> (category) { joins(:categories).where("categories.id = ?", category) }
 
