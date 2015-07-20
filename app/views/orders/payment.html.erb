@@ -1,4 +1,6 @@
-<%= form_for @order do |f| %>
+<!-- this information is updating an existing Order -->
+<!-- so the method should be put, right? Not the default 'post'… -->
+<%= form_for(@order, method: :put) do |f| %>
   <div class="form-group">
   <%= f.label :email %>
   <%= f.text_field :email %>
@@ -30,8 +32,8 @@
   </div>
 
   <div class="form-group">
-  <%= f.label :name_on_card %>
-  <%= f.text_field :name_on_card %>
+  Name on Card
+  <input type="text" name="name" value="">
   </div>
 
   <div class="form-group">
@@ -44,6 +46,6 @@
   <%= f.text_field :card_exp %>
   </div>
 
-  <%= f.submit %>
+  <%= f.submit "Submit Order", class: 'btn btn-primary' %>
 
   <% end %>

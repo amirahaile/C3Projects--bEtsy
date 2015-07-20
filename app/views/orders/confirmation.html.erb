@@ -1,7 +1,10 @@
 <% subtotal = 0 %>
+<!-- need '@order_items.first' because '@order_items is an
+ActiveRecord::Associations' object -->
+<% order = Order.find(@order_items.first.order_id) %>
 
-<h4>Order Placed: <%= @order_items.order.updated_at.strftime("%m/%d/%Y at %R") %></h4>
-<h4>Order Status: <%= @order_items.order.status %></h4>
+<h4>Order Placed: <%= order.updated_at.strftime("%m/%d/%Y at %R") %></h4>
+<h4>Order Status: <%= order.status.capitalize %></h4>
 
 <table class="table">
   <tr>
