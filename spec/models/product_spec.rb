@@ -99,13 +99,18 @@ RSpec.describe Product, type: :model do
     # OTHERS:
     # active is boolean & defaults to true?
 
-    # Testing association 
+    # Testing association
     it "Product must belong to a User" do
       user = User.create(username: "a_user", email: "user@user.com", password: "userstuff999")
       user.products << @product_a
       expect(@product_a.user_id).to eq(user.id)
       expect(user.products).to include(@product_a)
     end
+
+    # Scopes - WIP
+    # it "products can be sorted by User (vendor)" do
+    #   expect(Products.by_vendor(1)).to
+    # end
 
   end
 end
