@@ -48,7 +48,6 @@ class OrdersController < ApplicationController
       redirect_to :back rescue redirect_to order_path(@order)
       flash.now[:error] = "#{order_item.product} only has #{order_item.quantity} item in stock."
     end
->>>>>>> orders_controller
   end
 
   def confirmation
@@ -59,19 +58,12 @@ class OrdersController < ApplicationController
 
   def update_inventory(order)
     order.order_items.each do |order_item|
-<<<<<<< HEAD
-      if order_item.product.inventory >= order_item.quantity
-        # remove item from inventory
-        order_item.product.inventory -= order_item.quantity
-        order_item.product.update!
-=======
       product = Product.find(order_item.product_id)
       @enough_inventory = true
 
       if product.inventory >= order_item.quantity
         product.inventory -= order_item.quantity
         product.save
->>>>>>> orders_controller
       else
         @enough_inventory = false
       end
