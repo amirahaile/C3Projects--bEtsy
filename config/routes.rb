@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       get 'by_vendor', to: "products#by_vendor", as: 'by_vendor'
       get 'by_category', to: "products#by_category", as: 'by_category'
     end
-    resources :reviews
+    resources :reviews, only: [:new, :create]
   end
 
   get    "/login",  to: 'sessions#new',     as: 'login'
