@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :users, :orders, :order_items
 
   resources :products do
-    resources :reviews
+    resources :reviews, only: [:new, :create]
   end
 
   get    "/login",  to: 'sessions#new',     as: 'login'

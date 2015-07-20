@@ -2,7 +2,7 @@ class ReviewsController < ApplicationController
 
   def new
     @product = Product.find(params[:product_id])
-    @review = Review.new #(product_id: params[:product_id].to_i)
+    @review = Review.new
     # Is there a better way to pass on params...? - Brandi
   end
 
