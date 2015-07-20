@@ -19,6 +19,7 @@ class Product < ActiveRecord::Base
 
   # WORKING ON FOR PRODUCTS#INDEX: (DOES NOT WORK)
   # scope :by_category, (category) -> { where(Product.all.categories.includes?(category)) }
-  # scope :by_category, -> (category) { where(categories: category) }
+  scope :by_vendor, -> (vendor) { where(vendor: vendor) }
+  scope :by_category, -> (category) { where(categories: category) }
 
 end
