@@ -21,5 +21,6 @@ class Review < ActiveRecord::Base
     return if self.rating == rating.to_i
 
     self.rating = self.rating.to_i
-  end
+  end # How could you use this for both rating & product_id? - Brandi
+      # It seems like I have to specify self.SOME-METHOD....
 end

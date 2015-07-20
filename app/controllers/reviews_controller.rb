@@ -12,7 +12,6 @@ class ReviewsController < ApplicationController
     if @review.save
       redirect_to product_path(@review.product_id)
     else
-      raise
       render :new
     end
   end
