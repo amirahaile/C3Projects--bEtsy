@@ -1,10 +1,10 @@
 <% subtotal = 0 %>
 <!-- need '@order_items.first' because '@order_items is an
 ActiveRecord::Associations' object -->
-<% order = Order.find(@order_items.first.order_id) %>
+<!-- <% order = Order.find(@order_items.first.order_id) %> -->
 
-<h4>Order Placed: <%= order.updated_at.strftime("%m/%d/%Y at %R") %></h4>
-<h4>Order Status: <%= order.status.capitalize %></h4>
+<h4>Order Placed: <%= Time.now.strftime("%m/%d/%Y at %R") %></h4>
+<h4>Order Status: <%= @order.status.capitalize %></h4>
 
 <table class="table">
   <tr>
@@ -60,14 +60,7 @@ ActiveRecord::Associations' object -->
 	</tr>
 </table>
 
-
-
-
-
-
-After purchasing an order, I can view a confirmation screen including:
-<!-- Each item in the order with a quantity and line-item subtotal -->
-<!-- A link to the item description page -->
-Order total price
-DateTime the order was placed
-The current status of the order
+<!-- status stays the same, session order_id == nil, redirect_to root_path -->
+<%= link_to "Confirm Order", logout_path, method: :delete, class: "btn btn-default" %>
+<!-- status changes to "cancelled", session order_id == nil, redirect_to root_path -->
+<%= link_to "Cancel Order", order_path(@order.id), method: :delete, class: "btn btn-default" %>
