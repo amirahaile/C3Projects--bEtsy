@@ -20,12 +20,12 @@
           <%= item.quantity %>
           <%= button_to "+", options = { controller: 'order_items', action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
         </td>
+
         <td> <%= number_to_currency(product.price * item.quantity) %> </td>
-        <td> <%= button_to("Remove from Cart", order_item_path, id: item.id, method: :delete, class: "btn btn-default") %> </td>
+        <td> <%= button_to("Remove from Cart", order_order_item_path(order_id: @order.id, id: item.id), method: :delete, class: "btn btn-default") %> </td>
       </tr>
     <% else %>
-      <!-- does this work? -->
-      item.destroy
+      <% item.destroy %>
     <% end %>
   <% end %>
 </table>
