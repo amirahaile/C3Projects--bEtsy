@@ -5,24 +5,25 @@
   </div>
 <% end %>
 
-<%= form_for @user, method: :post do |f| %>
+<%= form_for @user, method: :post, class: "user" do |f| %>
 
   <fieldset>
     <div class="form-group">
-    <p class="field-error"><%= @user.errors.messages[:username][0].capitalize if @user.errors.messages[:username] %></p>
     <%= f.label :username %>
-    <%= f.text_field :username, class: "form-control"  %>
+    <%= f.text_field :username, class: "form-control" %>
+    <p class="text-field-error"><%= flash.now[:username_error] %></p>
 
-    <p class="field-error"><%= @user.errors.messages[:email][0].capitalize if @user.errors.messages[:email] %></p>
     <%= f.label :email %>
-    <%= f.text_field :email, class: "form-control"  %>
+    <%= f.text_field :email, class: "form-control" %>
+    <p class="text-field-error"><%= flash.now[:email_error] %></p>
 
-    <p class="field-error"><%= @user.errors.messages[:password][0].capitalize if @user.errors.messages[:password] %></p>
     <%= f.label :password %>
-    <%= f.text_field :password, class: "form-control"  %>
+    <%= f.text_field :password, class: "form-control" %>
+    <p class="text-field-error"><%= flash.now[:password_error] %></p>
 
-    <p class="field-error"><%= @user.errors.messages[:password_confirmation][0].capitalize if @user.errors.messages[:password_confirmation] %></p>    <%= f.label :password_confirmation %>
-    <%= f.text_field :password_confirmation, class: "form-control"  %>
+    <%= f.label :password_confirmation, "Password Confirmation" %>
+    <%= f.text_field :password_confirmation, class: "form-control" %>
+    <p class="text-field-error"><%= flash.now[:password_confirmation_error] %></p>
     </div>
   </fieldset>
 

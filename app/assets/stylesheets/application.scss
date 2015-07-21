@@ -41,6 +41,14 @@
   padding: 3px 7px;
 }
 
-div.field_with_errors {
+.new_review div.field_with_errors {
   display: inline-block;
+}
+
+.new_user div.field_with_errors {
+  display: block;
+}
+
+p.text-field-error {
+  color: #FF0000;
 }
