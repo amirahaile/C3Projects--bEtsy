@@ -12,21 +12,21 @@ RSpec.shared_examples "a controller" do
   end
 
   describe "GET #show" do
-  before :each do
-    @object = described_class.model.create(params.values)
-  end
+    before :each do
+      @object = described_class.model.create(params.values)
+    end
 
-  it "shows the selected #{described_class.model}" do
-    get :show, id: @object
+    it "shows the selected #{described_class.model}" do
+      get :show, id: @object
 
-    expect { assigns(:object).to eq(@object) }
-  end
+      expect { assigns(:object).to eq(@object) }
+    end
 
-  it  "renders the #show template" do
-    get :show, id: @object
-    expect(subject).to render_template :show
+    it  "renders the #show template" do
+      get :show, id: @object
+      expect(subject).to render_template :show
+    end
   end
-end
 
 
 end
