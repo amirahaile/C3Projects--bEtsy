@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   root 'products#index'
 
-  resources :orders, :order_items, :categories
+  resources :categories
 
   resources :users do
     resources :orders, only: [:index, :show]
@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     resources :reviews, only: [:new, :create]
   end
 
+  resources :orders do
+    resources :order_items
+  end
 
   get    "/login",  to: 'sessions#new',     as: 'login'
   post   "/login",  to: 'sessions#create'
