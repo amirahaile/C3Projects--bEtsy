@@ -11,7 +11,7 @@ class CategoriesProducts < ActiveRecord::Migration
       t.decimal :price, null: false, scale: 2, precision: 7
       t.string :photo_url, null: false
       t.integer :inventory, null: false
-      t.string :active, null: false, default: true
+      t.boolean :active, null: false, default: true
       t.integer :user_id, null: false
       t.timestamps null: false
     end

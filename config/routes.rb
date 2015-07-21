@@ -6,13 +6,14 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   root 'products#index'
 
+  resources :orders, :order_items, :categories
+
   resources :users do
     resources :orders, only: [:index, :show]
+    resources :products, only: [ :new, :create, :update, :edit ]
   end
 
-  resources :orders, :order_items
-
-  resources :products do
+  resources :products, except: [ :new, :create, :update, :edit ] do
     collection do
       get 'by_vendor', to: "products#by_vendor", as: 'by_vendor'
       get 'by_category', to: "products#by_category", as: 'by_category'
