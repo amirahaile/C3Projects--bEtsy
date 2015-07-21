@@ -1,14 +1,10 @@
 class UsersController < ApplicationController
   before_action :find_user
 
-  def index
-    # PLACEHOLDER
-    # NEEDS A WAY TO FIND RETURN USER ACCORDING TO SESSION
-    # OR MAKE A DIFFERENT ACTION FOR DASHBOARD THAT TAKES AN ID
-  end
-
   def show
     @user = User.find(params[:id])
+    orders = Order.find_by(user_id: @user.id)
+    separate_by_status(orders)
   end
 
   def new
@@ -36,4 +32,20 @@ class UsersController < ApplicationController
     params.require(:review).permit(:username, :email, :password, :password_confirmation)
   end
 
+  def separate_by_status(orders)
+    @pending, @paid, @completed, @canceled = []
+
+    orders.each do |order|
+      case order.status
+      when "pending"
+        @pending << order
+      when "paid"
+        @paid << order
+      when "completed"
+        @completed << order
+      when "canceled"
+        @canceled << order
+      end
+    end
+  end
 end
