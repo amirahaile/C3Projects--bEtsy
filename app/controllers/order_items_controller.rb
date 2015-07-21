@@ -1,6 +1,6 @@
 class OrderItemsController < ApplicationController
   before_action :find_order_item, only: [:destroy, :qty_decrease, :qty_increase]
-  before_action :find_order, only: [:new, :create]
+  before_action :find_order, only: [:create]
 
   def find_order_item
     @order_item = OrderItem.find_by(order_id: params[:id])
@@ -22,7 +22,7 @@ class OrderItemsController < ApplicationController
   end
 
   def create
-    if OrderItem.find_by(order_id: @order.id, product_id: params[:id])
+    if OrderItem.find_by(product_id: params[:id])
       @order_item = OrderItem.find_by(product_id: params[:id])
       @order_item.quantity += 1
       @order_item.save
