@@ -65,7 +65,6 @@ class ProductsController < ApplicationController
       flash[:notice] = "The product was not saved. Try again!"
       redirect_to new_user_product_path
     end
-    # raise
   end
 
   def edit
