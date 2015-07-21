@@ -34,9 +34,9 @@
       <!-- why does this trigger orders#find_order? -->
       <!-- and why does it set id to 'empty' when it's explicitly -->
       <!-- set to sessions[:order_id]?? -->
-      <%= link_to(@cart_quantity.nil? ? order_empty_path : order_path(@order), options = { id: session[:order_id] }, html_options = { method: :get, class: "btn btn-default" }) do %>
+      <%= link_to(order_path(@order), options = { id: session[:order_id] }, html_options = { method: :get, class: "btn btn-default" }) do %>
         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-        <span class="badge"> <%= @cart_quantity.nil? ? 0 : @cart_quantity %> </span>
+        <span class="badge"> <%= @cart_quantity %> </span>
       <% end %>
 		</div>
 
