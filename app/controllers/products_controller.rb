@@ -13,6 +13,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
+    @product_average = Review.average_rating(params[:id])
   end
 
   def by_vendor
