@@ -12,6 +12,7 @@
 
 		<div class="collapse navbar-collapse navbar-right float-right">
       <% if @user == nil %>
+        <%= link_to "Register", new_user_path, class: 'btn btn-primary col-sm-2' %>
 				<%= form_for(:session, url: login_path, class: "navbar-form  form-inline")  do |f| %>
 					<div class="form-group col-sm-4">
 						<%= f.label :username %>

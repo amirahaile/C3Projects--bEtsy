@@ -1,0 +1,31 @@
+<h3>SIGN UP!</h3>
+<% if flash.now[:error] %>
+  <div>
+    <%= flash.now[:error] %>
+  </div>
+<% end %>
+
+<%= form_for @user, method: :post do |f| %>
+
+  <fieldset>
+    <div class="form-group">
+    <p class="field-error"><%= @user.errors.messages[:username][0].capitalize if @user.errors.messages[:username] %></p>
+    <%= f.label :username %>
+    <%= f.text_field :username, class: "form-control"  %>
+
+    <p class="field-error"><%= @user.errors.messages[:email][0].capitalize if @user.errors.messages[:email] %></p>
+    <%= f.label :email %>
+    <%= f.text_field :email, class: "form-control"  %>
+
+    <p class="field-error"><%= @user.errors.messages[:password][0].capitalize if @user.errors.messages[:password] %></p>
+    <%= f.label :password %>
+    <%= f.text_field :password, class: "form-control"  %>
+
+    <p class="field-error"><%= @user.errors.messages[:password_confirmation][0].capitalize if @user.errors.messages[:password_confirmation] %></p>    <%= f.label :password_confirmation %>
+    <%= f.text_field :password_confirmation, class: "form-control"  %>
+    </div>
+  </fieldset>
+
+  <%= f.submit "Create", class: "btn btn-success" %>
+
+<% end %>
