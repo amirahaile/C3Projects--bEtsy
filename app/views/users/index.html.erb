@@ -1,4 +1,4 @@
-<table>
+<table class="table table-hover">
   <tr>
     <th>Product Name</th>
     <th>Qty</th>
@@ -6,12 +6,13 @@
   </tr>
   <tr>
     <% @orders.each do |order| %>
-    <% order.order_items.each do |order_item| %>
+    <% order.first.order_items.each do |order_item| %>
       <% if @product_ids.include?(order_item.product_id) %>
-      <td><%= link_to "#{order_item.product.name}" %></td>
+      <td><%= link_to "#{order_item.product.name}", product_path(order_item.product.id) %></td>
       <td><%= order_item.quantity %></td>
       <td><%= order_item.product.price %></td>
       <% end %>
+    <% end %>
     <% end %>
   </tr>
 </table>
