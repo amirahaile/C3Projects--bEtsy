@@ -1,12 +1,18 @@
 class OrdersController < ApplicationController
-  before_action :find_order, except: [:new, :create, :empty]
+  before_action :find_order, except: [ :index, :new, :create, :empty]
 
   def find_order
     @order = Order.find(params[:id])
   end
 
+  def index; end
+
   def show
-    @order_items = @order.order_items
+    if @cart_quantity > 0
+      @order_items = @order.order_items
+    else
+      render :index
+    end
   end
 
   # view for an empty cart
