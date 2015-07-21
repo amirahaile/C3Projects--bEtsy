@@ -28,15 +28,12 @@
 
 			<% else %>
 				Hello, <%= @username %>!
-				<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-danger' %>
+				<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-default' %>
 			<% end %>
 
-      <!-- why does this trigger orders#find_order? -->
-      <!-- and why does it set id to 'empty' when it's explicitly -->
-      <!-- set to sessions[:order_id]?? -->
-      <%= link_to(order_path(@order), options = { id: session[:order_id] }, html_options = { method: :get, class: "btn btn-default" }) do %>
+      <%= link_to(@order.nil? ? orders_path : order_path(@order), options = { id: session[:order_id] }, html_options = { class: "btn btn-default" }) do %>
         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-        <span class="badge"> <%= @cart_quantity %> </span>
+        <span class="badge"> <%= @cart_quantity ||= 0 %> </span>
       <% end %>
 		</div>
 
