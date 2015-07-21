@@ -23,12 +23,12 @@ class OrderItemsController < ApplicationController
 
   def create
     if OrderItem.find_by(product_id: params[:id])
-      @order_item = OrderItem.find_by(product_id: params[:id])
+      @order_item = OrderItem.find_by(product_id: params[:product_id])
       @order_item.quantity += 1
       @order_item.save
       @order.order_items << @order_item
     else
-      @order_item = OrderItem.create!(order_id: @order.id, product_id: params[:id])
+      @order_item = OrderItem.create!(order_id: @order.id, product_id: params[:product_id])
       @order.order_items << @order_item
     end
     redirect_to order_path(@order), method: :get
