@@ -11,6 +11,7 @@ class ProductsController < ApplicationController
   end
 
   def show
+    #When logged in, this should only be that user's products
     @product = Product.find(params[:id])
     @product_average = Review.average_rating(params[:id])
   end
@@ -22,7 +23,7 @@ class ProductsController < ApplicationController
       @user = User.find(params[:product][:user_id])
       @products = Product.by_vendor(@user)
     end
-    
+
     render :index
   end
 
@@ -38,9 +39,19 @@ class ProductsController < ApplicationController
   end
 
   def new
+    @product = Product.new
   end
 
   def create
+    @user = User.find(params[:session][:user_id])
+    @product = Product.create(create_params[:product])
+
+    # ADD LATER: Flash confirmation instead?
+    if @product.save
+      redirect_to product_path(@product.id)
+    else
+      redirect_to root_path
+    end
   end
 
   def edit
@@ -61,7 +72,8 @@ class ProductsController < ApplicationController
       :price,
       :photo_url,
       :inventory,
-      :active
+      :active,
+      :user_id
     )
   end
 
