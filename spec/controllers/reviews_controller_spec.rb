@@ -1,46 +1,82 @@
 require 'rails_helper'
 
 RSpec.describe ReviewsController, type: :controller do
+  before(:each) do
+    @product = Product.create!(
+      name: "The Product",
+      price: 20.00,
+      photo_url: "a_photo.jpg",
+      inventory: 10,
+      user_id: 1
+    )
+  end
+
   describe "GET #new" do
     it "responds successfully with an HTTP 200 status code" do
-      get :new
+      get :new, {product_id: 1}
 
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
+
+    it "will redirect the user (merchant) of the product back to the product page" do
+      session[:user_id] = @product.user_id
+      get :new, {product_id: 1}
+
+      expect(subject).to redirect_to(product_path(1))
+    end
   end
 
-  # describe "POST #create" do
-  #   let(:review) { Review.create!(
-  #     rating: 1,
-  #     description: "This product is LAME!",
-  #     product_id: 1
-  #     )
-  #
-  #   context "valid Review params" do
-  #     it "creates a Review" do
-  #       post :create, params
-  #       expect(described_class.model.count).to eq 1
-  #     end
-  #
-  #     #COPIES FROM SALLY'S CODE TO REFRENCE:
-  #
-  #     it "sets value of rank to 0" do
-  #       post :create, params
-  #       expect(medium.rank).to eq 0
-  #     end
-  #
-  #     it "redirects to the show page" do
-  #       post :create, params
-  #       expect(subject).to redirect_to(polymorphic_path(medium))
-  #     end
-  #
-  #     context "record in which only the title is specified" do
-  #       it "creates a record" do
-  #         post :create, minimal_params
-  #         expect(described_class.model.count).to eq 1
-  #       end
-  #     end
-  #   end
+  describe "POST #create" do
+    let(:params) do
+      { product_id: 1, review: { rating: 5, description: "Amazing." } }
+    end
+
+    let(:empty_params) do
+      { product_id: 1, review: { description: "" } }
+    end
+
+    let(:invalid_params) do
+      { product_id: 1, review: { description: "THERE'S NO RATING HERE! <GASP>"} }
+    end
+
+    let(:valid_params) do
+      { product_id: 1, review: { rating: 3 }}
+    end
+
+    context "valid review params" do
+      it "creates a review" do
+        post :create, params
+        expect(Review.count).to eq 1
+      end
+
+      it "creates a review with just a rating (no description)" do
+        post :create, valid_params
+        expect(Review.count).to eq 1
+      end
+
+      it "redirects to the product show page (after successful save)" do
+        post :create, params
+        expect(subject).to redirect_to(product_path(1))
+      end
+    end
+
+    context "invalid review params" do
+      it "does not create a review" do
+        post :create, empty_params
+        expect(Review.count).to eq 0
+      end
+
+      it "does not create a review with just a description (no rating)" do
+        post :create, invalid_params
+        expect(Review.count).to eq 0
+      end
+
+      it "renders the new review page (if unsuccessful save)" do
+        post :create, invalid_params
+        expect(subject).to render_template("new")
+      end
+    end
+  end
 
 end
