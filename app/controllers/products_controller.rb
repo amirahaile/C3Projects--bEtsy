@@ -14,6 +14,17 @@ class ProductsController < ApplicationController
     #When logged in, this should only be that user's products
     @product = Product.find(params[:id])
     @product_average = Review.average_rating(params[:id])
+
+    # moved from OrderItems controller
+    # an Order object is required for this view to render
+    # is there a better place for it? ApplicationController?
+    # (placement affects how cart renders when empty)
+    if session[:order_id].nil?
+      @order = Order.new
+      @order.save(validate: false)
+
+      session[:order_id] = @order.id
+    end
   end
 
   def by_vendor
