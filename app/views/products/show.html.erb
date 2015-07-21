@@ -11,7 +11,7 @@
     <% end %>
   </p>
 
-  <%= link_to "Add to Cart", url_options = { controller: "order_items", action: "create", id: @product.id}, html_options = { method: :post, class: "btn btn-default" } %>
+  <%= link_to "Add to Cart", order_order_items_path(order_id: session[:order_id], product_id: @product.id), html_options = { method: :post, class: "btn btn-default" } %>
 
   <h3>REVIEWS<h3>
   <h3>
