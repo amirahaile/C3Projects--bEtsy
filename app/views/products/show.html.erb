@@ -13,7 +13,15 @@
 
   <%= link_to "Add to Cart", url_options = { controller: "order_items", action: "create", id: @product.id}, html_options = { method: :post, class: "btn btn-default" } %>
 
-  <h3>REVIEWS</h3>
+  <h3>REVIEWS<h3>
+  <h3>
+    <% @product_average.times do %>
+      <span class='glyphicon glyphicon-star'></span>
+    <% end %>
+    <% (5 - @product_average).times do %>
+      <span class='glyphicon glyphicon-star-empty'></span>
+    <% end %>
+  </h3>
   <% @product.reviews.each do |review| %>
     <h4>Rating:
       <% (review.rating).times do %>

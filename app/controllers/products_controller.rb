@@ -8,11 +8,11 @@ class ProductsController < ApplicationController
   def index
     @products = Product.all
     @user = User.find_by(id: session[:user_id])
-    @username = @user ? @user.username : "Guest"
   end
 
   def show
     @product = Product.find(params[:id])
+    @product_average = Review.average_rating(params[:id])
   end
 
   def by_vendor
@@ -22,6 +22,7 @@ class ProductsController < ApplicationController
       @user = User.find(params[:product][:user_id])
       @products = Product.by_vendor(@user)
     end
+    
     render :index
   end
 
@@ -32,6 +33,7 @@ class ProductsController < ApplicationController
       @category = Category.find(params[:product][:category_id])
       @products = Product.by_category(@category)
     end
+
     render :index
   end
 

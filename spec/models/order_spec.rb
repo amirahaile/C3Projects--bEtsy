@@ -71,10 +71,7 @@ RSpec.describe Order, type: :model do
       end
     end
 
-
-
     # Test status and default should be "pending"!
-
 
     # Check card exp must be in the future.
 

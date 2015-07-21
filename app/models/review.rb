@@ -14,6 +14,14 @@ class Review < ActiveRecord::Base
   scope :ratings_by_4, -> { where(rating: 4) }
   scope :ratings_by_5, -> { where(rating: 5) }
 
+  def self.average_rating(product_id)
+    all_reviews = where(product_id: product_id)
+    review_count = all_reviews.count
+    sum = 0
+    all_reviews.each { |review| sum += review.rating }
+    average = (sum / review_count)
+  end
+
   # Callbacks
   before_validation :integerize_rating!, only: [:rating]
 

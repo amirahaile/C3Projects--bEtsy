@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :find_order, except: [:new, :create]
+  before_action :find_order, except: [:new, :create, :empty]
 
   def find_order
     @order = Order.find(params[:id])
@@ -8,6 +8,9 @@ class OrdersController < ApplicationController
   def show
     @order_items = @order.order_items
   end
+
+  # view for an empty cart
+  def empty; end
 
   # same as :show; any way to conslidate?
   def payment
@@ -28,7 +31,7 @@ class OrdersController < ApplicationController
       @order.card_last_4 = params[:order][:card_number][-4, 4]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
-      @order.save! # move and account for whether the order is canceled
+      @order.save! # move and account for whether the order is canceled?
       redirect_to order_confirmation_path(@order)
     else
       redirect_to :back rescue redirect_to order_path(@order)

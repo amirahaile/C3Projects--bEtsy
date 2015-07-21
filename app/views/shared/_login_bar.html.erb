@@ -1,9 +1,7 @@
 <!-- make it so it display over the top of the screen -->
-<% if flash.now[:error] %>
-  <div>
-    <%= flash.now[:error] %>
-  </div>
-<% end %>
+<div>
+  <%= flash.now[:error] if flash.now[:error] %>
+</div>
 
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
@@ -13,7 +11,7 @@
 
 
 		<div class="collapse navbar-collapse navbar-right float-right">
-			<% if @user == nil %>
+      <% if @user == nil %>
 				<%= form_for(:session, url: login_path, class: "navbar-form  form-inline")  do |f| %>
 					<div class="form-group col-sm-4">
 						<%= f.label :username %>
@@ -32,6 +30,14 @@
 				Hello, <%= @username %>!
 				<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-danger' %>
 			<% end %>
+
+      <!-- why does this trigger orders#find_order? -->
+      <!-- and why does it set id to 'empty' when it's explicitly -->
+      <!-- set to sessions[:order_id]?? -->
+      <%= link_to(@order_items.nil? ? order_empty_path : order_path(@order), options = { id: session[:order_id] }, html_options = { method: :get, class: "btn btn-default" }) do %>
+        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+        <span class="badge"> <%= @order_items.nil? ? 0 : @order_items.count %> </span>
+      <% end %>
 		</div>
 	</div>
 </nav>
