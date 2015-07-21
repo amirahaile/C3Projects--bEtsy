@@ -12,5 +12,7 @@ class ApplicationController < ActionController::Base
   def logged_in
     @user = User.find(session[:user_id]) unless session[:user_id].nil?
     @username = @user ? @user.username : "Guest"
+    @order = Order.find(session[:order_id])
+    @order_items = @order.order_items
   end
 end
