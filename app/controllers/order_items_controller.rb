@@ -37,7 +37,7 @@ class OrderItemsController < ApplicationController
   def destroy
     @order_item.destroy
     @order_item.save
-    redirect_to order_path
+    redirect_to order_path(@order)
   end
 
   def qty_decrease
