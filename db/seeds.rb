@@ -41,19 +41,6 @@ users.each do |user|
   User.create(user)
 end
 
-order_items = [
-  { quantity: 234,
-    order_id: 1,
-    product_id: 2 },
-  { quantity: 77,
-    order_id: 2,
-    product_id: 1 },
-]
-
-order_items.each do |item|
-  OrderItem.create(item)
-end
-
 categories = [
   { name: "Pet" }, { name: "Adult" }, { name: "Child" }
 ]
