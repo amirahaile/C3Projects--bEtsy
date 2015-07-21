@@ -31,9 +31,6 @@ Rails.application.routes.draw do
 
   get 'orders/:id/confirmation', to: 'orders#confirmation', as: 'order_confirmation'
 
-  get '/orders/empty', to: 'orders#empty', as:'order_empty'
-  post '/orders/empty', to: 'orders#empty'
-
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
