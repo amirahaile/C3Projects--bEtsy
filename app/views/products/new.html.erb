@@ -1,10 +1,10 @@
 
 <h2 class="col-sm-offset-1">Add a New Product</h2>
   <div class="form">
-    <%= form_for(:session, url: login_path)  do |f| %>
+    <%= form_for [ @user, @product ]  do |f| %>
       <div class="form-group col-sm-offset-2">
         <%= f.label :name %>
-        <%= f.text_field :name %>
+        <%= f.text_field :name, required: :true %>
       </div>
 
       <div class="form-group col-sm-offset-2">
@@ -14,23 +14,29 @@
 
       <div class="form-group col-sm-offset-2">
         <%= f.label :price %>
-        <%= f.text_field :price %>
+        <%= f.text_field :price, required: :true %>
       </div>
 
       <div class="form-group col-sm-offset-2">
         <%= f.label :photo_url %>
-        <%= f.file_field :photo_url %>
+        <%= f.text_field :photo_url, required: :true %>
       </div>
 
       <div class="form-group col-sm-offset-2">
         <%= f.label :inventory %>
-        <%= f.text_field :inventory %>
+        <%= f.number_field :inventory, required: :true %>
       </div>
 
       <div class="form-group col-sm-offset-2">
         <%= f.label :active %>
-        <%= f.check_box :active %>
+        <%= f.check_box :active, {checked: true} %>
       </div>
+
+      <div class="form-group col-sm-offset-2">
+        <%= f.label :categories %>
+        <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) %>
+      </div>
+
 
       <div class="form-group col-sm-offset-1">
         <%= f.submit "Add Product", id: session[:user_id], class: "btn btn-primary col-sm-2" %>

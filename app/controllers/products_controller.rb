@@ -43,15 +43,29 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @user = User.find(params[:session][:user_id])
-    @product = Product.create(create_params[:product])
+    # @user = User.find(params[:user_id])
+    @product = Product.new(create_params)
+    @product.user_id = params[:user_id]
+    # Below: Attempt to be able to upload a file, but it doesn't work.
+    # I might come back to this later... Would change text_field to file_field
+    # new product view
 
-    # ADD LATER: Flash confirmation instead?
+    # if params[:photo_url].present?
+    #   file = params[:product][:photo_url]
+    #   File.open(Rails.root.join('app','assets', 'images', file), 'wb') do |f|
+    #       f.write(file.read)
+    #   end
+    # end
+
+    # ADD LATER: Flash confirmation?
     if @product.save
-      redirect_to product_path(@product.id)
-    else
+      flash[:notice] = "Product saved!"
       redirect_to root_path
+    else
+      flash[:notice] = "The product was not saved. Try again!"
+      redirect_to new_user_product_path
     end
+    # raise
   end
 
   def edit
@@ -73,7 +87,8 @@ class ProductsController < ApplicationController
       :photo_url,
       :inventory,
       :active,
-      :user_id
+      :user_id,
+      category_ids: []
     )
   end
 
