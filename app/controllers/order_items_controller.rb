@@ -7,14 +7,7 @@ class OrderItemsController < ApplicationController
   end
 
   def find_order
-    if session[:order_id].nil?
-      @order = Order.new
-      @order.save(validate: false)
-      session[:order_id] = @order.id
-      @order = Order.find(session[:order_id])
-    else
-      @order = Order.find(session[:order_id])
-    end
+    @order = Order.find(session[:order_id])
   end
 
   def index
