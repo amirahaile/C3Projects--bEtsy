@@ -24,4 +24,5 @@
   <% end %>
 </table>
 
-<%= button_to("Checkout", "/orders/#{@order.id}/payment", method: :put, class: "btn btn-primary") %> </td>
+
+<%= button_to("Checkout", "/orders/#{@order.id}/payment", method: :get, id: @order, class: "btn btn-primary") %> </td>
