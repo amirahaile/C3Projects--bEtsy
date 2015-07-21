@@ -13,6 +13,12 @@ class ApplicationController < ActionController::Base
     @user = User.find(session[:user_id]) unless session[:user_id].nil?
     @username = @user ? @user.username : "Guest"
     @order = Order.find(session[:order_id])
-    @order_items = @order.order_items
+    @cart_quantity = quantity_in_cart(@order)
+  end
+
+  private
+
+  def quantity_in_cart(order)
+    order.order_items.reduce(0) { |sum, n| sum + n.quantity }
   end
 end
