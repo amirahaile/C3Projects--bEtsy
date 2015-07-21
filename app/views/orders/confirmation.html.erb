@@ -61,6 +61,6 @@ ActiveRecord::Associations' object -->
 </table>
 
 <!-- status stays the same, session order_id == nil, redirect_to root_path -->
-<%= link_to "Confirm Order", logout_path, method: :delete, class: "btn btn-default" %>
+<%= link_to "Go Home", logout_path, method: :delete, class: "btn btn-default" %>
 <!-- status changes to "cancelled", session order_id == nil, redirect_to root_path -->
-<%= link_to "Cancel Order", order_path(@order.id), method: :delete, class: "btn btn-default" %>
+<%= link_to "Cancel Order", order_path(@order), method: :delete, class: "btn btn-danger" %>
