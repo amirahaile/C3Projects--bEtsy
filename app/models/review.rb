@@ -19,7 +19,7 @@ class Review < ActiveRecord::Base
     review_count = all_reviews.count
     sum = 0
     all_reviews.each { |review| sum += review.rating }
-    average = (sum / review_count)
+    review_count != 0 ? (sum / review_count) : 0
   end
 
   # Callbacks
