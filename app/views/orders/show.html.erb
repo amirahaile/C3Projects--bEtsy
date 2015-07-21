@@ -10,17 +10,23 @@
 
   <% @order_items.each do |item| %>
     <% product = item.product %>
-  <tr>
-    <td> <%= product.name %> </td>
-    <td> <%= number_to_currency(product.price) %> </td>
-    <td>
-      <%= button_to '-', options = { controller: 'order_items', action: "qty_decrease", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
-      <%= item.quantity %>
-      <%= button_to "+", options = { controller: 'order_items', action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
-    </td>
-    <td> <%= number_to_currency(product.price * item.quantity) %> </td>
-    <td> <%= button_to("Remove from Cart", order_item_path, id: item.id, method: :delete, class: "btn btn-default") %> </td>
-  </tr>
+
+    <% if item.quantity > 0 %>
+      <tr>
+        <td> <%= product.name %> </td>
+        <td> <%= number_to_currency(product.price) %> </td>
+        <td>
+          <%= button_to '-', options = { controller: 'order_items', action: "qty_decrease", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+          <%= item.quantity %>
+          <%= button_to "+", options = { controller: 'order_items', action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+        </td>
+        <td> <%= number_to_currency(product.price * item.quantity) %> </td>
+        <td> <%= button_to("Remove from Cart", order_item_path, id: item.id, method: :delete, class: "btn btn-default") %> </td>
+      </tr>
+    <% else %>
+      <!-- does this work? -->
+      item.destroy
+    <% end %>
   <% end %>
 </table>
 
