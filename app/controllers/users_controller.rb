@@ -17,32 +17,20 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    nil_flash_errors
-    # let the model check if it successfuly passes validations and saves
-      # if not, send a flash error depedning on what errors are thrown?
+
     if @user.save
       session[:user_id] = @user.id # creates a session - they are logged in
       redirect_to user_path(@user) # WHERE DO WE WANT THIS TO REDIRECT TO?
-      # redirect_to root_path # with a message that they successfully created an account
+      # redirect_to root_path # with a message that they successfully created an account?
     else
-      # flash.now[:errors] = "ERROR"
-      flash.now[:username_error] = (@user.errors.messages[:username][0].capitalize + ".") if @user.errors[:username].any?
-      flash.now[:email_error] = (@user.errors.messages[:email][0].capitalize + ".") if @user.errors[:email].any?
-      flash.now[:password_error] = (@user.errors.messages[:password][0].capitalize + ".") if @user.errors[:password].any?
-      flash.now[:password_confirmation_error] = (@user.errors.messages[:password_confirmation][0].capitalize + ".") if @user.errors[:password_confirmation].any?
-        # Would we use the flash.now to display the individual errors.
-        # Would we reference the individual errors via the insance variable?
-          # long_message = ""
-          # count = 0
-          # while (@user.errors.messages[:password].count - 1)
-
-          # @user.errors.messages[:password].each do |message|
-          #   long_message = message + "&"
-          # end
-      # raise
+      error_check_for("username")
+      error_check_for("email")
+      error_check_for("password")
+      error_check_for("password_confirmation")
+        # Would we use the flash.now to display the individual errors?
+        # Should we reference the individual errors in the views via the instance variable?
       render :new
     end
-
   end
 
   def edit
@@ -64,6 +52,15 @@ class UsersController < ApplicationController
     flash.now[:email_error] = nil
     flash.now[:password_error] = nil
     flash.now[:password_confirmation_error] = nil
+  end
+
+  # NOTE TO SELF: This should actually be a method inside the views helper.
+  # Flash is usually only used for messages at the top of pages.
+  # They work for this, but conventionally they are not used like how I am using them here. - Brandi
+  def error_check_for(element)
+    if @user.errors[element].any?
+      flash.now[(element + "_error").to_sym] = (@user.errors.messages[element.to_sym][0].capitalize + ".")
+    end
   end
 
 end
