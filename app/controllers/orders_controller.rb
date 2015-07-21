@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :find_order, except: [:new, :create]
+  before_action :find_order, except: [:new, :create, :empty]
 
   def find_order
     @order = Order.find(params[:id])
@@ -8,6 +8,9 @@ class OrdersController < ApplicationController
   def show
     @order_items = @order.order_items
   end
+
+  # view for an empty cart
+  def empty; end
 
   # same as :show; any way to conslidate?
   def payment
