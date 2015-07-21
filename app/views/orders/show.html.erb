@@ -1,5 +1,4 @@
 <!-- SHOPPING CART PAGE -->
-
 <!-- list of order items -->
 <table class="table">
   <tr>
@@ -8,9 +7,10 @@
     <th>Qty</th>
     <th>Total</th>
   </tr>
+
   <% @order_items.each do |item| %>
+    <% product = item.product %>
   <tr>
-    <% product = Product.find(item.product_id) %>
     <td> <%= product.name %> </td>
     <td> <%= number_to_currency(product.price) %> </td>
     <td>
