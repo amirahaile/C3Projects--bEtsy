@@ -12,9 +12,9 @@ class UsersController < ApplicationController
     # return array of ActiveRecord::Relation objects that hold OrderItem objects
     products_of_user
 
-    @orders = find_orders(@order_items)
+    find_orders(@order_items) # @orders
     separate_by_status(@orders) # @pending, @paid, @completed, @canceled
-    @total_revenue = revenue(@order_items)
+    @total_revenue = @order_items.nil? ? 0 : revenue(@order_items)
 
     # why $50 and not $55?
     @paid_revenue = find_orders_items_from_order(@paid).nil? ? 0 : revenue(find_orders_items_from_order(@paid))
@@ -63,7 +63,8 @@ class UsersController < ApplicationController
       @order_items << OrderItem.where(product_id: product_id)
     end
 
-    if @order_items.count > 1
+    # checks if there are OrderItems
+    if @order_items.first.include? OrderItem
       return @order_items
     else
       @order_items = nil
@@ -116,14 +117,18 @@ class UsersController < ApplicationController
   end
 
   def find_orders(order_items)
-    orders = []
-    order_items.each do |item|
-      # access via #first because it's inside of an ActiveRecord::Relation
-      orders << Order.find(item.first.order_id)
+    @orders = []
+    if order_items.nil?
+      @orders
+    else
+      order_items.each do |item|
+        # access via #first because it's inside of an ActiveRecord::Relation
+        @orders << Order.find(item.first.order_id)
+      end
     end
 
     # make sure there aren't duplicating orders
-    orders.uniq { |order| order.id }
+    @orders.uniq { |order| order.id }
   end
 
   # make this work for orders and order items?

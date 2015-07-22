@@ -43,35 +43,37 @@
 	</div>
 </div>
 
-<!-- orders -->
-<div class="">
-	<table class="table table-hover">
-		<tr>
-			<th>
-				Order No.
-			</th>
-			<th>
-				Status
-			</th>
-		</tr>
-
-		<% @orders.each do |order| %>
-		<!-- why you no link?? -->
-		<% if order.status == "paid" %>
-			<tr class='success'>
-		<% elsif order.status == "canceled" %>
-			<tr class='danger'>
-		<% else %>
+<% unless @order.nil? %>
+	<!-- orders -->
+	<div class="">
+		<table class="table table-hover">
 			<tr>
-		<% end %>
-				<td>
-					<%= link_to order.id, order_confirmation_path(order) %>
-				</td>
-				<td>
-					<%= link_to order.status, order_confirmation_path(order) %>
-				</td>
+				<th>
+					Order No.
+				</th>
+				<th>
+					Status
+				</th>
 			</tr>
-		<% end %>
-	</table>
-</div>
-<%= button_tag "Orders to Fulfill", class: 'btn btn-primary' %>
+
+			<% @orders.each do |order| %>
+			<!-- why you no link?? -->
+			<% if order.status == "paid" %>
+				<tr class='success'>
+			<% elsif order.status == "canceled" %>
+				<tr class='danger'>
+			<% else %>
+				<tr>
+			<% end %>
+					<td>
+						<%= link_to order.id, order_confirmation_path(order) %>
+					</td>
+					<td>
+						<%= link_to order.status, order_confirmation_path(order) %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+	<%= button_tag "Orders to Fulfill", class: 'btn btn-primary' %>
+<% end %>
