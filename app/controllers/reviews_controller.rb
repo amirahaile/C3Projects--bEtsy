@@ -3,7 +3,13 @@ class ReviewsController < ApplicationController
   def new
     @product = Product.find(params[:product_id])
     @review = Review.new
-    # Is there a better way to pass on params...? - Brandi
+
+    if @product.user_id == session[:user_id]
+      # flash.now[:error] = "Don't be silly. You can't review your own product!"
+      redirect_to product_path(@product), notice: "Don't be silly. You can't review your own product!", flash: {other_error: "hello"}
+    else
+      render :new
+    end
   end
 
   def create
