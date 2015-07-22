@@ -4,4 +4,11 @@ class Category < ActiveRecord::Base
 
   # Validations
   validates :name, presence: true, uniqueness: true
+
+  # Callbacks
+  before_validation :normalize_names!
+
+  def normalize_names!
+    self.name = self.name.titlecase
+  end
 end
