@@ -73,10 +73,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    @orders.find(params[:order_id])
-  end
-
   private
 
   def user_params
