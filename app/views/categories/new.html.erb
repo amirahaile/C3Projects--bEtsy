@@ -1,0 +1,14 @@
+
+<h2 class="col-sm-offset-1">Add a New Product</h2>
+  <div class="form">
+    <%= form_for @category  do |f| %>
+      <div class="form-group col-sm-offset-2">
+        <%= f.label :name %>
+        <%= f.text_field :name, required: :true %>
+      </div>
+
+      <div class="form-group col-sm-offset-1">
+        <%= f.submit "Add Category", id: session[:user_id], class: "btn btn-primary col-sm-2" %>
+      </div>
+    <% end %>
+  </div>
