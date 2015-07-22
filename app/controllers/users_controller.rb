@@ -54,10 +54,10 @@ class UsersController < ApplicationController
   def index
     # if orders.order_items.product_id == user.products.ids
     @orders = []
-    if @order_items_relations.nil?
+    if @order_items.nil?
       puts "No Current Orders"
     else
-      @order_items_relations.each do |order_item|
+      @order_items.each do |order_item|
         @orders << Order.where(id: order_item.first.order_id)
         # still need to account for qty of order item
         @orders.uniq!
