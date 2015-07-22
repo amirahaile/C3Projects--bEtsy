@@ -4,22 +4,17 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    # Product has user_id
-    products = Product.where(user_id: @user.id)
 
-    orders_items = [] # array of ActiveRecord::Relations
-    products.each do |product|
-      # OrderItem has product_id
-      orders_items << OrderItem.where(product_id: product.id)
-    end
+    # return array of ActiveRecord::Relation objects that hold OrderItem objects
+    products_of_user
 
-    @orders = find_orders(orders_items)
+    @orders = find_orders(@order_items)
     separate_by_status(@orders) # @pending, @paid, @completed, @canceled
-    @total_revenue = revenue(orders_items)
+    @total_revenue = revenue(@order_items)
 
     # why $50 and not $55?
-    @paid_revenue = find_orders_items(@paid).nil? ? 0 : revenue(find_orders_items(@paid))
-    @completed_revenue = find_orders_items(@completed).nil? ? 0 : revenue(find_orders_items(@completed))
+    @paid_revenue = find_orders_items_from_order(@paid).nil? ? 0 : revenue(find_orders_items_from_order(@paid))
+    @completed_revenue = find_orders_items_from_order(@completed).nil? ? 0 : revenue(find_orders_items_from_order(@completed))
   end
 
   def new
@@ -58,10 +53,11 @@ class UsersController < ApplicationController
     user_products.each do |product|
       @product_ids << product.id
     end
-    order_items_by_user
+    order_items_from_products
   end
 
-  def order_items_by_user
+  def order_items_from_products
+    # an array of ActiveRecord::Relation objects that hold OrderItem objects
     @order_items = []
     @product_ids.each do |product_id|
       @order_items << OrderItem.where(product_id: product_id)
@@ -110,22 +106,23 @@ class UsersController < ApplicationController
     end
   end
 
-  def find_orders_items(orders_by_status)
+  # finds OrderItem objects of similar Order status
+  def find_orders_items_from_order(orders_by_status)
     if orders_by_status != []
-      orders_items = []
+      order_items = []
       orders_by_status.each do |order|
-        orders_items << OrderItem.where(order_id: order.id)
+        order_items << OrderItem.where(order_id: order.id)
       end
 
-      orders_items
+      order_items
     else
       nil
     end
   end
 
-  def find_orders(orders_items)
+  def find_orders(order_items)
     orders = []
-    orders_items.each do |item|
+    order_items.each do |item|
       # access via #first because it's inside of an ActiveRecord::Relation
       orders << Order.find(item.first.order_id)
     end
@@ -152,8 +149,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def revenue(orders_items)
-    # orders_items is an array of ActiveRecord::Relation objects
-    orders_items.reduce(0) { |sum, n| sum + (n[0].product.price * n[0].quantity)}
+  def revenue(order_items)
+    # order_items is an array of ActiveRecord::Relation objects
+    order_items.reduce(0) { |sum, n| sum + (n[0].product.price * n[0].quantity)}
   end
 end
