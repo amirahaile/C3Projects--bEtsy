@@ -65,7 +65,23 @@ products = [
     inventory: 58,
     active: true,
     user_id: 2,
-    category_ids: [1, 3] }
+    category_ids: [1, 3] },
+  { name: "Mr. T Costume for Dog - Large",
+    description: "Your dog will pity the fool with this totally awesome costume!",
+    price: 35.00,
+    photo_url: "pity-the-fool-dog.jpeg",
+    inventory: 2,
+    active: true,
+    user_id: 1,
+    category_ids: [1, 3] },
+  { name: "Taco Costume - Large",
+    description: "High-quality, one-size-fits-all adult hard-shelled taco costume (beef).",
+    price: 40.00,
+    photo_url: "adult_taco.jpeg",
+    inventory: 4,
+    active: true,
+    user_id: 2,
+    category_ids: 2 },
 ]
 
 products.each do |product|

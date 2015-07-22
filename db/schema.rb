@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150721035442) do
     t.string   "city"
     t.string   "state"
     t.string   "zipcode"
+    t.string   "card_number"
     t.string   "card_last_4"
     t.datetime "card_exp"
     t.string   "status",      default: "pending", null: false
@@ -47,15 +48,15 @@ ActiveRecord::Schema.define(version: 20150721035442) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string   "name",                                              null: false
+    t.string   "name",                                               null: false
     t.string   "description"
-    t.decimal  "price",       precision: 7, scale: 2,               null: false
-    t.string   "photo_url",                                         null: false
-    t.integer  "inventory",                                         null: false
-    t.string   "active",                              default: "t", null: false
-    t.integer  "user_id",                                           null: false
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.decimal  "price",       precision: 7, scale: 2,                null: false
+    t.string   "photo_url",                                          null: false
+    t.integer  "inventory",                                          null: false
+    t.boolean  "active",                              default: true, null: false
+    t.integer  "user_id",                                            null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
   end
 
   create_table "reviews", force: :cascade do |t|
