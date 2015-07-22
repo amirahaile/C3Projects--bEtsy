@@ -1,3 +1,7 @@
+<% flash.each do |name, msg| %>
+	<%= content_tag :div, msg, class: "name alert alert-success alert-dismissable", role: 'alert' %>
+<% end %>
+
 <div class="row">
 	<div class="col-sm-2">
 		<h3 class="text-center"> <%= number_to_currency(@total_revenue) %> </h3>
@@ -53,22 +57,20 @@
 
 		<% @orders.each do |order| %>
 		<!-- why you no link?? -->
-		<%= link_to(order_path(order)) do %>
-			<% if order.status == "paid" %>
-				<tr class='success'>
-			<% elsif order.status == "canceled" %>
-				<tr class='danger'>
-			<% else %>
-				<tr>
-			<% end %>
-					<td>
-						<%= order.id %>
-					</td>
-					<td>
-						<%= order.status %>
-					</td>
-				</tr>
-			<% end %>
+		<% if order.status == "paid" %>
+			<tr class='success'>
+		<% elsif order.status == "canceled" %>
+			<tr class='danger'>
+		<% else %>
+			<tr>
+		<% end %>
+				<td>
+					<%= link_to order.id, order_confirmation_path(order) %>
+				</td>
+				<td>
+					<%= link_to order.status, order_confirmation_path(order) %>
+				</td>
+			</tr>
 		<% end %>
 	</table>
 </div>
