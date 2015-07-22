@@ -1,20 +1,28 @@
 class UsersController < ApplicationController
-  before_action :find_user, only: :products_of_user
-  before_action :products_of_user, only: [:index, :show]
+  before_action :find_user, only: :show
+  # before_action :product_ids_from_user, only: [:index, :show]
+
+  def find_user
+    @user = User.find(session[:user_id])
+  end
 
   def show
-    @user = User.find(params[:id])
+    # associations
+    product_ids = User.product_ids_from_user(@user)
+    order_items = User.order_items_from_products(product_ids)
+    @orders = User.orders_from_order_items(order_items)
 
-    # return array of ActiveRecord::Relation objects that hold OrderItem objects
-    products_of_user # @order_items
+    # needed for a count of orders based on status
+    # an array of Order objects
+    @pending_orders = Order.by_status(@orders, "pending")
+    @paid_orders = Order.by_status(@orders, "paid")
+    @completed_orders = Order.by_status(@orders, "completed")
+    @canceled_orders = Order.by_status(@orders, "canceled")
 
-    find_orders(@order_items) # @orders
-    separate_by_status(@orders) # @pending, @paid, @completed, @canceled
-    @total_revenue = @order_items.nil? ? 0 : revenue(@order_items)
-
+    @total_revenue = order_items.nil? ? 0 : revenue(order_items)
     # why $50 and not $55?
-    @paid_revenue = find_orders_items_from_order(@paid).nil? ? 0 : revenue(find_orders_items_from_order(@paid))
-    @completed_revenue = find_orders_items_from_order(@completed).nil? ? 0 : revenue(find_orders_items_from_order(@completed))
+    @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
+    @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
   end
 
   def new
@@ -43,43 +51,13 @@ class UsersController < ApplicationController
     # PLACE HOLDER - SHINY STUFF THAT ISN'T REQUIRED
   end
 
-  def find_user
-    @user = User.find(session[:user_id])
-  end
-
-  def products_of_user
-    user_products = @user.products.to_a
-    @product_ids = []
-    user_products.each do |product|
-      @product_ids << product.id
-    end
-    order_items_from_products
-  end
-
-  def order_items_from_products
-    # an array of ActiveRecord::Relation objects that hold OrderItem objects
-    @order_items = []
-    @product_ids.each do |product_id|
-      @order_items << OrderItem.where(product_id: product_id)
-    end
-
-    @order_items.reject! { |relation| relation.empty? }
-
-    # checks if there are OrderItems
-    unless @order_items.empty?
-      return @order_items
-    else
-      @order_items = nil
-    end
-  end
-
   def index
     # if orders.order_items.product_id == user.products.ids
     @orders = []
-    if @order_items.nil?
+    if @order_items_relations.nil?
       puts "No Current Orders"
     else
-      @order_items.each do |order_item|
+      @order_items_relations.each do |order_item|
         @orders << Order.where(id: order_item.first.order_id)
         # still need to account for qty of order item
         @orders.uniq!
@@ -109,55 +87,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # finds OrderItem objects of similar Order status
-  def find_orders_items_from_order(orders_by_status)
-    if orders_by_status != []
-      order_items = []
-      orders_by_status.each do |order|
-        order_items << OrderItem.where(order_id: order.id)
-      end
-
-      order_items
-    else
-      nil
-    end
-  end
-
-  def find_orders(order_items)
-    @orders = []
-    if order_items.nil?
-      return @orders
-    else
-      order_items.each do |item|
-        # access via #first because it's inside of an ActiveRecord::Relation
-        @orders << Order.find(item.first.order_id)
-      end
-    end
-
-    # make sure there aren't duplicating orders
-    @orders.uniq { |order| order.id }
-  end
-
-  # make this work for orders and order items?
-  def separate_by_status(orders)
-    @pending, @paid, @completed, @canceled = [], [], [], []
-
-    orders.each do |order|
-      case order.status
-      when "pending"
-        @pending << order
-      when "paid"
-        @paid << order
-      when "completed"
-        @completed << order
-      when "canceled"
-        @canceled << order
-      end
-    end
-  end
-
   def revenue(order_items)
-    # order_items is an array of ActiveRecord::Relation objects
-    order_items.reduce(0) { |sum, n| sum + (n[0].product.price * n[0].quantity)}
+    order_items.reduce(0) { |sum, n| sum + (n.product.price * n.quantity)}
   end
 end
