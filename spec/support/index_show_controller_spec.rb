@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.shared_examples "index-show controller" do
+RSpec.shared_examples "index show controller" do
 
   describe "GET #index" do
     it "responds successfully with an HTTP 200 status code" do
@@ -19,7 +19,7 @@ RSpec.shared_examples "index-show controller" do
 
   describe "GET #show" do
     before :each do
-      @object = described_class.model.create(params.values)
+      @object = described_class.model.create(params.values.first)
     end
 
     it "responds successfully with an HTTP 200 status code" do
