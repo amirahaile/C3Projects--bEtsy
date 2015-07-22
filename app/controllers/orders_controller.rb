@@ -41,7 +41,7 @@ class OrdersController < ApplicationController
       redirect_to order_confirmation_path(@order)
     else
       redirect_to :back rescue redirect_to order_path(@order)
-      flash.now[:error] = "#{order_item.product} only has #{order_item.quantity} item in stock."
+      flash.now[:error] = "#{@order_item.product} only has #{@order_item.quantity} item in stock."
     end
   end
 
@@ -68,6 +68,7 @@ class OrdersController < ApplicationController
         product.save
       else
         @enough_inventory = false
+        @order_item = order_item
       end
     end
   end
