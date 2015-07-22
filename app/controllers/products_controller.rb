@@ -12,10 +12,9 @@ class ProductsController < ApplicationController
   end
 
   def show
-    #When logged in, this should only be that user's products
     @product = Product.find(params[:id])
     @product_average = Review.average_rating(params[:id])
-
+    @status = @product.active ? "Active" : "Inactive"
     # moved from OrderItems controller
     # an Order object is required for this view to render
     # is there a better place for it? ApplicationController?
@@ -72,12 +71,21 @@ class ProductsController < ApplicationController
   end
 
   def edit
+    @product = Product.find(params[:id])
   end
 
   def update
+    edit
+    @product.update(create_params)
+
+    redirect_to product_path(@product.id)
   end
 
   def destroy
+    edit
+    @product.destroy
+
+    redirect_to my_user_products_path(session[:user_id])
   end
 
   private
