@@ -60,7 +60,13 @@ ActiveRecord::Associations' object -->
 	</tr>
 </table>
 
-<!-- status stays the same, session order_id == nil, redirect_to root_path -->
-<%= link_to "Go Home", logout_path, method: :delete, class: "btn btn-default" %>
-<!-- status changes to "cancelled", session order_id == nil, redirect_to root_path -->
-<%= link_to "Cancel Order", order_path(@order), method: :delete, class: "btn btn-danger" %>
+<% if session[:user_id] %>
+  <%= link_to "Back to Dashboard", user_path(session[:user_id]), class: "btn btn-default" %>
+  <!-- status changes to "cancelled", session order_id == nil, redirect_to root_path -->
+  <%= link_to "Cancel Order", order_path(@order), method: :delete, class: "btn btn-danger" %>
+<% else %>
+  <!-- status stays the same, session order_id == nil, redirect_to root_path -->
+  <%= link_to "Go Home", logout_path, method: :delete, class: "btn btn-default" %>
+  <!-- status changes to "cancelled", session order_id == nil, redirect_to root_path -->
+  <%= link_to "Cancel Order", order_path(@order), method: :delete, class: "btn btn-danger" %>
+<% end %>
