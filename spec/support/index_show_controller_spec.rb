@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.shared_examples "a controller" do
+RSpec.shared_examples "index-show controller" do
 
   describe "GET #index" do
     it "responds successfully with an HTTP 200 status code" do
@@ -9,6 +9,12 @@ RSpec.shared_examples "a controller" do
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
+
+    it  "renders the #index template" do
+      get :index
+
+      expect(subject).to render_template :index
+    end
   end
 
   describe "GET #show" do
@@ -16,17 +22,22 @@ RSpec.shared_examples "a controller" do
       @object = described_class.model.create(params.values)
     end
 
-    it "shows the selected #{described_class.model}" do
+    it "responds successfully with an HTTP 200 status code" do
       get :show, id: @object
 
-      expect { assigns(:object).to eq(@object) }
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
     end
 
     it  "renders the #show template" do
       get :show, id: @object
       expect(subject).to render_template :show
     end
-  end
 
+    it "shows the selected #{described_class.model}" do
+      get :show, id: @object
+      expect { assigns(:object).to eq(@object) }
+    end
+  end
 
 end

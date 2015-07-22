@@ -1,6 +1,10 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
 
+  def self.model
+    Order
+  end
+
   def find_order
     @order = Order.find(params[:id])
   end
