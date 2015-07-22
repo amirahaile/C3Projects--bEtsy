@@ -38,3 +38,38 @@
 		</div>
 	</div>
 </div>
+
+<!-- orders -->
+<div class="">
+	<table class="table table-hover">
+		<tr>
+			<th>
+				Order No.
+			</th>
+			<th>
+				Status
+			</th>
+		</tr>
+
+		<% @orders.each do |order| %>
+		<!-- why you no link?? -->
+		<%= link_to(order_path(order)) do %>
+			<% if order.status == "paid" %>
+				<tr class='success'>
+			<% elsif order.status == "canceled" %>
+				<tr class='danger'>
+			<% else %>
+				<tr>
+			<% end %>
+					<td>
+						<%= order.id %>
+					</td>
+					<td>
+						<%= order.status %>
+					</td>
+				</tr>
+			<% end %>
+		<% end %>
+	</table>
+</div>
+<%= button_tag "Orders to Fulfill", class: 'btn btn-primary' %>

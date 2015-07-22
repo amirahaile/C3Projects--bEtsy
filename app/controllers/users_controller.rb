@@ -13,8 +13,8 @@ class UsersController < ApplicationController
       orders_items << OrderItem.where(product_id: product.id)
     end
 
-    orders = find_orders(orders_items)
-    separate_by_status(orders) # @pending, @paid, @completed, @canceled
+    @orders = find_orders(orders_items)
+    separate_by_status(@orders) # @pending, @paid, @completed, @canceled
     @total_revenue = revenue(orders_items)
 
     # why $50 and not $55?
