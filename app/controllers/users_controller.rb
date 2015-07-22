@@ -85,6 +85,24 @@ class UsersController < ApplicationController
     # end
   # end
 
+  def edit
+    # PLACE HOLDER - SHINY STUFF THAT ISN'T REQUIRED
+  end
+
+  def index
+    # if orders.order_items.product_id == user.products.ids
+    @orders = []
+    if @order_items_relations.nil?
+      puts "No Current Orders"
+    else
+      @order_items_relations.each do |order_item|
+        @orders << Order.where(id: order_item.first.order_id)
+        # still need to account for qty of order item
+        @orders.uniq!
+      end
+    end
+  end
+
   private
 
   def self.model
@@ -95,8 +113,23 @@ class UsersController < ApplicationController
     params.require(:user).permit(:username, :email, :password, :password_confirmation)
   end
 
+  def nil_flash_errors
+    flash.now[:username_error] = nil
+    flash.now[:email_error] = nil
+    flash.now[:password_error] = nil
+    flash.now[:password_confirmation_error] = nil
+  end
+
+  # NOTE TO SELF: This should actually be a method inside the views helper.
+  # Flash is usually only used for messages at the top of pages.
+  # They work for this, but conventionally they are not used like how I am using them here. - Brandi
+  def error_check_for(element)
+    if @user.errors[element].any?
+      flash.now[(element + "_error").to_sym] = (@user.errors.messages[element.to_sym][0].capitalize + ".")
+    end
+  end
+
   def revenue(order_items)
-    return 0 if order_items.nil?
     order_items.reduce(0) { |sum, n| sum + (n.product.price * n.quantity)}
   end
 end
