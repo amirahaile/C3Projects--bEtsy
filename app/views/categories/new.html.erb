@@ -1,14 +1,24 @@
 
-<h2 class="col-sm-offset-1">Add a New Product</h2>
-  <div class="form">
-    <%= form_for @category  do |f| %>
-      <div class="form-group col-sm-offset-2">
-        <%= f.label :name %>
-        <%= f.text_field :name, required: :true %>
-      </div>
+<h2 class="col-sm-offset-1">Add a New Costume Category</h2>
+<div class="form row">
+  <%= form_for @category do |f| %>
+    <div class="form-group col-sm-offset-2">
+      <%= f.label :name %>
+      <%= f.text_field :name, required: :true %>
+    </div>
 
-      <div class="form-group col-sm-offset-1">
-        <%= f.submit "Add Category", id: session[:user_id], class: "btn btn-primary col-sm-2" %>
-      </div>
-    <% end %>
+    <div class="form-group col-sm-offset-1">
+      <%= f.submit "Add Category", id: session[:user_id], class: "btn btn-primary col-sm-2" %>
+    </div>
+  <% end %>
+</div>
+
+<div "row">
+    <h5 class="col-sm-offset-1">List of Categories:</h5>
+    <ul class="col-sm-offset-1 list-inline">
+      <% @categories.each do |cat| %>
+        <li class="list-group-item"><%= cat.name %></li>
+      <% end %>
+    </ul>
   </div>
+</div>
