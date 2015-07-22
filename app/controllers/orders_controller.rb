@@ -53,7 +53,12 @@ class OrdersController < ApplicationController
     @order.status = "cancelled"
     @order.save!
     session[:order_id] = nil
-    redirect_to root_path
+
+    if session[:user_id]
+      redirect_to user_path(session[:user_id]), notice: "The order was canceled and an (pretend) email has be sent to the buyer."
+    else
+      redirect_to root_path
+    end
   end
 
   private
