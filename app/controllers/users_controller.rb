@@ -90,7 +90,6 @@ class UsersController < ApplicationController
     flash.now[:password_confirmation_error] = nil
   end
 
-<<<<<<< HEAD
   # NOTE TO SELF: This should actually be a method inside the views helper.
   # Flash is usually only used for messages at the top of pages.
   # They work for this, but conventionally they are not used like how I am using them here. - Brandi
@@ -100,8 +99,6 @@ class UsersController < ApplicationController
     end
   end
 
-=======
->>>>>>> f84cfc4ef0d83328825bee15516f2d5faf4032b7
   def separate_by_status(orders)
     @pending, @paid, @completed, @canceled = []
 
