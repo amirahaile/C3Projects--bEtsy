@@ -4,8 +4,17 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    orders = Order.find_by(user_id: @user.id)
-    separate_by_status(orders)
+
+    # Product has user_id
+    products = Product.where(user_id: @user.id)
+
+    orders_items = []
+    products.each do |product|
+      # OrderItem has product_id
+      orders_items << OrderItem.where(product_id: product.id)
+    end
+
+    separate_by_status(orders_items)
   end
 
   def new
@@ -95,19 +104,27 @@ class UsersController < ApplicationController
     end
   end
 
-  def separate_by_status(orders)
-    @pending, @paid, @completed, @canceled = []
+  def separate_by_status(order_items)
+    orders = []
+    order_items.each do |item|
+      # access via #first because it's inside of an ActiveRecord::Relation
+      orders << Order.where(id: item.first.order_id)
+    end
 
-    orders.each do |order|
-      case order.status
+    # make sure there aren't duplicating orders
+    orders.uniq! { |item| item.first.id}
+
+    @pending = @paid = @completed = @canceled = []
+    orders.each do |item|
+      case item.first.status
       when "pending"
-        @pending << order
+        @pending << Order.find(item.first.id)
       when "paid"
-        @paid << order
+        @paid << Order.find(item.first.id)
       when "completed"
-        @completed << order
+        @completed << Order.find(item.first.id)
       when "canceled"
-        @canceled << order
+        @canceled << Order.find(item.first.id)
       end
     end
   end
