@@ -1,0 +1,29 @@
+<div class="row">
+  <% @products.each do |item| %>
+    <div class="col-sm-4">
+
+      <div class="product-card">
+        <%= link_to(product_path(item)) do %>
+          <%= image_tag(item.photo_url, alt: "Image of #{item.name}", height: 200, class: "center-block" ) %>
+        <% end %>
+
+        <div class="product-card-details">
+          <h3 class="text-center">
+            <%= item.name %>
+            <br>
+            <small><%= number_to_currency(item.price) %></small>
+          </h3>
+
+          <p><%= item.description %></p>
+          <p>Merchant: <%= item.user.username %></p>
+          <p>
+            Categories: <% item.categories.each do |cat| %>
+              <%= cat.name %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  <% end %>
+</div>

@@ -10,7 +10,11 @@ Rails.application.routes.draw do
 
   resources :users do
     resources :orders, only: [:index, :show]
-    resources :products, only: [ :new, :create, :update, :edit ]
+    resources :products, only: [ :new, :create, :update, :edit ] do
+      collection do
+        get 'index', to: 'products#merchant', as: 'my'
+      end
+    end
   end
 
   resources :products, except: [ :new, :create, :update, :edit ] do

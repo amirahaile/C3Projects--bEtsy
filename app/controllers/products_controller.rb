@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :require_login, only: [:new, :create, :edit, :update, :destroy]
+  before_action :require_login, only: [:new, :create, :edit, :update, :destroy, :merchant]
   before_action :view_active, only: [:index, :by_vendor, :by_category]
 
   def self.model
@@ -50,6 +50,10 @@ class ProductsController < ApplicationController
     render :index
   end
 
+  def merchant
+    @products = Product.where(user_id: session[:user_id])
+  end
+
   def new
     @product = Product.new
   end
@@ -58,16 +62,6 @@ class ProductsController < ApplicationController
     # @user = User.find(params[:user_id])
     @product = Product.new(create_params)
     @product.user_id = params[:user_id]
-    # Below: Attempt to be able to upload a file, but it doesn't work.
-    # I might come back to this later... Would change text_field to file_field
-    # new product view
-
-    # if params[:photo_url].present?
-    #   file = params[:product][:photo_url]
-    #   File.open(Rails.root.join('app','assets', 'images', file), 'wb') do |f|
-    #       f.write(file.read)
-    #   end
-    # end
 
     if @product.save
       redirect_to root_path, notice: "Product saved!"
