@@ -7,7 +7,7 @@ class ProductsController < ApplicationController
   end
 
   def index
-    # @products = Product.where(active: true)
+    # @products is defined by view_active
     @user = User.find_by(id: session[:user_id])
   end
 
@@ -69,7 +69,6 @@ class ProductsController < ApplicationController
     #   end
     # end
 
-    # ADD LATER: Flash confirmation?
     if @product.save
       redirect_to root_path, notice: "Product saved!"
     else
