@@ -3,6 +3,7 @@
 <div class="container-fluid row">
 
   <h4 class="col-sm-2 col-sm-offset-1">View By: </h4>
+
   <div class="dropdown">
     <%= form_for(:product, url: by_vendor_products_path, method: :get, class: "form-inline")  do |f| %>
       <div class="form-group col-sm-4">
