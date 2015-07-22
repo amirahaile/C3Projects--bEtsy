@@ -23,6 +23,7 @@ class Order < ActiveRecord::Base
 
   def self.latest_5(orders)
     orders.max_by(5) { |order| order.created_at }
+    orders.reject { |order| order == nil }
   end
 
 # Callbacks --------------------------------------------------------------------
