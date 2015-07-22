@@ -51,6 +51,7 @@ class User < ActiveRecord::Base
       orders_by_status.each do |order|
         order_items << OrderItem.where(order_id: order.id).to_a
       end
+
       order_items_array = []
       order_items.each do |order_item|
         if order_item.first.product.user.id == user.id
@@ -59,6 +60,8 @@ class User < ActiveRecord::Base
         order_items_array.flatten!
       end
         return order_items_array
+
+      # order_items.flatten.reject! { |item| item.product.user.id != user.id }
     else
       nil
     end
