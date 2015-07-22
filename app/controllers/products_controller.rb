@@ -1,12 +1,13 @@
 class ProductsController < ApplicationController
   before_action :require_login, only: [:new, :create, :edit, :update, :destroy]
+  before_action :view_active, only: [:index, :by_vendor, :by_category]
 
   def self.model
     Product
   end
 
   def index
-    @products = Product.all
+    # @products = Product.where(active: true)
     @user = User.find_by(id: session[:user_id])
   end
 
@@ -29,10 +30,10 @@ class ProductsController < ApplicationController
 
   def by_vendor
     if params[:product][:user_id].empty?
-      @products = Product.all
+      index
     else
       @user = User.find(params[:product][:user_id])
-      @products = Product.by_vendor(@user)
+      @products = @products.by_vendor(@user)
     end
 
     render :index
@@ -40,10 +41,10 @@ class ProductsController < ApplicationController
 
   def by_category
     if params[:product][:category_id].empty?
-      @products = Product.all
+      index
     else
       @category = Category.find(params[:product][:category_id])
-      @products = Product.by_category(@category)
+      @products = @products.by_category(@category)
     end
 
     render :index
@@ -70,11 +71,10 @@ class ProductsController < ApplicationController
 
     # ADD LATER: Flash confirmation?
     if @product.save
-      flash[:notice] = "Product saved!"
-      redirect_to root_path
+      redirect_to root_path, notice: "Product saved!"
     else
-      flash[:notice] = "The product was not saved. Try again!"
-      redirect_to new_user_product_path
+      flash.now[:error] = "Could not save product. Please check the information and try again."
+      render :new
     end
   end
 
