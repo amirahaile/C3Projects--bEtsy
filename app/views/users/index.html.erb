@@ -1,18 +1,53 @@
-<table class="table table-hover">
-  <tr>
-    <th>Product Name</th>
-    <th>Qty</th>
-    <th>Price</th>
-  </tr>
-  <tr>
-    <% @orders.each do |order| %>
-    <% order.first.order_items.each do |order_item| %>
-      <% if @product_ids.include?(order_item.product_id) %>
-      <td><%= link_to "#{order_item.product.name}", product_path(order_item.product.id) %></td>
-      <td><%= order_item.quantity %></td>
-      <td><%= order_item.product.price %></td>
-      <% end %>
-    <% end %>
-    <% end %>
-  </tr>
-</table>
+<% @order_types = [@pending, @paid, @completed, @cancelled] %>
+<%= render "shared/order_info_by_status" %>
+
+<!-- On the order fulfillment page:
+=========================================
+  Total Revenue
+  Total Revenue by status
+  Total number of orders by status
+  Filter orders displayed by status
+  Link to each individual order
+View an individual order to see the user's:
+==========================================
+  Each order item sold by me with a quantity and line-item subtotal
+  A link to the item description page
+  DateTime the order was placed
+  Link to transition the order item to marked as shipped
+  The current status of the order ("pending", "paid", "complete", "cancelled")
+Customer Details:
+  Name
+  Email address
+  Mailing address
+  Last four digits of their credit card
+  Credit card expiration date -->
+
+<!-- SETUP    -->
+  <!-- all orders -->
+  <!-- sort by order status  -->
+  <!-- all paid orders -->
+  <!-- all completed orders -->
+
+<!-- ALL ORDERS -->
+  <!-- order id -->
+  <!-- # of products owned in the order -->
+  <!-- revenue by order -->
+
+<!-- SORTED VIEW -->
+  <!-- Pending Orders: total # of pending orders -->
+    <!-- order id -->
+    <!-- total # of pending orders -->
+    <!-- potential revenue -->
+
+  <!-- Paid Orders: total # of paid orders -->
+    <!-- order id -->
+    <!-- total # of paid orders -->
+    <!-- total revenue for paid orders -->
+
+    <!-- Completed Orders: total # of completed orders -->
+    <!-- order id -->
+    <!-- total revenue for completed orders  -->
+
+  <!-- Cancelled Orders: total # of cancelled orders -->
+    <!-- order id -->
+    <!-- potential revenue -->
