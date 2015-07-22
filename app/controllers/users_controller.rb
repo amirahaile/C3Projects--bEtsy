@@ -2,7 +2,33 @@ class UsersController < ApplicationController
   before_action :find_user, only: :products_of_user
   before_action :products_of_user, only: [:index, :show]
 
-  def show
+  def find_user
+    @user = User.find(session[:user_id])
+  end
+
+  def new
+    @user = User.new
+  end
+
+  def create # create a new logged in user
+    @user = User.new(user_params)
+
+    if @user.save
+      session[:user_id] = @user.id # creates a session - they are logged in
+      redirect_to user_path(@user) # WHERE DO WE WANT THIS TO REDIRECT TO?
+      # redirect_to root_path # with a message that they successfully created an account?
+    else
+      error_check_for("username")
+      error_check_for("email")
+      error_check_for("password")
+      error_check_for("password_confirmation")
+        # Would we use the flash.now to display the individual errors?
+        # Should we reference the individual errors in the views via the instance variable?
+      render :new
+    end
+  end
+
+  def show # user dashboard w/ orders and revenue by status
     @user = User.find(params[:id])
     # Product has user_id
     products = Product.where(user_id: @user.id)
@@ -22,46 +48,20 @@ class UsersController < ApplicationController
     @completed_revenue = find_orders_items(@completed).nil? ? 0 : revenue(find_orders_items(@completed))
   end
 
-  def new
-    @user = User.new
-  end
-
-  def create
-    @user = User.new(user_params)
-
-    if @user.save
-      session[:user_id] = @user.id # creates a session - they are logged in
-      redirect_to user_path(@user) # WHERE DO WE WANT THIS TO REDIRECT TO?
-      # redirect_to root_path # with a message that they successfully created an account?
-    else
-      error_check_for("username")
-      error_check_for("email")
-      error_check_for("password")
-      error_check_for("password_confirmation")
-        # Would we use the flash.now to display the individual errors?
-        # Should we reference the individual errors in the views via the instance variable?
-      render :new
-    end
-  end
-
   def edit
     # PLACE HOLDER - SHINY STUFF THAT ISN'T REQUIRED
   end
 
-  def find_user
-    @user = User.find(session[:user_id])
-  end
-
-  def products_of_user
+  def products_of_user # gives array of product id's assoc w/ user
     user_products = @user.products.to_a
     @product_ids = []
     user_products.each do |product|
       @product_ids << product.id
     end
-    order_items_by_user
+    order_items_from_products # calls next method
   end
 
-  def order_items_by_user
+  def order_items_from_products # returns order items assoc w/ user or nil
     @order_items = []
     @product_ids.each do |product_id|
       @order_items << OrderItem.where(product_id: product_id)
@@ -74,15 +74,13 @@ class UsersController < ApplicationController
     end
   end
 
-  def index
-    # if orders.order_items.product_id == user.products.ids
+  def index # returns array of order assoc w/ order items of user
     @orders = []
     if @order_items.nil?
       puts "No Current Orders"
     else
       @order_items.each do |order_item|
         @orders << Order.where(id: order_item.first.order_id)
-        # still need to account for qty of order item
         @orders.uniq!
       end
     end
