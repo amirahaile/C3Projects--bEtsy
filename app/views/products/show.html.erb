@@ -46,6 +46,8 @@
       <%= review.description %>
     </p>
   <% end %>
-  <%= link_to "Write Review", new_product_review_path(@product), { method: :get, class: "btn btn-default" } %>
+  <% if @product.user_id != session[:user_id] %>
+    <%= link_to "Write Review", new_product_review_path(@product), { method: :get, class: "btn btn-default" } %>
+  <% end %>
 
 </div>

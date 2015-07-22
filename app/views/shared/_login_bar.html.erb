@@ -6,25 +6,16 @@
 
 
 		<div class="collapse navbar-collapse navbar-right float-right">
-      <% if @user == nil %>
+      <% if @user.nil? %>
         <%= link_to "Register", new_user_path, class: 'btn btn-primary col-sm-2' %>
-				<%= form_for(:session, url: login_path, class: "navbar-form  form-inline")  do |f| %>
-					<div class="form-group col-sm-4">
-						<%= f.label :username %>
-						<%= f.text_field :username %>
-					</div>
-
-					<div class="form-group col-sm-4">
-							<%= f.label :password %>
-							<%= f.password_field :password %>
-					</div>
-
-					<%= f.submit "Log In", class: "btn btn-primary col-sm-2 login" %>
-				<% end %>
-
+				<%= render partial: "shared/login" %>
 			<% else %>
-				Hello, <%= @username %>!
-				<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-default' %>
+				<% if @user[:id].nil? %>
+					<%= render partial: "shared/login" %>
+				<% else %>
+					Hello, <%= link_to @username, user_path(session[:user_id]) %>!
+					<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-default' %>
+				<% end %>
 			<% end %>
 
       <%= link_to(@order.nil? ? orders_path : order_path(@order), options = { id: session[:order_id] }, html_options = { class: "btn btn-default" }) do %>
