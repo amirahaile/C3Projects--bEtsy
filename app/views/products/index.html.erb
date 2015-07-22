@@ -2,21 +2,29 @@
 
 
 <div class="container-fluid">
-  <h4 class="col-sm-2">View By: </h4> <%= form_for(:product, url: by_vendor_products_path, method: :get, class: "form-inline")  do |f| %>
-    <div class="form-group col-sm-4">
-      <%= f.label "Merchant: " %>
-      <%= f.collection_select(:user_id, User.all, :id, :username, prompt: "View All" ) %>
-      <%= f.submit "Go", class: "btn btn-primary" %>
-    </div>
-  <% end %>
 
-  <%= form_for(:product, url: by_category_products_path, method: :get, class: "form-inline")  do |f| %>
-    <div class="form-group col-sm-4">
-      <%= f.label "Category: " %>
-      <%= f.collection_select(:category_id, Category.all, :id, :name, prompt: "View All" ) %>
+  <h4 class="col-sm-2">View By: </h4>
+
+  <div class="dropdown">
+    <%= form_for(:product, url: by_vendor_products_path, method: :get, class: "form-inline")  do |f| %>
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <%= f.label "Merchant: " %>
+      <%= f.collection_select(:user_id, User.all, :id, :username, prompt: "View All", class: "dropdown-menu multi-column" ) %>
       <%= f.submit "Go", class: "btn btn-primary" %>
+    </button>
+    <% end %>
     </div>
-  <% end %>
+  </div>
+
+  <div class="dropdown">
+    <%= form_for(:product, url: by_category_products_path, method: :get, class: "form-inline")  do |f| %>
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <%= f.label "Category: " %>
+        <%= f.collection_select(:category_id, Category.all, :id, :name, prompt: "View All", class: "dropdown-menu multi-column" ) %>
+        <%= f.submit "Go", class: "btn btn-primary" %>
+      </button>
+    <% end %>
+  </div>
 </div>
 
 
