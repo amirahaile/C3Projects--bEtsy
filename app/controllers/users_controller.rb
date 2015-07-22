@@ -17,18 +17,9 @@ class UsersController < ApplicationController
     separate_by_status(orders) # @pending, @paid, @completed, @canceled
     @total_revenue = revenue(orders_items)
 
-    if @paid != []
-      # sent inside of an array to match format of orders_items
-      @paid_revenue = revenue([OrderItem.where(order_id: @paid.first.id)])
-    else
-      @paid_revenue = 0
-    end
-
-    if @completed != []
-      @completed_revenue = revenue([OrderItem.where(order_id: @completed.first.id)])
-    else
-      @completed_revenue = 0
-    end
+    # why $50 and not $55?
+    @paid_revenue = find_orders_items(@paid).nil? ? 0 : revenue(find_orders_items(@paid))
+    @completed_revenue = find_orders_items(@completed).nil? ? 0 : revenue(find_orders_items(@completed))
   end
 
   def new
@@ -119,6 +110,19 @@ class UsersController < ApplicationController
     end
   end
 
+  def find_orders_items(orders_by_status)
+    if orders_by_status != []
+      orders_items = []
+      orders_by_status.each do |order|
+        orders_items << OrderItem.where(order_id: order.id)
+      end
+
+      orders_items
+    else
+      nil
+    end
+  end
+
   def find_orders(orders_items)
     orders = []
     orders_items.each do |item|
@@ -149,6 +153,7 @@ class UsersController < ApplicationController
   end
 
   def revenue(orders_items)
-    orders_items.reduce(0) { |sum, n| sum + (n.first.product.price * n.first.quantity)}
+    # orders_items is an array of ActiveRecord::Relation objects
+    orders_items.reduce(0) { |sum, n| sum + (n[0].product.price * n[0].quantity)}
   end
 end
