@@ -14,8 +14,10 @@ class UsersController < ApplicationController
       orders_items << OrderItem.where(product_id: product.id)
     end
 
+    orders = find_orders(orders_items)
     # @pending, @paid, @completed, @canceled
-    separate_by_status(find_orders(orders_items))
+    separate_by_status(orders)
+    @total_revenue = total_revenue(orders_items)
   end
 
   def new
@@ -132,5 +134,10 @@ class UsersController < ApplicationController
         @canceled << order
       end
     end
+  end
+
+  def total_revenue(orders_items)
+    # orders_items is an ActiveRecord::Relation
+    orders_items.reduce(0) { |sum, n| sum + (n.first.product.price * n.first.quantity)}
   end
 end
