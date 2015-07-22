@@ -1,8 +1,8 @@
 class Order < ActiveRecord::Base
-  # Associations
+# Associations -----------------------------------------------------------------
   has_many :order_items
 
-  # Validations
+# Validations ------------------------------------------------------------------
   validates_presence_of :email, :address1, :city, :state, :zipcode,
                         :card_last_4, :card_exp, :status
   validates_length_of :state, is: 2, message: "must be state abbreviation" # must be two (capital) characters? ex. WA
@@ -12,7 +12,13 @@ class Order < ActiveRecord::Base
   validates_inclusion_of :status, in: %w(pending paid cancelled complete),
                                   message: "%{value} is not a valid status"
 
-  # Callbacks
+# Scopes -----------------------------------------------------------------------
+  def self.by_status(orders, status_string)
+    orders = orders.map { |order| order if order.status == status_string }
+    orders.reject { |order| order == nil }
+  end
+
+# Callbacks --------------------------------------------------------------------
   # before_validation :capitalize_city!, only: [:city]
   # before_validation :state_conversion!, only: [:state]
   #
