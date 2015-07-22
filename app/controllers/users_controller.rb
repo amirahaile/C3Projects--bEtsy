@@ -4,20 +4,20 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-
     # Product has user_id
     products = Product.where(user_id: @user.id)
 
-    orders_items = []
+    orders_items = [] # array of ActiveRecord::Relations
     products.each do |product|
       # OrderItem has product_id
       orders_items << OrderItem.where(product_id: product.id)
     end
 
     orders = find_orders(orders_items)
-    # @pending, @paid, @completed, @canceled
-    separate_by_status(orders)
-    @total_revenue = total_revenue(orders_items)
+    separate_by_status(orders) # @pending, @paid, @completed, @canceled
+    @total_revenue = revenue(orders_items)
+    # sent inside of an array to match format of orders_items
+    @paid_revenue = revenue([OrderItem.where(order_id: @paid.first.id)])
   end
 
   def new
@@ -119,6 +119,7 @@ class UsersController < ApplicationController
     orders.uniq { |order| order.id }
   end
 
+  # make this work for orders and order items?
   def separate_by_status(orders)
     @pending, @paid, @completed, @canceled = [], [], [], []
 
@@ -136,8 +137,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def total_revenue(orders_items)
-    # orders_items is an ActiveRecord::Relation
+  def revenue(orders_items)
     orders_items.reduce(0) { |sum, n| sum + (n.first.product.price * n.first.quantity)}
   end
 end
