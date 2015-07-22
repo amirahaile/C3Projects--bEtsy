@@ -16,8 +16,19 @@ class UsersController < ApplicationController
     orders = find_orders(orders_items)
     separate_by_status(orders) # @pending, @paid, @completed, @canceled
     @total_revenue = revenue(orders_items)
-    # sent inside of an array to match format of orders_items
-    @paid_revenue = revenue([OrderItem.where(order_id: @paid.first.id)])
+
+    if @paid != []
+      # sent inside of an array to match format of orders_items
+      @paid_revenue = revenue([OrderItem.where(order_id: @paid.first.id)])
+    else
+      @paid_revenue = 0
+    end
+
+    if @completed != []
+      @completed_revenue = revenue([OrderItem.where(order_id: @completed.first.id)])
+    else
+      @completed_revenue = 0
+    end
   end
 
   def new
