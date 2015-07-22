@@ -1,20 +1,33 @@
 <%= render partial: 'shared/header'%>
 
-<div class="row">
 
-  Sort By: <%= form_for(:product, url: by_vendor_products_path, method: :get)  do |f| %>
-    <%= f.label "Merchant: " %>
-    <%= f.collection_select(:user_id, User.all, :id, :username, prompt: "View All" ) %>
-    <%= f.submit "Go", class: "btn btn-primary" %>
-  <% end %>
+<div class="container-fluid">
 
-  <%= form_for(:product, url: by_category_products_path, method: :get)  do |f| %>
-    <%= f.label "Category: " %>
-    <%= f.collection_select(:category_id, Category.all, :id, :name, prompt: "View All" ) %>
-    <%= f.submit "Go", class: "btn btn-primary" %>
-  <% end %>
+  <h4 class="col-sm-2">View By: </h4>
 
+  <div class="dropdown">
+    <%= form_for(:product, url: by_vendor_products_path, method: :get, class: "form-inline")  do |f| %>
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <%= f.label "Merchant: " %>
+      <%= f.collection_select(:user_id, User.all, :id, :username, prompt: "View All", class: "dropdown-menu multi-column" ) %>
+      <%= f.submit "Go", class: "btn btn-primary" %>
+    </button>
+    <% end %>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <%= form_for(:product, url: by_category_products_path, method: :get, class: "form-inline")  do |f| %>
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <%= f.label "Category: " %>
+        <%= f.collection_select(:category_id, Category.all, :id, :name, prompt: "View All", class: "dropdown-menu multi-column" ) %>
+        <%= f.submit "Go", class: "btn btn-primary" %>
+      </button>
+    <% end %>
+  </div>
 </div>
+
+
 
 <div class="row">
   <% @products.each do |item| %>
@@ -24,7 +37,7 @@
         <%= link_to(product_path(item)) do %>
           <%= image_tag(item.photo_url, alt: "Image of #{item.name}", height: 200, class: "center-block" ) %>
         <% end %>
-        
+
         <div class="product-card-details">
           <h3 class="text-center">
             <%= item.name %>

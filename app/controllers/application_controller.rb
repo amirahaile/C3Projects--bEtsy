@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def view_active
+    @products = Product.where(active: true)
+  end
+
   private
 
   def quantity_in_cart(order)

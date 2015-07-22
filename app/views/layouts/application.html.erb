@@ -24,6 +24,11 @@
     <%= render partial: "shared/login_bar" %>
 
     <div class="container-fluid center-block">
+
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, class: "alert alert-info" %>
+      <% end -%>
+
       <%= yield %>
     </div>
 
