@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def create
+  def create # create a new logged in user
     @user = User.new(user_params)
 
     if @user.save
@@ -51,15 +51,13 @@ class UsersController < ApplicationController
     # PLACE HOLDER - SHINY STUFF THAT ISN'T REQUIRED
   end
 
-  def index
-    # if orders.order_items.product_id == user.products.ids
+  def index # returns array of order assoc w/ order items of user
     @orders = []
     if @order_items.nil?
       puts "No Current Orders"
     else
       @order_items.each do |order_item|
         @orders << Order.where(id: order_item.first.order_id)
-        # still need to account for qty of order item
         @orders.uniq!
       end
     end
