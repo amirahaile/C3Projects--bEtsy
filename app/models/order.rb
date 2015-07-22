@@ -1,6 +1,9 @@
 class Order < ActiveRecord::Base
   # Associations
   has_many :order_items
+  
+  # product -> user
+  # product -> order_item -> order -> user
 
   # Validations
   validates_presence_of :email, :address1, :city, :state, :zipcode,
