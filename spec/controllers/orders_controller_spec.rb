@@ -1,6 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe OrdersController, type: :controller do
+  it_behaves_like "index-show controller"
+  let(:params) do
+    {
+      order: {
+        email: "test@test.com",
+        address1: "1 Test",
+        address2: "Apt Test",
+        city: "Testcity",
+        state: "WA",
+        zipcode: "55555",
+        card_number: "123456789",
+        card_last_4: "6789",
+        card_exp: Time.now
+      }
+    }
+  end
 
   before :each do
     @order = Order.create!(email: "hi@hi.com", address1: "123 someplace", city: "somewhere", state: "WA", zipcode: "12345", card_last_4: "1234", card_exp: "10-11")

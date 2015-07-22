@@ -21,6 +21,12 @@ RSpec.describe ReviewsController, type: :controller do
 
     it "will redirect the user (merchant) of the product back to the product page" do
       session[:user_id] = @product.user_id
+      User.create!(
+        username: "Test",
+        email: "test@test.com",
+        password: "test",
+        password_confirmation: "test"
+      )
       get :new, {product_id: 1}
 
       expect(subject).to redirect_to(product_path(1))

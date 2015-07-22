@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ProductsController, type: :controller do
-  it_behaves_like "a controller"
+  it_behaves_like "index-show controller"
   let(:params) do
     {
       product: {
