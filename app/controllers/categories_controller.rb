@@ -2,7 +2,7 @@ class CategoriesController < ApplicationController
   before_action :require_login
 
   def new
-    index
+    @categories = Category.all
     @category = Category.new
   end
 
@@ -14,10 +14,6 @@ class CategoriesController < ApplicationController
       flash.now[:error] = "Could not add category. Are you sure you aren't duplicating a category that already exists?"
       render :new
     end
-  end
-
-  def index
-    @categories = Category.all
   end
 
   private
