@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     # return array of ActiveRecord::Relation objects that hold OrderItem objects
-    products_of_user
+    products_of_user # @order_items
 
     find_orders(@order_items) # @orders
     separate_by_status(@orders) # @pending, @paid, @completed, @canceled
@@ -63,8 +63,10 @@ class UsersController < ApplicationController
       @order_items << OrderItem.where(product_id: product_id)
     end
 
+    @order_items.reject! { |relation| relation.empty? }
+
     # checks if there are OrderItems
-    if @order_items.first.include? OrderItem
+    unless @order_items.empty?
       return @order_items
     else
       @order_items = nil
@@ -119,7 +121,7 @@ class UsersController < ApplicationController
   def find_orders(order_items)
     @orders = []
     if order_items.nil?
-      @orders
+      return @orders
     else
       order_items.each do |item|
         # access via #first because it's inside of an ActiveRecord::Relation
