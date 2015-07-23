@@ -2,6 +2,14 @@ class UsersController < ApplicationController
   before_action :find_user, only: :show
   # before_action :product_ids_from_user, only: [:index, :show]
 
+<<<<<<< HEAD
+=======
+  # USED FOR RSPEC SHARED EXAMPLES
+  def self.model
+    User
+  end
+
+>>>>>>> Made order_items an instance variable and fixed the whole dashboard.
   def find_user
     @user = User.find(session[:user_id])
   end
@@ -14,7 +22,7 @@ class UsersController < ApplicationController
     @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
   end
 
-  def sorted_orders
+  def sorted_orders # variables shared by :show & :index
     # associations
     product_ids = User.product_ids_from_user(@user)
     @order_items = User.order_items_from_products(product_ids).nil? ? [] : User.order_items_from_products(product_ids)
@@ -26,7 +34,6 @@ class UsersController < ApplicationController
     @paid_orders = Order.by_status(@orders, "paid")
     @completed_orders = Order.by_status(@orders, "completed")
     @cancelled_orders = Order.by_status(@orders, "cancelled")
-
 
     order_items_except_cancelled = @order_items.reject { |item| item.order.status == 'cancelled' }
     @total_revenue = revenue(order_items_except_cancelled)
