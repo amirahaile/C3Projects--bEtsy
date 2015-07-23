@@ -17,12 +17,16 @@ class UsersController < ApplicationController
     @pending_orders = Order.by_status(@orders, "pending")
     @paid_orders = Order.by_status(@orders, "paid")
     @completed_orders = Order.by_status(@orders, "completed")
-    @canceled_orders = Order.by_status(@orders, "canceled")
+    @cancelled_orders = Order.by_status(@orders, "cancelled")
 
-    @total_revenue = order_items.nil? ? 0 : revenue(order_items)
+    order_items_except_cancelled = order_items.reject { |item| item.order.status == 'cancelled' }
+    @total_revenue = order_items.nil? ? 0 : revenue(order_items_except_cancelled)
     # why $50 and not $55?
     @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
     @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
+
+    @products = Product.top_5(order_items)
+    @latest_orders = Order.latest_5(@orders)
   end
 
   def new
