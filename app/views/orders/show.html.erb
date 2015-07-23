@@ -1,3 +1,4 @@
+<h3>Order Status: <%= @order.status.upcase %></h3>
 <table class="table">
   <tr>
     <th>Name</th>
@@ -14,13 +15,21 @@
         <td> <%= product.name %> </td>
         <td> <%= number_to_currency(product.price) %> </td>
         <td>
-          <%= button_to '-', options = { controller: 'order_items', action: "qty_decrease", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+          <% if @order.status == "pending" %>
+            <%= button_to '-', options = { controller: 'order_items', action: "qty_decrease", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+          <% end %>
           <%= item.quantity %>
-          <%= button_to "+", options = { controller: 'order_items', action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+          <% if @order.status == "pending" %>
+            <%= button_to "+", options = { controller: 'order_items', action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+          <% end %>
         </td>
 
         <td> <%= number_to_currency(product.price * item.quantity) %> </td>
-        <td> <%= button_to("Remove from Cart", order_order_item_path(order_id: @order.id, id: item.id), method: :delete, class: "btn btn-default") %> </td>
+        <td>
+          <% if @order.status == "pending" %>
+          <%= button_to("Remove from Cart", order_order_item_path(order_id: @order.id, id: item.id), method: :delete, class: "btn btn-default") %>
+          <% end %>
+        </td>
       </tr>
     <% else %>
       <% item.destroy %>
@@ -28,4 +37,6 @@
   <% end %>
 </table>
 
-<%= button_to("Checkout", "/orders/#{@order.id}/payment", method: :get, id: @order, class: "btn btn-primary") %> </td>
+<% if @order.status == "pending" %>
+  <%= button_to("Checkout", "/orders/#{@order.id}/payment", method: :get, id: @order, class: "btn btn-primary") %> </td>
+<% end %>
