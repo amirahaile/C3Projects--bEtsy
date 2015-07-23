@@ -42,7 +42,7 @@ class OrdersController < ApplicationController
       @order.card_last_4 = params[:order][:card_number][-4, 4]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
-      @order.save! # move and account for whether the order is canceled?
+      @order.save! # move and account for whether the order is cancelled?
       redirect_to order_confirmation_path(@order)
     else
       redirect_to :back rescue redirect_to order_path(@order)
@@ -61,7 +61,7 @@ class OrdersController < ApplicationController
     session[:order_id] = nil
 
     if session[:user_id]
-      redirect_to user_path(session[:user_id]), notice: "The order was canceled and an (pretend) email has be sent to the buyer."
+      redirect_to user_path(session[:user_id]), notice: "The order was cancelled and an (pretend) email has be sent to the buyer."
     else
       redirect_to root_path
     end
