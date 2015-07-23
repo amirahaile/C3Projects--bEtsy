@@ -2,10 +2,6 @@ class ProductsController < ApplicationController
   before_action :require_login, only: [:new, :create, :edit, :update, :destroy, :merchant]
   before_action :view_active, only: [:index, :by_vendor, :by_category]
 
-  def self.model
-    Product
-  end
-
   def index
     # @products is defined by view_active
     @user = User.find_by(id: session[:user_id])
@@ -89,6 +85,10 @@ class ProductsController < ApplicationController
   end
 
   private
+
+  def self.model
+    Product
+  end # USED FOR RSPEC SHARED EXAMPLES
 
   def create_params
     params.require(:product).permit(

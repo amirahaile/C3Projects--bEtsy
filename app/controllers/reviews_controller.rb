@@ -39,10 +39,6 @@ class ReviewsController < ApplicationController
 
   private
 
-  def self.model
-    User
-  end # USED FOR RSPEC SHARED EXAMPLES
-
   def review_params
     params.require(:review).permit(:rating, :description)
   end

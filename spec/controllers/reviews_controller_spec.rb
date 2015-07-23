@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ReviewsController, type: :controller do
+
   before(:each) do
     @product = Product.create!(
       name: "The Product",
@@ -11,7 +12,7 @@ RSpec.describe ReviewsController, type: :controller do
     )
   end
 
-  describe "GET #new" do
+  describe "#new" do
     it "responds successfully with an HTTP 200 status code" do
       get :new, {product_id: 1}
 
@@ -33,7 +34,7 @@ RSpec.describe ReviewsController, type: :controller do
     end
   end
 
-  describe "POST #create" do
+  describe "#create" do
     let(:params) do
       { product_id: 1, review: { rating: 5, description: "Amazing." } }
     end
@@ -81,6 +82,11 @@ RSpec.describe ReviewsController, type: :controller do
       it "renders the new review page (if unsuccessful save)" do
         post :create, invalid_params
         expect(subject).to render_template("new")
+      end
+
+      it "throw a flash error if review is invalid" do
+        post :create, invalid_params
+        expect(flash).to_not be_empty
       end
     end
   end
