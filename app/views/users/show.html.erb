@@ -115,29 +115,28 @@
 				</th>
 			</tr>
 
-			<% if order.status == "paid" %>
-				<tr class='success'>
-			<% else %>
-				<tr>
-			<% end %>
-					<td class="text-center">
-						<%= link_to order.id, order_confirmation_path(order) %>
-					</td>
-					<td>
-						<%= link_to order.address1, order_confirmation_path(order) %>
-					</td>
-					<td class="text-center">
-						<%= link_to order.status, order_confirmation_path(order) %>
-					</td>
-				</tr>
-			<% end %>
+			<% @latest_orders.each do |order| %>
+				<% if order.status == "paid" %>
+					<tr class='success'>
+				<% else %>
+					<tr>
+				<% end %>
+						<td class="text-center">
+							<%= link_to order.id, order_confirmation_path(order) %>
+						</td>
+						<td>
+							<%= link_to order.address1 || "N/A", order_confirmation_path(order) %>
+						</td>
+						<td class="text-center">
+							<%= link_to order.status, order_confirmation_path(order) %>
+						</td>
+					</tr>
+				<% end %>
 		</table>
 
-		<%= link_to "All Orders", users_orders_path %>
-
 	<% else %>
-			<h4 class="no_orders">You don't have any orders. Sorry.</h4>
+				<h4 class="no_orders">You don't have any orders. Sorry.</h4>
 	<% end %>
 
-<span class="text-center"><%= link_to "All Orders", users_orders_path %></span>
+	<span class="text-center"><%= link_to "All Orders", users_orders_path %></span>
 </div>
