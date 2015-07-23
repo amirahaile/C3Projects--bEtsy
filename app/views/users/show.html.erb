@@ -89,7 +89,7 @@
 		<% end %>
 	</table>
 
-	<%= button_to "Add Product", new_user_product_path(@user), class: 'btn btn-primary float-right' %>
+	<%= button_to "Add Product", new_user_product_path(@user), method: :get, class: 'btn btn-primary float-right' %>
 	<%= link_to "All Products", my_user_products_path(@user) %>
 </div>
 
@@ -134,5 +134,5 @@
 		<% end %>
 	</table>
 
-	<%= link_to "All Orders", products_path %>
+	<%= link_to "All Orders", users_orders_path %>
 </div>
