@@ -1,61 +1,45 @@
-<form role="form">
-  <%= form_for [ @user, @product ]  do |f| %>
-    <div class="row">
-      <div class="form-inline col-sm-offset-2">
-        <%= f.label :name %>
-        <%= f.text_field :name, required: :true, class: "form-control" %>
-      </div>
-    </div>
+<div class="form">
+ <%= form_for [ @user, @product ]  do |f| %>
+   <div class="form-group col-sm-offset-2">
+     <%= f.label :name %>
+     <%= f.text_field :name, required: :true %>
+   </div>
 
-    <div class="row">
-      <div class="form-group col-sm-8 col-sm-offset-2">
-        <%= f.label :description %>
-        <%= f.text_field :description, class: "form-control" %>
-      </div>
-    </div>
+   <div class="form-group col-sm-offset-2">
+     <%= f.label :description %>
+     <%= f.text_field :description %>
+   </div>
 
-    <div class="row">
-      <div class="form-inline col-sm-offset-2">
-        <%= f.label :price %>
-        <span class="form-group-addon">$ </span><%= f.text_field :price, required: :true, class: "form-control" %>
-      </div>
-    </div>
+   <div class="form-group col-sm-offset-2">
+     <%= f.label :price %>
+     <span class="form-group-addon">$</span><%= f.text_field :price, required: :true, value: number_to_currency(f.object.price, unit: '') %>
+   </div>
 
+   <div class="form-group col-sm-offset-2">
+     <%= f.label :photo_url %>
+     <%= f.text_field :photo_url, required: :true %>
+   </div>
 
-    <div class="row">
-      <div class="form-inline col-sm-offset-2">
-        <%= f.label :photo_url %>
-        <%= f.text_field :photo_url, required: :true, class: "form-control" %>
-      </div>
-    </div>
+   <div class="form-group col-sm-offset-2">
+     <%= f.label :inventory %>
+     <%= f.number_field :inventory, required: :true %>
+   </div>
 
-    <div class="row">
-      <div class="form-inline col-sm-offset-2">
-        <%= f.label :inventory %>
-        <%= f.number_field :inventory, required: :true, class: "form-control" %>
-      </div>
-    </div>
+   <div class="form-group col-sm-offset-2">
+     <%= f.label :active %>
+     <%= f.radio_button :active, true %>
+     <%= f.label "Inactive" %>
+     <%= f.radio_button :active, false %>
+   </div>
 
-
-    <div class="row">
-      <div class="form-group col-sm-offset-2">
-        <%= f.label :active %>
-        <%= f.radio_button :active, true %>
-        <%= f.label "Inactive" %>
-        <%= f.radio_button :active, false %>
-      </div>
-    </div>
+   <div class="form-group col-sm-offset-2">
+     <%= f.label :categories %>
+     <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) %>
+   </div>
 
 
-    <div class="row">
-      <div class="form-inline col-sm-offset-2">
-        <%= f.label :categories %>
-        <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name, class: "form-control") %>
-      </div>
-    </div>
-
-    <div class="form-group col-sm-offset-1">
-      <%= f.submit "Submit", id: session[:user_id], class: "btn btn-primary col-sm-2" %>
-    </div>
-  <% end %>
-</form>
+   <div class="form-group col-sm-offset-1">
+     <%= f.submit "Submit", id: session[:user_id], class: "btn btn-primary col-sm-2" %>
+   </div>
+ <% end %>
+</div>

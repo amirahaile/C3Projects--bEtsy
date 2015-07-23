@@ -7,8 +7,8 @@ class SessionsController < ApplicationController
       session[:user_id] = @user.id
       redirect_to root_path
     else
-      flash.now[:error] = "Incorrect username or password" # @user.errors.messages
-      render :new
+      flash[:error] = "Incorrect username or password" # @user.errors.messages
+      redirect_to root_path
     end
   end
 

@@ -1,5 +1,4 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <%= link_to "New Product", new_user_product_path(@user), method: :get, class: "btn btn-primary" %>
-    <%= link_to "New Category", new_category_path, method: :get, class: "btn btn-primary" %>
-</nav>
+<div class="container-fluid">
+    <%= link_to "Add a Product", new_user_product_path(@user), method: :get, class: "btn btn-primary" %>
+    <%= link_to "Add a Category", new_category_path, method: :get, class: "btn btn-primary" %>
+</div>
