@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :logged_in
 
   def require_login
-    redirect_to login_path, flash: { error: "Merchant login required" } unless session[:user_id]
+    redirect_to new_user_path, flash: { error: "Merchant login required" } unless session[:user_id]
   end
 
   def logged_in
