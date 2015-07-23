@@ -15,13 +15,14 @@ ActiveRecord::Associations' object -->
     <th>Mailing Address</th>
     <th>Credit Card</th>
     <th>CC Expiration</th>
+    <!-- security code! -->
   </tr>
   <tr>
     <td>User</td>
     <td><%= @order.email %></td>
     <td><%= @order.address1 %></td>
     <td><%= @order.card_last_4 %></td>
-    <td><%= @rder.card_exp %></td>
+    <td><%= @order.card_exp %></td>
   </tr>
   <% end %>
 </table>
