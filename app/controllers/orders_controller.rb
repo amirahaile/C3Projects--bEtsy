@@ -25,6 +25,7 @@ class OrdersController < ApplicationController
   # same as :show; any way to conslidate?
   def payment
     @order_items = @order.order_items
+    @user = User.find(session[:user_id]) if session[:user_id]
   end
 
   def update
@@ -63,6 +64,21 @@ class OrdersController < ApplicationController
     else
       redirect_to root_path
     end
+  end
+
+  # def shipped_item
+  #   @shipped_items = []
+  #   @shipped = @order.order_items.find_by(product_id: :product_id)
+  #   @shipped_items << @shipped
+  #   return @shipped_items
+  # end
+
+  def completed
+    # if @order.order_items.count == @shipped_items.count
+
+      @order.status = "completed"
+      @order.save!
+    redirect_to list_of_orders_path, notice: "You've shipped and completed order ##{@order.id}!"
   end
 
   private

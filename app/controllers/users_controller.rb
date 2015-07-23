@@ -7,10 +7,19 @@ class UsersController < ApplicationController
   end
 
   def show
+    sorted_orders
+
+    @total_revenue = order_items.nil? ? 0 : revenue(order_items)
+    # why $50 and not $55?
+    @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
+    @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
+  end
+
+  def sorted_orders
     # associations
     product_ids = User.product_ids_from_user(@user)
-    order_items = User.order_items_from_products(product_ids)
-    @orders = User.orders_from_order_items(order_items)
+    @order_items = User.order_items_from_products(product_ids)
+    @orders = User.orders_from_order_items(@order_items)
 
     # needed for a count of orders based on status
     # an array of Order objects
@@ -18,11 +27,6 @@ class UsersController < ApplicationController
     @paid_orders = Order.by_status(@orders, "paid")
     @completed_orders = Order.by_status(@orders, "completed")
     @canceled_orders = Order.by_status(@orders, "canceled")
-
-    @total_revenue = order_items.nil? ? 0 : revenue(order_items)
-    # why $50 and not $55?
-    @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
-    @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
   end
 
   def new
@@ -52,34 +56,31 @@ class UsersController < ApplicationController
   end
 
   def list_of_orders # returns array of order assoc w/ order items of user
-    product_ids = User.product_ids_from_user(@user)
-    @order_items = User.order_items_from_products(product_ids)
-    @orders = User.orders_from_order_items(@order_items)
-
-    @pending_orders = Order.by_status(@orders, "pending")
-    @paid_orders = Order.by_status(@orders, "paid")
-    @completed_orders = Order.by_status(@orders, "completed")
-    @canceled_orders = Order.by_status(@orders, "canceled")
-
-    @order_statuses = [[@pending_orders], [@paid_orders], [@completed_orders], [@caneled_orders]]
-
-    @total_revenue = @order_items.nil? ? 0 : revenue(@order_items)
-    # why $50 and not $55?
-    @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
-    @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
+    sorted_orders
+    @order_statuses = [@pending_orders, @paid_orders, @completed_orders, @caneled_orders]
+    # @order_statuses.each do |order_status|
+      # if order_status.nil? || order_status.empty?
+        # order_status = nil
+      # else
+        # revenue_by_order(order_status)
+      # end
+    # end
   end
 
-  #### WHERE DO I PUT THIS??? #########
-  # def revenue_by_order(order)
-    # @item_qty = 0
-    # @revenue_by_order = 0
-    # items = @order_items.find_all {|order_item| order_item.order_id == order.id }
+  # def revenue_by_order(order_status)
+  #  order_status.each do |order|
+    #  @item_qty = 0
+    #  @revenue_by_order = 0
+    #  @total_revenue_by_status = 0
+    #  items = @order_items.find_all {|order_item| order_item.order_id == order.id }
     #  items.each do |item|
       #  @item_qty += item.quantity
       #  @price_of_item = Product.find(item.product_id).price
       #  @revenue_by_item = @price_of_item * item.quantity
       #  @revenue_by_order += @revenue_by_item
-    #  end
+      #  end
+    #  @total_revenue_by_status += @revenue_by_order
+    # end
   # end
 
 

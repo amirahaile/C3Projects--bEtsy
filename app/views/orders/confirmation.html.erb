@@ -7,53 +7,69 @@ ActiveRecord::Associations' object -->
 <h4>Order Status: <%= @order.status.capitalize %></h4>
 
 <table class="table">
+<% if @order.status == "paid" || @order.status == "completed" %>
+  <h3>Customer Information</h3>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Mailing Address</th>
+    <th>Credit Card</th>
+    <th>CC Expiration</th>
+  </tr>
+  <tr>
+    <td>User</td>
+    <td><%= @order.email %></td>
+    <td><%= @order.address1 %></td>
+    <td><%= @order.card_last_4 %></td>
+    <td><%= @rder.card_exp %></td>
+  </tr>
+  <% end %>
+</table>
+
+<table class="table">
   <tr>
     <th>Name</th>
     <th>Price</th>
     <th>Qty</th>
     <th>Total</th>
+    <th><%= "Shipped?" if session[:user_id] %></th>
   </tr>
-  <% @order_items.each do |item| %>
-  <tr>
-    <% product = Product.find(item.product_id) %>
-    <td> <%= link_to  product.name, product_path(product) %> </td>
-    <td> <%= number_to_currency(product.price) %> </td>
-    <td>
-      <%= item.quantity %>
-    </td>
-    <td> <%= number_to_currency(product.price * item.quantity) %> </td>
+    <% @order_items.each do |item| %>
+    <tr>
+      <% if session[:user_id] %>
+        <% product = Product.find_by(user_id: @user.id) %>
+      <% else %>
+        <% product = Product.find(item.product_id) %>
+      <% end %>
+      <td> <%= link_to product.name, product_path(product) %> </td>
+      <td> <%= number_to_currency(product.price) %> </td>
+      <td>
+        <%= item.quantity %>
+      </td>
+      <td> <%= number_to_currency(product.price * item.quantity) %> </td>
+		    <% subtotal += (product.price * item.quantity) %>
+      </tr>
 
-		<% subtotal += (product.price * item.quantity) %>
-  </tr>
-  <% end %>
+      <% end %>
 
 	<tr>
-		<td colspan="2">
-		</td>
-		<td>
-			Subtotal:
-		</td>
+		<td colspan="2"></td>
+		<td>Subtotal:</td>
 		<td>
 			<%= number_to_currency(subtotal) %>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2">
-		</td>
-		<td>
-			Tax:
-		</td>
+		<td colspan="2"></td>
+		<td>Tax:</td>
 		<td>
 			<% tax = subtotal * 0.095 %>
 			<%= number_to_currency(tax) %>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2">
-		</td>
-		<td>
-			Total:
-		</td>
+		<td colspan="2"></td>
+		<td>Total:</td>
 		<td>
 			<%= number_to_currency(subtotal + tax) %>
 		</td>
@@ -64,6 +80,10 @@ ActiveRecord::Associations' object -->
   <%= link_to "Back to Dashboard", user_path(session[:user_id]), class: "btn btn-default" %>
   <!-- status changes to "cancelled", session order_id == nil, redirect_to root_path -->
   <%= link_to "Cancel Order", order_path(@order), method: :delete, class: "btn btn-danger" %>
+
+  <% if @order.status == "paid" %>
+    <%= link_to "Order Shipped", shipped_order_path, method: :get, class: "btn btn-success" %>
+  <% end %>
 <% else %>
   <!-- status stays the same, session order_id == nil, redirect_to root_path -->
   <%= link_to "Go Home", logout_path, method: :delete, class: "btn btn-default" %>

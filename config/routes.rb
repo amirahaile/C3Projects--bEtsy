@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resources :categories
 
-  get 'users/list_of_orders', to: 'users#list_of_orders', as: 'list_of_orders'
+  get 'users/orders', to: 'users#list_of_orders', as: 'users_orders'
 
   resources :users do
     resources :products, only: [ :new, :create, :update, :edit ] do
@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   put 'orders/:id/payment', to: 'orders#payment'
 
   get 'orders/:id/confirmation', to: 'orders#confirmation', as: 'order_confirmation'
+  get 'orders/:id/completed', to: 'orders#completed', as: 'shipped_order'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
