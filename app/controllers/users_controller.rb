@@ -2,14 +2,11 @@ class UsersController < ApplicationController
   before_action :find_user, only: :show
   # before_action :product_ids_from_user, only: [:index, :show]
 
-<<<<<<< HEAD
-=======
   # USED FOR RSPEC SHARED EXAMPLES
   def self.model
     User
   end
 
->>>>>>> Made order_items an instance variable and fixed the whole dashboard.
   def find_user
     @user = User.find(session[:user_id])
   end
