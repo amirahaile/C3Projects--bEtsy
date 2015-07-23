@@ -86,9 +86,10 @@ ActiveRecord::Associations' object -->
 <% if session[:user_id] %>
   <%= link_to "Back to Dashboard", user_path(session[:user_id]), class: "btn btn-default" %>
   <!-- status changes to "cancelled", session order_id == nil, redirect_to root_path -->
-  <% unless @order.status == "complete" %>
+  <% unless @order.status == "complete" || @order.status == "cancelled"%>
     <%= link_to "Cancel Order", order_path(@order), method: :delete, class: "btn btn-danger" %>
   <% end %>
+
   <% if @order.status == "paid" %>
     <%= link_to "Order Shipped", shipped_order_path, method: :get, class: "btn btn-success" %>
   <% end %>
