@@ -21,14 +21,14 @@ class Product < ActiveRecord::Base
   scope :by_vendor, -> (vendor) { where(user_id: vendor) }
   scope :by_category, -> (category) { joins(:categories).where("categories.id = ?", category) }
 
-  def self.top_5(order_items)
-    grouped_items = order_items.group_by { |item| item.product_id }
+  def self.top_5(products)
+    grouped_items = products.group_by { |product| product.id }
     popular_items = grouped_items.max_by(5) { |place, items| items.count }
 
     products = []
     popular_items.each do |item|
       # formatted [1, [<order>, <order>]]
-      products << Product.find(item[1][0].product_id)
+      products << Product.find(item[1][0].id)
     end
 
     products

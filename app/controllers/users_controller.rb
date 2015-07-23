@@ -13,8 +13,7 @@ class UsersController < ApplicationController
   def show
     sorted_orders
 
-    @total_revenue = order_items.nil? ? 0 : revenue(order_items)
-    # why $50 and not $55?
+    @total_revenue = @order_items.nil? ? 0 : revenue(@order_items)
     @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
     @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
   end
@@ -22,7 +21,7 @@ class UsersController < ApplicationController
   def sorted_orders
     # associations
     product_ids = User.product_ids_from_user(@user)
-    @order_items = User.order_items_from_products(product_ids)
+    @order_items = User.order_items_from_products(product_ids).nil? ? [] : User.order_items_from_products(product_ids)
     @orders = User.orders_from_order_items(@order_items)
 
     # needed for a count of orders based on status
@@ -32,12 +31,12 @@ class UsersController < ApplicationController
     @completed_orders = Order.by_status(@orders, "completed")
     @cancelled_orders = Order.by_status(@orders, "cancelled")
 
-    order_items_except_cancelled = order_items.reject { |item| item.order.status == 'cancelled' }
+    order_items_except_cancelled = @order_items.reject { |item| item.order.status == 'cancelled' }
     @total_revenue = revenue(order_items_except_cancelled)
     @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
     @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
 
-    @products = Product.top_5(order_items)
+    @products = Product.top_5(@user.products.to_a)
     @latest_orders = Order.latest_5(@orders)
   end
 
