@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
   end
 
   def self.latest_5(orders)
-    orders.max_by(5) { |order| order.created_at }.reverse
+    orders.max_by(5) { |order| order.created_at }
   end
 
 # Callbacks --------------------------------------------------------------------
