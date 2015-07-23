@@ -9,6 +9,7 @@ class CreateOrders < ActiveRecord::Migration
       t.string :zipcode
       t.string :name_on_card
       t.string :card_number
+      t.string :ccv
       t.string :card_last_4
       t.datetime :card_exp
       t.string :status, null: false, default: "pending"
