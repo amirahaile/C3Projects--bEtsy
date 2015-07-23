@@ -45,7 +45,7 @@
 
 		<div class="col-sm-2">
 			<h3 class="text-center"> <%= @cancelled_orders.count %> </h3>
-			<h3 class="text-center"><small>CANCELED</small></h3>
+			<h3 class="text-center"><small>CANCELLED</small></h3>
 		</div>
 	</div>
 </div>
@@ -90,7 +90,7 @@
 	</table>
 
 	<%= button_to "Add Product", new_user_product_path(@user), class: 'btn btn-primary float-right' %>
-	<%= link_to "View Your Products", my_user_products_path(@user) %>
+	<%= link_to "All Products", my_user_products_path(@user) %>
 </div>
 
 <!-- orders -->
@@ -134,5 +134,5 @@
 		<% end %>
 	</table>
 
-	<%= link_to "View Your Orders", products_path %>
+	<%= link_to "All Orders", products_path %>
 </div>
