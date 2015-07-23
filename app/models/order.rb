@@ -15,7 +15,12 @@ class Order < ActiveRecord::Base
 # Scopes -----------------------------------------------------------------------
   def self.by_status(orders, status_string)
     orders = orders.map { |order| order if order.status == status_string }
+    # map returns nil if the order doesn't match
     orders.reject { |order| order == nil }
+  end
+
+  def self.latest_5(orders)
+    orders.max_by(5) { |order| order.created_at }
   end
 
 # Callbacks --------------------------------------------------------------------

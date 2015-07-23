@@ -19,7 +19,14 @@ RSpec.shared_examples "index show controller" do
 
   describe "GET #show" do
     before :each do
-      @object = described_class.model.create(params.values.first)
+      @object = described_class.model.create(params.values.first.values.first)
+      User.create!(
+        username: "Test",
+        email: "test@test.com",
+        password: "test",
+        password_confirmation: "test"
+      )
+      session[:user_id] = 1
     end
 
     it "responds successfully with an HTTP 200 status code" do

@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
     if session[:order_id] != nil
       @order = Order.find(session[:order_id])
       @cart_quantity = quantity_in_cart(@order)
+    else
+      @cart_quantity = 0
     end
   end
 

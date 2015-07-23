@@ -4,22 +4,38 @@
 			<a class="navbar-brand" href="/">CosMade</a>
 		</div>
 
-		<div class="collapse navbar-collapse navbar-right float-right">
-      <% if @user.nil? %>
-				<%= render partial: "shared/login" %>
-        <%= link_to "Register", new_user_path, class: 'btn btn-primary col-sm-2' %>
+		<div class="col-sm-6 float-right">
+      <% if session[:user_id].nil? %>
+				<!-- sign in form -->
+				<%= form_for(:session, url: login_path)  do |f| %>
+					<div class="form-group col-sm-4">
+						<%= f.label :username %>
+						<%= f.text_field :username, class: "form-control" %>
+					</div>
+
+					<div class="form-group col-sm-4">
+							<%= f.label :password %>
+							<%= f.password_field :password, class: "form-control"  %>
+					</div>
+
+					<%= f.submit "Log In", class: "btn btn-primary col-sm-2 login" %>
+				<% end %>
+
+				<!-- register button -->
+        <%= link_to "Register", new_user_path, class: 'btn btn-primary' %>
+
 			<% else %>
 				<% if @user[:id].nil? %>
 					<%= render partial: "shared/login" %>
 				<% else %>
 					Hello, <%= link_to @user.username, user_path(session[:user_id]) %>!
+
 					<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-default' %>
 				<% end %>
-			<% end %>
 
       <%= link_to(@order.nil? ? orders_path : order_path(@order), options = { id: session[:order_id] }, html_options = { class: "btn btn-default" }) do %>
         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-        <span class="badge"> <%= @cart_quantity ||= 0 %> </span>
+        <span class="badge"> <%= @cart_quantity %> </span>
       <% end %>
 		</div>
 	</div>

@@ -52,3 +52,26 @@
 p.text-field-error {
   color: #FF0000;
 }
+
+.status_summary {
+  text-align: center;
+}
+
+.orders_by_status {
+  outline: black solid thick;
+}
+
+.order_list_details {
+  list-style-type: none;
+}
+
+/* USER VIEW */
+.bkgd-gray {
+  background-color: #E0E0E0;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+}
+
+.float-right {
+  float: right;
+}

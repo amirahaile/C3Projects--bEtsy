@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ProductsController, type: :controller do
   it_behaves_like "index show controller"
+  it_behaves_like "a basic new-create controller"
   let(:params) do
     {
       product: {
@@ -12,6 +13,41 @@ RSpec.describe ProductsController, type: :controller do
         user_id: 1
       }
     }
+  end
+  let(:params) do # Ugliest params ever...
+    {
+      product: {
+        name: "A product",
+        price: 20.95,
+        photo_url: "a_photo.jpg",
+        inventory: 4,
+        user_id: 1
+      },
+      create_user: true,
+      valid: {
+        user: {
+          username: "Testwoman",
+          email: "test@testing.com",
+          password: "test",
+          password_confirmation: "test"
+        }
+      },
+      invalid: { user: { username: "" } }
+    }
+
+  # let(:valid_params) do
+  #   {
+  #     product: {
+  #       name: "A product",
+  #       price: 20.95,
+  #       photo_url: "a_photo.jpg",
+  #       inventory: 4,
+  #       user_id: 1
+  #     }
+  #   }
+  # end
+  let(:invalid_params) do
+    { product: { name: "" } }
   end
 
   describe "delete product" do

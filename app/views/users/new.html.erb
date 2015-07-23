@@ -6,19 +6,19 @@
     <div class="form-group">
     <%= f.label :username %>
     <%= f.text_field :username, class: "form-control" %>
-    <p class="text-field-error"><%= flash.now[:username_error] %></p>
+    <p class="text-field-error"><%= error_check_for(:username) %></p>
 
     <%= f.label :email %>
     <%= f.text_field :email, class: "form-control" %>
-    <p class="text-field-error"><%= flash.now[:email_error] %></p>
+    <p class="text-field-error"><%= error_check_for(:email) %></p>
 
     <%= f.label :password %>
     <%= f.text_field :password, class: "form-control" %>
-    <p class="text-field-error"><%= flash.now[:password_error] %></p>
+    <p class="text-field-error"><%= error_check_for(:password) %></p>
 
     <%= f.label :password_confirmation, "Password Confirmation" %>
     <%= f.text_field :password_confirmation, class: "form-control" %>
-    <p class="text-field-error"><%= flash.now[:password_confirmation_error] %></p>
+    <p class="text-field-error"><%= error_check_for(:password_confirmation) %></p>
     </div>
   </fieldset>
 

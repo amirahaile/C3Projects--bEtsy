@@ -1,5 +1,32 @@
-<% @order_types = [@pending, @paid, @completed, @cancelled] %>
-<%= render "shared/order_info_by_status" %>
+<div class="orders_by_status">
+  <% @order_statuses.each do |order_status| %>
+  <% if order_status.nil? || order_status.empty? %>
+    <h4></h4>
+    <% else %>
+  <ul>
+  <h3 class="status_summary">"<%= order_status.first.status.capitalize %>" Orders</h3>
+      <% order_status.each do |order| %>
+      <li><%= link_to "Order ID: #{order.id}", order_confirmation_path(order.id), class: "orders_list" %></li>
+        <% @item_qty = 0 %>
+        <% @revenue_by_order = 0 %>
+        <% @total_revenue_by_status = 0 %>
+        <% items = @order_items.find_all {|order_item| order_item.order_id == order.id } %>
+          <% items.each do |item| %>
+            <% @item_qty += item.quantity %>
+            <% @price_of_item = Product.find(item.product_id).price %>
+            <% @revenue_by_item = @price_of_item * item.quantity %>
+            <% @revenue_by_order += @revenue_by_item %>
+            <% end %>
+            <% @total_revenue_by_status += @revenue_by_order %>
+            <li class="order_list_details">Qty Products Sold: <%= @item_qty %></li>
+            <li class="order_list_details">Total Order Revenue: <%= number_to_currency(@revenue_by_order) %></li>
+        <% end %>
+        <h4 class="status_summary"><strong>Total # of Orders:</strong> <%= @pending_orders.count %> </h4>
+        <h4 class="status_summary"><strong>Total Revenue:</strong> <%= number_to_currency(@total_revenue_by_status) %> </h4>
+  </ul>
+      <% end %>
+  <% end %>
+</div>
 
 <!-- On the order fulfillment page:
 =========================================

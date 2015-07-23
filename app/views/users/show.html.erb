@@ -1,32 +1,39 @@
-<% flash.each do |name, msg| %>
-	<%= content_tag :div, msg, class: "name alert alert-success alert-dismissable", role: 'alert' %>
-<% end %>
+<div class="row bkgd-gray">
+	<div class="col-sm-5">
+		<h3 class="text-center">Revenue</h3>
 
-<div class="row">
-	<div class="col-sm-2">
-		<h3 class="text-center"> <%= number_to_currency(@total_revenue) %> </h3>
-		<h3 class="text-center"><small>TOTAL REVENUE</small></h3>
-	</div>
+		<div class="col-sm-4">
+			<h3 class="text-center"> <%= number_to_currency(@total_revenue) %> </h3>
+			<h3 class="text-center"><small>TOTAL</small></h3>
+		</div>
 
-	<!-- status revenue -->
-	<div class="col-sm-1">
-		<h3 class="text-center"> <%= number_to_currency(@paid_revenue) %> </h3>
-		<h3 class="text-center"><small>PAID REVENUE</small></h3>
-	</div>
+		<!-- status revenue -->
+		<div class="col-sm-4">
+			<h3 class="text-center"> <%= number_to_currency(@paid_revenue) %> </h3>
+			<h3 class="text-center"><small>PAID</small></h3>
+		</div>
 
-	<div class="col-sm-1">
-		<h3 class="text-center"> <%= number_to_currency(@completed_revenue) %> </h3>
-		<h3 class="text-center"><small>COMPLETED REVENUE</small></h3>
+		<div class="col-sm-4">
+			<h3 class="text-center"> <%= number_to_currency(@completed_revenue) %> </h3>
+			<h3 class="text-center"><small>COMPLETED</small></h3>
+		</div>
 	</div>
 
 	<!-- number per status -->
-	<div class="col-sm-8">
+	<div class="col-sm-6">
+		<h3 class="text-center">Orders</h3>
+
 		<div class="col-sm-3">
+			<h3 class="text-center"> <%= @orders.count %> </h3>
+			<h3 class="text-center"><small>TOTAL</small></h3>
+		</div>
+
+		<div class="col-sm-2">
 			<h3 class="text-center"> <%= @pending_orders.count %> </h3>
 			<h3 class="text-center"><small>PENDING</small></h3>
 		</div>
 
-		<div class="col-sm-3">
+		<div class="col-sm-2">
 			<h3 class="text-center"> <%= @paid_orders.count %> </h3>
 			<h3 class="text-center"><small>PAID</small></h3>
 		</div>
@@ -36,44 +43,96 @@
 			<h3 class="text-center"><small>COMPLETED</small></h3>
 		</div>
 
-		<div class="col-sm-3">
-			<h3 class="text-center"> <%= @canceled_orders.count %> </h3>
-			<h3 class="text-center"><small>CANCELED</small></h3>
+		<div class="col-sm-2">
+			<h3 class="text-center"> <%= @cancelled_orders.count %> </h3>
+			<h3 class="text-center"><small>CANCELLED</small></h3>
 		</div>
 	</div>
 </div>
 
-<% unless @orders.empty? %>
-	<!-- orders -->
-	<div class="">
-		<table class="table table-hover">
-			<tr>
-				<th>
-					Order No.
-				</th>
-				<th>
-					Status
-				</th>
-			</tr>
+<!-- products -->
+<div class="col-sm-6">
+	<h4 class="text-center">Top Selling Products</h4>
 
-			<% @orders.each do |order| %>
-			<!-- why you no link?? -->
-			<% if order.status == "paid" %>
-				<tr class='success'>
-			<% elsif order.status == "canceled" %>
-				<tr class='danger'>
-			<% else %>
-				<tr>
-			<% end %>
-					<td>
-						<%= link_to order.id, order_confirmation_path(order) %>
-					</td>
-					<td>
-						<%= link_to order.status, order_confirmation_path(order) %>
-					</td>
-				</tr>
-			<% end %>
-		</table>
-	</div>
-	<%= button_tag "Orders to Fulfill", class: 'btn btn-primary' %>
-<% end %>
+	<table class="table table-hover">
+		<tr>
+			<th>
+				Product
+			</th>
+			<th class="text-center">
+				Price
+			</th>
+			<th class="text-center">
+				Status
+			</th>
+			<th class="text-center">
+				Total Revenue
+			</th>
+		</tr>
+
+		<% @products.each do |id|  %>
+			<tr>
+				<% product = Product.find(id) %>
+				<td>
+					<%= link_to product.name, product_path(product) %>
+				</td>
+				<td class="text-center">
+					<%= number_to_currency(product.price) %>
+				</td>
+				<td class="text-center">
+					<%= product.active == true ? "active" : "inactive" %>
+				</td>
+				<td class="text-center">
+					<%= number_to_currency(product.total_revenue) %>
+				</td>
+			</tr>
+		<% end %>
+	</table>
+
+	<%= button_to "Add Product", new_user_product_path(@user), method: :get, class: 'btn btn-primary float-right' %>
+	<%= link_to "All Products", my_user_products_path(@user) %>
+</div>
+
+<!-- orders -->
+<div class="col-sm-6">
+	<h4 class="text-center">Latest Orders</h4>
+	<table class="table table-hover">
+		<tr>
+			<th class="text-center">
+				Order No.
+			</th>
+			<th>
+				Address
+			</th>
+			<th class="text-center">
+				Status
+			</th>
+		</tr>
+
+		<% unless @orders.nil? %>
+			<% @latest_orders.each do |order| %>
+				<% if order.status == "paid" %>
+					<tr class='success'>
+				<% else %>
+					<tr>
+				<% end %>
+						<td class="text-center">
+							<%= link_to order.id, order_confirmation_path(order) %>
+						</td>
+						<td>
+							<%= link_to order.address1, order_confirmation_path(order) %>
+						</td>
+						<td class="text-center">
+							<%= link_to order.status, order_confirmation_path(order) %>
+						</td>
+					</tr>
+				<% end %>
+		<% else %>
+			<tr>
+				You don't have any orders. Sorry.
+			</tr>
+		<% end %>
+	</table>
+
+	<%= link_to "All Orders", users_orders_path %>
+</div>

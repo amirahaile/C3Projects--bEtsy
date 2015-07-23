@@ -18,6 +18,10 @@ class CategoriesController < ApplicationController
 
   private
 
+  def self.model
+    Category
+  end # USED FOR RSPEC SHARED EXAMPLES
+
   def create_params
     params.require(:category).permit(:name)
   end

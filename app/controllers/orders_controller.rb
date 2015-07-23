@@ -1,10 +1,6 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
 
-  def self.model
-    Order
-  end
-
   def find_order
     @order = Order.find(params[:id])
   end
@@ -25,6 +21,7 @@ class OrdersController < ApplicationController
   # same as :show; any way to conslidate?
   def payment
     @order_items = @order.order_items
+    @user = User.find(session[:user_id]) if session[:user_id]
   end
 
   def update
@@ -41,7 +38,8 @@ class OrdersController < ApplicationController
       @order.card_last_4 = params[:order][:card_number][-4, 4]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
-      @order.save! # move and account for whether the order is canceled?
+      @order.save! # move and account for whether the order is cancelled?
+      session[:order_id] = nil # emptying the cart after confirming order
       redirect_to order_confirmation_path(@order)
     else
       redirect_to :back rescue redirect_to order_path(@order)
@@ -50,6 +48,7 @@ class OrdersController < ApplicationController
   end
 
   def confirmation
+    @purchase_time = Time.now
     @order_items = @order.order_items
   end
 
@@ -59,13 +58,32 @@ class OrdersController < ApplicationController
     session[:order_id] = nil
 
     if session[:user_id]
-      redirect_to user_path(session[:user_id]), notice: "The order was canceled and an (pretend) email has be sent to the buyer."
+      redirect_to user_path(session[:user_id]), notice: "The order was cancelled and an (pretend) email has be sent to the buyer."
     else
       redirect_to root_path
     end
   end
 
+  # def shipped_item
+  #   @shipped_items = []
+  #   @shipped = @order.order_items.find_by(product_id: :product_id)
+  #   @shipped_items << @shipped
+  #   return @shipped_items
+  # end
+
+  def completed
+    # if @order.order_items.count == @shipped_items.count
+
+      @order.status = "complete"
+      @order.save!
+    redirect_to users_orders_path, notice: "You've shipped and completed order ##{@order.id}!"
+  end
+
   private
+
+  def self.model
+    Order
+  end # USED FOR RSPEC SHARED EXAMPLES
 
   def update_inventory(order)
     order.order_items.each do |order_item|
