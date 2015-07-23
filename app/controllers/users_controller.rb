@@ -2,10 +2,6 @@ class UsersController < ApplicationController
   before_action :find_user, only: :show
   # before_action :product_ids_from_user, only: [:index, :show]
 
-  def self.model
-    User
-  end # USED FOR RSPEC SHARED EXAMPLES
-
   def find_user
     @user = User.find(session[:user_id])
   end
@@ -41,7 +37,13 @@ class UsersController < ApplicationController
   end
 
   def new
-    @user = User.new
+    if session[:user_id].nil?
+      @user = User.new
+      render :new
+    else
+      flash[:alert] = "You can't make a new account while you're currently logged in."
+      redirect_to root_path
+    end
   end
 
   def create # create a new logged in user
@@ -49,21 +51,10 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id # creates a session - they are logged in
-      redirect_to user_path(@user) # WHERE DO WE WANT THIS TO REDIRECT TO?
-      # redirect_to root_path # with a message that they successfully created an account?
+      redirect_to user_path(@user)
     else
-      error_check_for("username")
-      error_check_for("email")
-      error_check_for("password")
-      error_check_for("password_confirmation")
-        # Would we use the flash.now to display the individual errors?
-        # Should we reference the individual errors in the views via the instance variable?
       render :new
     end
-  end
-
-  def edit
-    # PLACE HOLDER - SHINY STUFF THAT ISN'T REQUIRED
   end
 
   def list_of_orders # returns array of order assoc w/ order items of user
@@ -97,24 +88,12 @@ class UsersController < ApplicationController
 
   private
 
+  def self.model
+    User
+  end # USED FOR RSPEC SHARED EXAMPLES
+
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation)
-  end
-
-  def nil_flash_errors
-    flash.now[:username_error] = nil
-    flash.now[:email_error] = nil
-    flash.now[:password_error] = nil
-    flash.now[:password_confirmation_error] = nil
-  end
-
-  # NOTE TO SELF: This should actually be a method inside the views helper.
-  # Flash is usually only used for messages at the top of pages.
-  # They work for this, but conventionally they are not used like how I am using them here. - Brandi
-  def error_check_for(element)
-    if @user.errors[element].any?
-      flash.now[(element + "_error").to_sym] = (@user.errors.messages[element.to_sym][0].capitalize + ".")
-    end
   end
 
   def revenue(order_items)
