@@ -77,9 +77,9 @@ class OrdersController < ApplicationController
   def completed
     # if @order.order_items.count == @shipped_items.count
 
-      @order.status = "completed"
+      @order.status = "complete"
       @order.save!
-    redirect_to list_of_orders_path, notice: "You've shipped and completed order ##{@order.id}!"
+    redirect_to users_orders_path, notice: "You've shipped and completed order ##{@order.id}!"
   end
 
   private
