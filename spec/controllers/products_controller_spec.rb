@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ProductsController, type: :controller do
-  it_behaves_like "index-show controller"
+  it_behaves_like "index show controller"
   let(:params) do
     {
       product: {
@@ -52,6 +52,20 @@ RSpec.describe ProductsController, type: :controller do
       get :by_vendor, params
 
       expect(assigns(:products).count).to eq products.count
+    end
+  end
+
+  context "delete object" do
+    it_behaves_like "controller destroy action"
+    let(:params) do
+      {
+        name: "A product",
+        price: 20.95,
+        photo_url: "a_photo.jpg",
+        inventory: 4,
+        user_id: 1
+      }
+    let(:path) { :my_user_products_path }
     end
   end
 end
