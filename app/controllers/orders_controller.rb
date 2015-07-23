@@ -39,6 +39,7 @@ class OrdersController < ApplicationController
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
       @order.save! # move and account for whether the order is cancelled?
+      session[:order_id] = nil # emptying the cart after confirming order
       redirect_to order_confirmation_path(@order)
     else
       redirect_to :back rescue redirect_to order_path(@order)

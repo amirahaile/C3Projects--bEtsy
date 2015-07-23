@@ -31,7 +31,7 @@
 
       <%= link_to(@order.nil? ? orders_path : order_path(@order), options = { id: session[:order_id] }, html_options = { class: "btn btn-default" }) do %>
         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-        <span class="badge"> <%= @cart_quantity ||= 0 %> </span>
+        <span class="badge"> <%= @cart_quantity %> </span>
       <% end %>
 		</div>
 	</div>
