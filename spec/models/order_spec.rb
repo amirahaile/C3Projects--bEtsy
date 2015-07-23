@@ -75,5 +75,51 @@ RSpec.describe Order, type: :model do
 
     # Check card exp must be in the future.
 
+    describe "scopes" do
+      before(:each) do
+        # paid
+        3.times do
+          Order.create(email: "example@fake.com", address1: "1234 St", address2: "Apt. A", city: "Plainsville", state: "NA", zipcode: "12345", card_number: nil, card_last_4: "0987", card_exp: "05/06", status: "paid" )
+        end
+
+        # pending
+        3.times do
+          Order.create(email: "example@fake.com", address1: "1234 St", address2: "Apt. A", city: "Plainsville", state: "NA", zipcode: "12345", card_number: nil, card_last_4: "0987", card_exp: "05/06", status: "pending" )
+        end
+
+        @orders = Order.all
+      end
+
+      describe "#by_status" do
+        it "doesn't allow more or less than two arguments" do
+          expect { Order.by_status(@orders) }.to raise_error ArgumentError
+          expect { Order.by_status(@orders, 'paid', 'pending') }.to raise_error ArgumentError
+          expect { Order.by_status(@orders, 'pending') }.not_to raise_error
+        end
+
+        it "only returns orders of the requested status" do
+          requested_status = 'paid'
+          output = Order.by_status(@orders, requested_status)
+
+          output.each do |order|
+            expect(order.status).to eq requested_status
+          end
+        end
+
+        it "doesn't return nil in place of unmatched orders" do
+          output = Order.by_status(@orders, 'pending')
+          expect(output).to_not include(nil)
+        end
+
+        it "returns an array of Order objects" do
+          output = Order.by_status(@orders, 'paid')
+
+          expect(output.class).to be Array
+          output.each do |element|
+            expect(element.class).to be Order
+          end
+        end
+      end
+    end
   end
 end
