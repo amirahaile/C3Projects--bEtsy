@@ -19,7 +19,7 @@ RSpec.shared_examples "index show controller" do
 
   describe "GET #show" do
     before :each do
-      @object = described_class.model.create(params.values.first)
+      @object = described_class.model.create(params.values.first.values.first)
       User.create!(
         username: "Test",
         email: "test@test.com",

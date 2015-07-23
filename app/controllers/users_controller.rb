@@ -2,10 +2,6 @@ class UsersController < ApplicationController
   before_action :find_user, only: :show
   # before_action :product_ids_from_user, only: [:index, :show]
 
-  def self.model
-    User
-  end # USED FOR RSPEC SHARED EXAMPLES
-
   def find_user
     @user = User.find(session[:user_id])
   end
@@ -42,7 +38,13 @@ class UsersController < ApplicationController
   end
 
   def new
-    @user = User.new
+    if session[:user_id].nil?
+      @user = User.new
+      render :new
+    else
+      flash[:alert] = "You can't make a new account while you're currently logged in."
+      redirect_to root_path
+    end
   end
 
   def create # create a new logged in user
@@ -86,6 +88,10 @@ class UsersController < ApplicationController
 
 
   private
+
+  def self.model
+    User
+  end # USED FOR RSPEC SHARED EXAMPLES
 
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation)

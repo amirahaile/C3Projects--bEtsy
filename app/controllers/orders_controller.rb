@@ -1,10 +1,6 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
 
-  def self.model
-    Order
-  end
-
   def find_order
     @order = Order.find(params[:id])
   end
@@ -83,6 +79,10 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def self.model
+    Order
+  end # USED FOR RSPEC SHARED EXAMPLES
 
   def update_inventory(order)
     order.order_items.each do |order_item|
