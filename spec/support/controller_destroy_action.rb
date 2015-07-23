@@ -15,9 +15,9 @@ RSpec.shared_examples "controller destroy action" do
       }.to change(described_class.model, :count).by(-1)
     end
 
-    it "redirects to #{path} view" do
+    it "redirects to index view" do
       delete :destroy, id: @object
-      expect(response).to redirect_to :path
+      expect(response).to redirect_to @path
     end
   end
 end

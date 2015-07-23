@@ -52,7 +52,47 @@ RSpec.describe ProductsController, type: :controller do
       get :by_vendor, params
 
       expect(assigns(:products).count).to eq products.count
+      expect(products.count).to eq 2
     end
+  end
+
+  describe "GET #by_category" do
+    before :each do
+      cat_a = Category.create(name: "cat a")
+      cat_b = Category.create(name: "cat b")
+      product_a = Product.create(
+        name: "A product",
+        price: 49.95,
+        photo_url: "a_photo.jpg",
+        inventory: 7,
+        user_id: 1
+      )
+      product_a.categories << cat_a
+      product_a.categories << cat_b
+
+      product_b = Product.create(
+        name: "B product",
+        price: 4.95,
+        photo_url: "B_photo.jpg",
+        inventory: 5,
+        user_id: 2
+      )
+      product_b.categories << cat_a
+
+      @products = Product.all
+    end
+
+    it "displays a Category's products" do
+      products = Product.by_category(1)
+      params = { product: { category_id: 1 } }
+      get :by_category, params
+
+      expect(assigns(:products).count).to eq products.count
+      expect(products.count).to eq 2
+    end
+  end
+
+  describe "GET #merchant" do
   end
 
   context "delete object" do
@@ -65,7 +105,10 @@ RSpec.describe ProductsController, type: :controller do
         inventory: 4,
         user_id: 1
       }
-    let(:path) { :my_user_products_path }
+      end
+
+    before :each do
+      @path = my_user_products_path(params[:user_id])
     end
   end
 end
