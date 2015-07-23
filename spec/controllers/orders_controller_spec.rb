@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe OrdersController, type: :controller do
-  it_behaves_like "index-show controller"
+  it_behaves_like "index show controller"
   let(:params) do
     {
       order: {
@@ -11,7 +11,7 @@ RSpec.describe OrdersController, type: :controller do
         city: "Testcity",
         state: "WA",
         zipcode: "55555",
-        card_number: "123456789",
+        card_number: "123456789988",
         card_last_4: "6789",
         card_exp: Time.now
       }
