@@ -26,6 +26,10 @@ class Order < ActiveRecord::Base
     orders.reject { |order| order == nil }
   end
 
+  def self.latest_5(orders)
+    orders.max_by(5) { |order| order.created_at }.reverse
+  end
+
 # Callbacks --------------------------------------------------------------------
   # before_validation :capitalize_city!, only: [:city]
   # before_validation :state_conversion!, only: [:state]
