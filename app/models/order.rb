@@ -15,6 +15,7 @@ class Order < ActiveRecord::Base
 # Scopes -----------------------------------------------------------------------
   def self.by_status(orders, status_string)
     orders = orders.map { |order| order if order.status == status_string }
+    # map returns nil if the order doesn't match
     orders.reject { |order| order == nil }
   end
 
