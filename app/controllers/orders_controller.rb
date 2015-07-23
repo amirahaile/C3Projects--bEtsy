@@ -36,6 +36,7 @@ class OrdersController < ApplicationController
       @order.state = params[:order][:state]
       @order.zipcode = params[:order][:zipcode]
       @order.card_last_4 = params[:order][:card_number][-4, 4]
+      @order.ccv = params[:order][:ccv]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
       @order.save! # move and account for whether the order is cancelled?
