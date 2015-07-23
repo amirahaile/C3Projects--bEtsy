@@ -126,7 +126,7 @@
 								<%= link_to order.id, order_confirmation_path(order) %>
 							</td>
 							<td>
-								<%= link_to order.address1, order_confirmation_path(order) %>
+								<%= link_to order.address1 || "N/A", order_confirmation_path(order) %>
 							</td>
 							<td class="text-center">
 								<%= link_to order.status, order_confirmation_path(order) %>
