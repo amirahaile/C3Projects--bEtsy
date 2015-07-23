@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     # an array of Order objects
     @pending_orders = Order.by_status(@orders, "pending")
     @paid_orders = Order.by_status(@orders, "paid")
-    @completed_orders = Order.by_status(@orders, "completed")
+    @completed_orders = Order.by_status(@orders, "complete")
     @cancelled_orders = Order.by_status(@orders, "cancelled")
 
     order_items_except_cancelled = @order_items.reject { |item| item.order.status == 'cancelled' }

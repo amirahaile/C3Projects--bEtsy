@@ -75,7 +75,7 @@ class OrdersController < ApplicationController
 
       @order.status = "complete"
       @order.save!
-    redirect_to users_orders_path, notice: "You've shipped and completed order ##{@order.id}!"
+    redirect_to user_path(@user), notice: "You've shipped and completed order ##{@order.id}!"
   end
 
   private
