@@ -50,89 +50,96 @@
 	</div>
 </div>
 
-<!-- products -->
-<div class="col-sm-6">
-	<h4 class="text-center">Top Selling Products</h4>
 
-	<table class="table table-hover">
-		<tr>
-			<th>
-				Product
-			</th>
-			<th class="text-center">
-				Price
-			</th>
-			<th class="text-center">
-				Status
-			</th>
-			<th class="text-center">
-				Total Revenue
-			</th>
-		</tr>
+	<!-- products -->
+	<div class="col-sm-6">
+		<% unless @products.empty? %>
+			<h4 class="text-center">Top Selling Products</h4>
 
-		<% @products.each do |id|  %>
-			<tr>
-				<% product = Product.find(id) %>
-				<td>
-					<%= link_to product.name, product_path(product) %>
-				</td>
-				<td class="text-center">
-					<%= number_to_currency(product.price) %>
-				</td>
-				<td class="text-center">
-					<%= product.active == true ? "active" : "inactive" %>
-				</td>
-				<td class="text-center">
-					<%= number_to_currency(product.total_revenue) %>
-				</td>
-			</tr>
-		<% end %>
-	</table>
+			<table class="table table-hover">
+				<tr>
+					<th>
+						Product
+					</th>
+					<th class="text-center">
+						Price
+					</th>
+					<th class="text-center">
+						Status
+					</th>
+					<th class="text-center">
+						Total Revenue
+					</th>
+				</tr>
 
-	<%= button_to "Add Product", new_user_product_path(@user), method: :get, class: 'btn btn-primary float-right' %>
-	<%= link_to "All Products", my_user_products_path(@user) %>
-</div>
-
-<!-- orders -->
-<div class="col-sm-6">
-	<h4 class="text-center">Latest Orders</h4>
-	<table class="table table-hover">
-		<tr>
-			<th class="text-center">
-				Order No.
-			</th>
-			<th>
-				Address
-			</th>
-			<th class="text-center">
-				Status
-			</th>
-		</tr>
-
-		<% unless @orders.nil? %>
-			<% @latest_orders.each do |order| %>
-				<% if order.status == "paid" %>
-					<tr class='success'>
-				<% else %>
+				<% @products.each do |id|  %>
 					<tr>
-				<% end %>
-						<td class="text-center">
-							<%= link_to order.id, order_confirmation_path(order) %>
-						</td>
+						<% product = Product.find(id) %>
 						<td>
-							<%= link_to order.address1, order_confirmation_path(order) %>
+							<%= link_to product.name, product_path(product) %>
 						</td>
 						<td class="text-center">
-							<%= link_to order.status, order_confirmation_path(order) %>
+							<%= number_to_currency(product.price) %>
+						</td>
+						<td class="text-center">
+							<%= product.active == true ? "active" : "inactive" %>
+						</td>
+						<td class="text-center">
+							<%= number_to_currency(product.total_revenue) %>
 						</td>
 					</tr>
 				<% end %>
+			</table>
+
+			<%= link_to "All Products", my_user_products_path(@user) %>
+
+		<% else %>
+			<h1 class="text-center"><small>You don't have any products. Make some!</small></h1>
+		<% end %>
+			<%= button_to "Add Product", new_user_product_path(@user), method: :get, class: 'btn btn-primary float-right' %>
+	</div>
+
+	<!-- orders -->
+	<div class="col-sm-6">
+		<% unless @orders.empty? %>
+			<h4 class="text-center">Latest Orders</h4>
+			<table class="table table-hover">
+				<tr>
+					<th class="text-center">
+						Order No.
+					</th>
+					<th>
+						Address
+					</th>
+					<th class="text-center">
+						Status
+					</th>
+				</tr>
+
+				<% @latest_orders.each do |order| %>
+					<% if order.status == "paid" %>
+						<tr class='success'>
+					<% else %>
+						<tr>
+					<% end %>
+							<td class="text-center">
+								<%= link_to order.id, order_confirmation_path(order) %>
+							</td>
+							<td>
+								<%= link_to order.address1, order_confirmation_path(order) %>
+							</td>
+							<td class="text-center">
+								<%= link_to order.status, order_confirmation_path(order) %>
+							</td>
+						</tr>
+					<% end %>
+			</table>
+
+			<%= link_to "All Orders", users_orders_path %>
+
 		<% else %>
 			<tr>
-				You don't have any orders. Sorry.
+				<h1 class="text-center"><small>You don't have any orders yet, sorry. :(</small></h1>
 			</tr>
 		<% end %>
-	</table>
-
-	<%= link_to "All Orders", users_orders_path %>
-</div>
+	</div>
