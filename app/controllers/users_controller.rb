@@ -27,6 +27,7 @@ class UsersController < ApplicationController
     @completed_orders = Order.by_status(@orders, "completed")
     @cancelled_orders = Order.by_status(@orders, "cancelled")
 
+
     order_items_except_cancelled = @order_items.reject { |item| item.order.status == 'cancelled' }
     @total_revenue = revenue(order_items_except_cancelled)
     @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
@@ -130,6 +131,7 @@ class UsersController < ApplicationController
   end
 
   def revenue(order_items)
+    return 0 if order_items.nil?
     order_items.reduce(0) { |sum, n| sum + (n.product.price * n.quantity)}
   end
 end
