@@ -126,5 +126,48 @@ RSpec.describe Order, type: :model do
         end
       end
     end
+
+    describe "#latest_5" do
+      it "doesn't allow more or less than one argument" do
+        expect { Order.latest_5() }.to raise_error ArgumentError
+        expect { Order.latest_5(@orders, 'pending') }.to raise_error ArgumentError
+        expect { Order.latest_5(@orders) }.to_not raise_error
+      end
+
+      it "returns 5 Order objects" do
+        expect(Order.latest_5(@orders).count).to be 5
+        @orders.each do |element|
+          expect(element.class).to be Order
+        end
+      end
+
+      it "returns the most recent orders" do
+        output = Order.latest_5(@orders)
+        # selects order with oldest created_at timestamp
+        oldest_order = @orders.min_by { |order| order if order.created_at }
+
+        expect(output).to_not include oldest_order
+      end
+
+
+      it "returns Order objects in reverse chronological order" do
+        # in reverse because we want the last order (largest date) first
+        output = Order.latest_5(@orders)
+        count = 0
+
+        while output.length < count
+          expect(output[count].created_at).to be > output[count + 1].created_at
+        end
+      end
+
+      it "returns an array of Order objects" do
+        output = Order.latest_5(@orders)
+
+        expect(output.class).to be Array
+        output.each do |element|
+          expect(element.class).to be Order
+        end
+      end
+    end
   end
 end
