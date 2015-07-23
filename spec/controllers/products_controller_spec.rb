@@ -14,6 +14,23 @@ RSpec.describe ProductsController, type: :controller do
     }
   end
 
+  describe "delete product" do
+    it_behaves_like "controller destroy action"
+    let(:params) do
+      {
+        name: "A product",
+        price: 20.95,
+        photo_url: "a_photo.jpg",
+        inventory: 4,
+        user_id: 1
+      }
+      end
+
+    before :each do
+      @path = my_user_products_path(params[:user_id])
+    end
+  end
+
   describe "GET #by_vendor" do
     before :each do
       User.create(
@@ -95,20 +112,5 @@ RSpec.describe ProductsController, type: :controller do
   describe "GET #merchant" do
   end
 
-  context "delete object" do
-    it_behaves_like "controller destroy action"
-    let(:params) do
-      {
-        name: "A product",
-        price: 20.95,
-        photo_url: "a_photo.jpg",
-        inventory: 4,
-        user_id: 1
-      }
-      end
 
-    before :each do
-      @path = my_user_products_path(params[:user_id])
-    end
-  end
 end
