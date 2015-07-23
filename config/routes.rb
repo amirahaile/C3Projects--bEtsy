@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   resources :categories
 
+  get 'users/list_of_orders', to: 'users#list_of_orders', as: 'list_of_orders'
+
   resources :users do
     resources :products, only: [ :new, :create, :update, :edit ] do
       collection do

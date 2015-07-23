@@ -1,5 +1,31 @@
-<% @order_types = [@pending, @paid, @completed, @cancelled] %>
-<%= render "shared/order_info_by_status" %>
+<div class="orders_by_status">
+  <h3>Pending Orders</h3>
+  <% @pending_orders.each do |order| %>
+    <% if order.nil? %>
+    <% order %>
+    <% else %>
+    <% revenue_by_type = 0 %>
+    <ul>
+      <li>Order ID:<%= link_to "#{order.id}", order_path(order.id) %></li>
+      <% @item_qty = 0 %>
+      <% @revenue_by_order = 0 %>
+      <% @total_revenue_by_status = 0 %>
+      <% items = @order_items.find_all {|order_item| order_item.order_id == order.id } %>
+        <% items.each do |item| %>
+          <% @item_qty += item.quantity %>
+          <% @price_of_item = Product.find(item.product_id).price %>
+          <% @revenue_by_item = @price_of_item * item.quantity %>
+          <% @revenue_by_order += @revenue_by_item %>
+        <% end %>
+        <% @total_revenue_by_status += @revenue_by_order %>
+      <li>Qty Products Sold: <%= @item_qty %></li>
+      <li>Total Order Revenue: <%= number_to_currency(@revenue_by_order) %></li>
+    </ul>
+    <% end %>
+  <% end %>
+  <h5><strong>Total # of Orders:</strong> <%= @pending_orders.count %> </h5>
+  <h5><strong>Total Revenue:</strong> <%= number_to_currency(@total_revenue_by_status) %> </h5>
+</div>
 
 <!-- On the order fulfillment page:
 =========================================

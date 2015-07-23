@@ -51,17 +51,37 @@ class UsersController < ApplicationController
     # PLACE HOLDER - SHINY STUFF THAT ISN'T REQUIRED
   end
 
-  def index # returns array of order assoc w/ order items of user
-    @orders = []
-    if @order_items.nil?
-      puts "No Current Orders"
-    else
-      @order_items.each do |order_item|
-        @orders << Order.where(id: order_item.first.order_id)
-        @orders.uniq!
-      end
-    end
+  def list_of_orders # returns array of order assoc w/ order items of user
+    product_ids = User.product_ids_from_user(@user)
+    @order_items = User.order_items_from_products(product_ids)
+    @orders = User.orders_from_order_items(@order_items)
+
+    @pending_orders = Order.by_status(@orders, "pending")
+    @paid_orders = Order.by_status(@orders, "paid")
+    @completed_orders = Order.by_status(@orders, "completed")
+    @canceled_orders = Order.by_status(@orders, "canceled")
+
+    @order_statuses = [[@pending_orders], [@paid_orders], [@completed_orders], [@caneled_orders]]
+
+    @total_revenue = @order_items.nil? ? 0 : revenue(@order_items)
+    # why $50 and not $55?
+    @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
+    @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
   end
+
+  #### WHERE DO I PUT THIS??? #########
+  # def revenue_by_order(order)
+    # @item_qty = 0
+    # @revenue_by_order = 0
+    # items = @order_items.find_all {|order_item| order_item.order_id == order.id }
+    #  items.each do |item|
+      #  @item_qty += item.quantity
+      #  @price_of_item = Product.find(item.product_id).price
+      #  @revenue_by_item = @price_of_item * item.quantity
+      #  @revenue_by_order += @revenue_by_item
+    #  end
+  # end
+
 
   private
 
