@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
     end
 
     order_items.flatten!
-    return [] if order_items.nil?
+    order_items.nil? ? [] : order_items
   end
 
   def self.orders_from_order_items(order_items)
