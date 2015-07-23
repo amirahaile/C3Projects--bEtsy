@@ -26,6 +26,10 @@ Rails.application.routes.draw do
 
   resources :categories, only: [ :new, :create ]
 
+<<<<<<< HEAD
+=======
+  get    "/login",  to: 'sessions#new',     as: 'login'
+>>>>>>> Have unauthorized user accessing blocked pages redirected to sign up page.
   post   "/login",  to: 'sessions#create'
   delete "/logout", to: 'sessions#destroy', as: 'logout'
 
