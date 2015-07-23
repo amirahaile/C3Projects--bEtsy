@@ -3,7 +3,7 @@
 ActiveRecord::Associations' object -->
 <!-- <% order = Order.find(@order_items.first.order_id) %> -->
 
-<h4>Order Placed: <%= @purchase_time %></h4>
+<h4>Order Placed: <%= @purchase_time.strftime("%b %e, %Y") %></h4>
 <h4>Order Status: <%= @order.status.capitalize %></h4>
 
 <table class="table">
@@ -15,6 +15,7 @@ ActiveRecord::Associations' object -->
     <th>Mailing Address</th>
     <th>Credit Card</th>
     <th>CC Expiration</th>
+    <th>CCV Code</th>
     <!-- security code! -->
   </tr>
   <tr>
@@ -23,6 +24,7 @@ ActiveRecord::Associations' object -->
     <td><%= @order.address1 %></td>
     <td><%= @order.card_last_4 %></td>
     <td><%= @order.card_exp %></td>
+    <td><%= @order.ccv %></td>
   </tr>
   <% end %>
 </table>
