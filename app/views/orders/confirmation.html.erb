@@ -3,7 +3,7 @@
 ActiveRecord::Associations' object -->
 <!-- <% order = Order.find(@order_items.first.order_id) %> -->
 
-<h4>Order Placed: <%= Time.now.strftime("%m/%d/%Y at %R") %></h4>
+<h4>Order Placed: <%= @purchase_time %></h4>
 <h4>Order Status: <%= @order.status.capitalize %></h4>
 
 <table class="table">

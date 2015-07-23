@@ -51,6 +51,7 @@ class OrdersController < ApplicationController
   end
 
   def confirmation
+    @purchase_time = Time.now
     @order_items = @order.order_items
   end
 

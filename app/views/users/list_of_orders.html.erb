@@ -1,12 +1,12 @@
 <div class="orders_by_status">
   <% @order_statuses.each do |order_status| %>
-  <h3><%= order_status %> Orders</h3>
-    <% if order_status.nil? || order_status.empty? %>
-      <h4>NO ORDERS</h4>
+  <% if order_status.nil? || order_status.empty? %>
+    <h4></h4>
     <% else %>
+  <ul>
+  <h3 class="status_summary">"<%= order_status.first.status.capitalize %>" Orders</h3>
       <% order_status.each do |order| %>
-      <ul>
-        <li><%= link_to "Order ID: #{order.id}", order_confirmation_path(order.id) %></li>
+      <li><%= link_to "Order ID: #{order.id}", order_confirmation_path(order.id), class: "orders_list" %></li>
         <% @item_qty = 0 %>
         <% @revenue_by_order = 0 %>
         <% @total_revenue_by_status = 0 %>
@@ -18,12 +18,12 @@
             <% @revenue_by_order += @revenue_by_item %>
             <% end %>
             <% @total_revenue_by_status += @revenue_by_order %>
-            <li>Qty Products Sold: <%= @item_qty %></li>
-            <li>Total Order Revenue: <%= number_to_currency(@revenue_by_order) %></li>
-          </ul>
+            <li class="order_list_details">Qty Products Sold: <%= @item_qty %></li>
+            <li class="order_list_details">Total Order Revenue: <%= number_to_currency(@revenue_by_order) %></li>
         <% end %>
-        <h5><strong>Total # of Orders:</strong> <%= @pending_orders.count %> </h5>
-        <h5><strong>Total Revenue:</strong> <%= number_to_currency(@total_revenue_by_status) %> </h5>
+        <h4 class="status_summary"><strong>Total # of Orders:</strong> <%= @pending_orders.count %> </h4>
+        <h4 class="status_summary"><strong>Total Revenue:</strong> <%= number_to_currency(@total_revenue_by_status) %> </h4>
+  </ul>
       <% end %>
   <% end %>
 </div>
