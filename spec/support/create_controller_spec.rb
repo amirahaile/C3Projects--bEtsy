@@ -1,7 +1,6 @@
 require 'spec_helper'
-require 'pry'
 
-RSpec.shared_examples "a basic new-create controller" do
+RSpec.shared_examples "a create controller" do
 
   before :each do
     # Checks to see if you need to create a user & log in.
@@ -14,21 +13,6 @@ RSpec.shared_examples "a basic new-create controller" do
         password_confirmation: "test"
       )
       session[:user_id] = 1
-    end
-  end
-
-  describe "#new" do
-
-    it "responds successfully with an HTTP 200 status code" do
-      get :new
-
-      expect(response).to be_success
-      expect(response).to have_http_status(200)
-    end
-
-    it  "renders the #new template" do
-      get :new
-      expect(subject).to render_template :new
     end
   end
 
