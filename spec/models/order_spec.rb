@@ -135,7 +135,7 @@ RSpec.describe Order, type: :model do
       end
 
       it "returns 5 Order objects" do
-        expect(Order.latest_5(@orders).count).to be 5
+        expect(Order.latest_5(@orders).count).to eq 5
         @orders.each do |element|
           expect(element.class).to be Order
         end
