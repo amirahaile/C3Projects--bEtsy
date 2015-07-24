@@ -2,6 +2,11 @@
 <!-- so the method should be put, right? Not the default 'post'… -->
 <%= form_for(@order, method: :put) do |f| %>
   <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="form-group">
   <%= f.label :email %>
   <%= f.text_field :email %>
   </div>
@@ -31,17 +36,14 @@
   <%= f.text_field :zipcode %>
   </div>
 
-  <!-- WIP -->
-  <!-- :name_on_card -->
-
   <div class="form-group">
   <%= f.label :card_number %>
   <%= f.text_field :card_number %>
   </div>
 
   <div class="form-group">
-    <%= f.label :ccv, class: 'text-uppercase' %>
-    <%= f.text_field :ccv %>
+    <label for="cvv">CVV</label>:
+    <input id="cvv" name="cvv" type="text" /><br />
   </div>
 
   <div class="form-group">

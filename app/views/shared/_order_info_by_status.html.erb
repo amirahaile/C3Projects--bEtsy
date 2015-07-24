@@ -1,0 +1,18 @@
+<!-- varaible names have changed!! look deeper into changes and incorporate into custom path and method name -->
+
+
+<div class="orders_by_status">
+  <% @order_types.each do |order_type| %>
+  <h3><%= order_type.upcase %></h3>
+  <% order_type.each do |order| %>
+  <% revenue_by_type = 0 %>
+  <ul>
+    <li>Order ID:<%= link_to "#{order.id}" ##path to order %></li>
+    <li>My Products/Total Products: <%= order.order_items.where(user_id: session[:user_id]).count %>/<%= order.order_items %></li>
+    <li>Total Order Revenue:</li>
+  </ul>
+  <% end %>
+  <h5><strong>Total # of Orders:</strong> <%= order_type.count %></h5>
+  <h5><strong>Total Revenue:</strong> <%= ##some logic to total revenues %></h5>
+<% end %>
+</div>

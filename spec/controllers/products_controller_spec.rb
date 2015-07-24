@@ -34,7 +34,7 @@ RSpec.describe ProductsController, type: :controller do
       },
       invalid: { user: { username: "" } }
     }
-
+  end
   # let(:valid_params) do
   #   {
   #     product: {
