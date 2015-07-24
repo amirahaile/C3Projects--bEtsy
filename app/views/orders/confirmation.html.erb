@@ -18,10 +18,10 @@ ActiveRecord::Associations' object -->
     <!-- security code! -->
   </tr>
   <tr>
-    <td>User</td>
+    <td><%= @order.name.upcase %></td>
     <td><%= @order.email %></td>
     <td><%= @order.address1 %></td>
-    <td><%= @order.card_last_4 %></td>
+    <td>XXXX-XXXX-<%= @order.card_last_4 %></td>
     <td><%= @order.card_exp %></td>
   </tr>
   <% end %>

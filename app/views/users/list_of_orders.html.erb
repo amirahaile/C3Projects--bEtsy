@@ -1,3 +1,7 @@
+<% @possible_orders = @order_statuses.flatten.first %>
+<% if @possible_orders.nil? %>
+    <h1 class="no_orders">No orders in queue :( </h1>
+<% end %>
 <div class="orders_by_status">
   <% @order_statuses.each do |order_status| %>
   <% if order_status.nil? || order_status.empty? %>
