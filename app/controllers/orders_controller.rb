@@ -38,12 +38,16 @@ class OrdersController < ApplicationController
       @order.card_last_4 = params[:order][:card_number][-4, 4]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
-      @order.save! # move and account for whether the order is cancelled?
-      session[:order_id] = nil # emptying the cart after confirming order
-      redirect_to order_confirmation_path(@order)
+      if @order.save # move and account for whether the order is cancelled?
+        session[:order_id] = nil # emptying the cart after confirming order
+        redirect_to order_confirmation_path(@order)
+      else
+        render :payment
+      end
     else
-      redirect_to :back rescue redirect_to order_path(@order)
-      flash.now[:error] = "#{@order_item.product} only has #{@order_item.quantity} item in stock."
+      # redirect_to :back rescue redirect_to order_path(@order)
+      flash[:error] = "There's only #{@order_item.product.inventory} #{@order_item.product.name} in stock."
+      render :payment
     end
   end
 
