@@ -3,17 +3,7 @@ require 'rails_helper'
 RSpec.describe ProductsController, type: :controller do
   it_behaves_like "index show controller"
   it_behaves_like "a basic new-create controller"
-  let(:params) do
-    {
-      product: {
-        name: "A product",
-        price: 20.95,
-        photo_url: "a_photo.jpg",
-        inventory: 4,
-        user_id: 1
-      }
-    }
-  end
+
   let(:params) do # Ugliest params ever...
     {
       product: {
@@ -34,7 +24,7 @@ RSpec.describe ProductsController, type: :controller do
       },
       invalid: { user: { username: "" } }
     }
-
+  end
   # let(:valid_params) do
   #   {
   #     product: {
@@ -62,7 +52,10 @@ RSpec.describe ProductsController, type: :controller do
       }
       end
 
+    let(:session_key) { :user_id }
+
     before :each do
+      @path_hash = { id: params[:user_id] }
       @path = my_user_products_path(params[:user_id])
     end
   end

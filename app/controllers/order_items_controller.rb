@@ -45,4 +45,10 @@ class OrderItemsController < ApplicationController
 
     redirect_to :back rescue redirect_to order_path(@order_items.order)
   end
+
+  private
+
+  def self.model
+    OrderItem
+  end
 end

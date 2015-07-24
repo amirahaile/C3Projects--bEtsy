@@ -37,6 +37,27 @@ RSpec.describe OrdersController, type: :controller do
     end
   end
 
+  describe "order #destroy action" do
+
+    before :each do
+      @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zipcode: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
+      @thing = OrderItem.create!(quantity: 2, order_id: 1, product_id: 1)
+      @order.order_items << @thing
+    end
+
+    it "cancels the order" do
+      delete :destroy, id: @order.id
+      @order.reload
+
+      expect(@order.status).to eq("cancelled")
+    end
+
+    it "redirects appropriately" do
+      delete :destroy, id: @order.id
+      expect(response).to redirect_to root_path
+    end
+  end
+
   # describe "order status" do
   #   it "changes from 'pending' to 'paid' after payment info is input" do
   #     put :update, id: @order.id

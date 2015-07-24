@@ -12,6 +12,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20150723234737) do
+
   create_table "categories", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
@@ -38,14 +39,14 @@ ActiveRecord::Schema.define(version: 20150723234737) do
     t.string   "city"
     t.string   "state"
     t.string   "zipcode"
-    t.string   "name_on_card"
     t.string   "card_number"
     t.string   "card_last_4"
     t.datetime "card_exp"
-    t.string   "status",       default: "pending", null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.string   "name",         default: "guest",   null: false
+    t.string   "status",      default: "pending", null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "ccv"
+    t.string   "name",        default: "guest",   null: false
   end
 
   create_table "products", force: :cascade do |t|
