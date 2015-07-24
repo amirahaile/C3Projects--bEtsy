@@ -19,14 +19,14 @@ RSpec.shared_examples "a new controller" do
   describe "#new" do
 
     it "responds successfully with an HTTP 200 status code" do
-      get :new
+      get :new, params[:nested_class]
 
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
 
     it  "renders the #new template" do
-      get :new
+      get :new, params[:nested_class]
       expect(subject).to render_template :new
     end
   end

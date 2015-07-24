@@ -6,6 +6,8 @@ RSpec.describe CategoriesController, type: :controller do
   let(:params) do
     { valid: { category: { name: "Test Category" } },
       create_user: true,
+      nested: false,
+      nested_class: {},
       invalid: { category: { name: "" } }
     }
   end

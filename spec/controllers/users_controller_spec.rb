@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
-  it_behaves_like "a index controller"
   it_behaves_like "a show controller"
   it_behaves_like "a new controller"
   it_behaves_like "a create controller"
@@ -16,6 +15,7 @@ RSpec.describe UsersController, type: :controller do
         }
       },
       create_user: false,
+      nested: false,
       invalid: { user: { username: "" } }
     }
   end

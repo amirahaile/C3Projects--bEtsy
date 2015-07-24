@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe OrdersController, type: :controller do
   it_behaves_like "a index controller"
-  it_behaves_like "a show controller"
   let(:params) do
     {
       valid: {

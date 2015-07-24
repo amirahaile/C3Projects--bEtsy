@@ -5,26 +5,21 @@ RSpec.describe ProductsController, type: :controller do
   it_behaves_like "a show controller"
   it_behaves_like "a new controller"
   it_behaves_like "a create controller"
-
   let(:params) do # Ugliest params ever...
     {
-      product: {
-        name: "A product",
-        price: 20.95,
-        photo_url: "a_photo.jpg",
-        inventory: 4,
-        user_id: 1
-      },
-      create_user: true,
       valid: {
-        user: {
-          username: "Testwoman",
-          email: "test@testing.com",
-          password: "test",
-          password_confirmation: "test"
+        product: {
+          name: "A product",
+          price: 20.95,
+          photo_url: "a_photo.jpg",
+          inventory: 4,
+          user_id: 1
         }
       },
-      invalid: { user: { username: "" } }
+      create_user: true,
+      nested: true,
+      nested_class: {user_id: 1},
+      invalid: { product: { name: "" } }
     }
   end
 
