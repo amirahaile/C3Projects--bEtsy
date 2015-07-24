@@ -1,5 +1,4 @@
 <% subtotal = 0 %>
-
 <h4>Order Placed: <%= @purchase_time.strftime("%b %e, %Y at %l:%M %p") %></h4>
 <h4>Order Status: <%= @order.status.capitalize %></h4>
 
@@ -36,11 +35,7 @@
   </tr>
     <% @order_items.each do |item| %>
     <tr>
-      <% if session[:user_id] %>
-        <% product = Product.find_by(user_id: @user.id) %>
-      <% else %>
-        <% product = Product.find(item.product_id) %>
-      <% end %>
+      <% product = Product.find(item.product_id) %>
       <td> <%= link_to product.name, product_path(product) %> </td>
       <td> <%= number_to_currency(product.price) %> </td>
       <td>
