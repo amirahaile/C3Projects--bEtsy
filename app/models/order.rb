@@ -5,7 +5,8 @@ class Order < ActiveRecord::Base
 # Validations ------------------------------------------------------------------
   validates_presence_of :email, :address1, :city, :state, :zipcode,
                         :card_last_4, :card_exp, :status
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true
+    # you don't want a email address to be unique here because then the same person couldn't order twice from your website - Brandi
   validates_format_of :email, with: /\A[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\Z/i
   validates_length_of :state, is: 2, message: "must be state abbreviation" # must be two (capital) characters? ex. WA
   validates_length_of :card_last_4, is: 4
