@@ -1,23 +1,20 @@
 class Session < ActiveRecord::Base
+	# yo, we tried… and failed
 
-	def self.sweep
-    if session[:order_id] != nil
-
-      delete_all "created_at < '#{1.day.ago.to_s(:db)}'"
-    # else
-      # session[:order_id] = nil
-    end
-  end
-
-	# deletes long sessions
-	# not sure how it works
-	# from the docs:
-
-	# def self.sweep(time = 1.hour) # converts to 3600 seconds
-	# 	if time.is_a?(String)
-	# 		time = time.split.inject { |count, unit| count.to_i.send(unit) }
-	# 	end
+	# before_action :update_session_time
+	# before_action :session_expires
+	# require 'date'
 	#
-	# 	delete_all "updated at < '#{time.ago.to_s(:db)}'"
+	# def update_session_time
+	#  session[:expires_at] = 1.minutes.from_now
+	# end
+	#
+	# def session_expires
+	#  @time_left = (session[:expires_at] - Time.now).to_i
+	#  unless @time_left > 0
+	# 	 reset_session
+	# 	 flash[:error] = 'Sorry, you took too long.'
+	# 	 redirect_to :controller => 'product', :action => 'index'
+	#  end
 	# end
 end

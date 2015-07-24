@@ -4,6 +4,22 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :logged_in
 
+  # before_filter :update_session_time, :except => [:login, :logout]
+  # before_filter :session_expires, :except => [:login, :logout]
+  #
+  # def update_session_time
+  #  session[:expires_at] = 1.minutes.from_now
+  # end
+  # def session_expires
+  #  @time_left = (session[:expires_at] - Time.now).to_i
+  #  unless @time_left > 0
+  #    reset_session
+  #    flash[:error] = 'Lorem Ipsum.'
+  #    redirect_to :controller => 'foo', :action => 'bar'
+  #  end
+  # end
+
+
   def require_login
     redirect_to new_user_path, flash: { error: "Merchant login required" } unless session[:user_id]
   end
