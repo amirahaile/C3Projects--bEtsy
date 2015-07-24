@@ -42,8 +42,7 @@ class OrdersController < ApplicationController
       session[:order_id] = nil # emptying the cart after confirming order
       redirect_to order_confirmation_path(@order)
     else
-      redirect_to :back rescue redirect_to order_path(@order)
-      flash.now[:error] = "#{@order_item.product} only has #{@order_item.quantity} item in stock."
+      redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item in stock."
     end
   end
 

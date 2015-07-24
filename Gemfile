@@ -27,6 +27,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'bootstrap-sass', '~> 3.3.5'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
@@ -48,6 +49,8 @@ group :development, :test do
 
   gem 'simplecov', require: false
   gem 'rspec-rails', '~> 3.0'
+
+  gem 'traceroute'
 
   gem 'pry'
 end
