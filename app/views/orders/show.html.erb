@@ -1,10 +1,11 @@
-<h3>Order Status: <%= @order.status.upcase %></h3>
+<h4>Order Status: <%= @order.status.capitalize %></h4>
 <table class="table">
   <tr>
     <th>Name</th>
     <th>Price</th>
     <th>Qty</th>
     <th>Total</th>
+    <th></th>
   </tr>
 
   <% @order_items.each do |item| %>
@@ -16,11 +17,11 @@
         <td> <%= number_to_currency(product.price) %> </td>
         <td>
           <% if @order.status == "pending" %>
-            <%= button_to '-', options = { controller: 'order_items', action: "qty_decrease", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+            <%= button_to '-', options = { controller: 'order_items', action: "qty_decrease", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline display-inline" } %>
           <% end %>
           <%= item.quantity %>
           <% if @order.status == "pending" %>
-            <%= button_to "+", options = { controller: 'order_items', action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline" } %>
+            <%= button_to "+", options = { controller: 'order_items', action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline display-inline" } %>
           <% end %>
         </td>
 
