@@ -8,10 +8,14 @@ class OrdersController < ApplicationController
   def index; end
 
   def show
-    if @cart_quantity > 0
-      @order_items = @order.order_items
+    if session[:order_id] == @order.id
+      if @cart_quantity > 0
+        @order_items = @order.order_items
+      else
+        render :index
+      end
     else
-      render :index
+      redirect_to root_path
     end
   end
 
@@ -39,7 +43,7 @@ class OrdersController < ApplicationController
       @order.ccv = params[:order][:ccv]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
-      @order.save! # move and account for whether the order is cancelled?
+      @order.save!
       redirect_to order_confirmation_path(@order)
     else
       redirect_to :back rescue redirect_to order_path(@order)
@@ -48,6 +52,7 @@ class OrdersController < ApplicationController
   end
 
   def confirmation
+    session[:order_id] = nil # clears cart
     @purchase_time = Time.now
     @order_items = @order.order_items
   end
