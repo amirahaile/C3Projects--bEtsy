@@ -4,36 +4,37 @@
 			<a class="navbar-brand" href="/">CosMade</a>
 		</div>
 
-		<div class="col-sm-6 float-right">
+		<div class="float-right col-sm-6 navbar-actions">
+			<div class="shopping-cart float-right col-sm-1">
+				<%= link_to(@order.nil? ? orders_path : order_path(@order), options = { id: session[:order_id] }, html_options = { class: "btn btn-default" }) do %>
+					<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+					<span class="badge"> <%= @cart_quantity %> </span>
+				<% end %>
+			</div>
       <% if session[:user_id].nil? %>
 				<!-- sign in form -->
-				<%= form_for(:session, url: login_path)  do |f| %>
-					<div class="form-group col-sm-4">
-						<%= f.label :username %>
-						<%= f.text_field :username, class: "form-control" %>
+				<%= form_for(:session, url: login_path, html: {class: 'form-inline col-sm-8'}) do |f| %>
+					<div class="form-group col-sm-5">
+						<%= f.label :username, class: 'sr-only' %>
+						<%= f.text_field :username, class: 'form-control', placeholder: 'Username', style: 'width: 120%' %>
 					</div>
 
-					<div class="form-group col-sm-4">
-							<%= f.label :password %>
-							<%= f.password_field :password, class: "form-control"  %>
+					<div class="form-group col-sm-5">
+							<%= f.label :password, class: 'sr-only' %>
+							<%= f.password_field :password, class: 'form-control', placeholder: 'Password', style: 'width: 100%'  %>
 					</div>
 
-					<%= f.submit "Log In", class: "btn btn-primary col-sm-2 login" %>
+					<%= f.submit "Log In", class: "btn btn-primary col-sm-2" %>
 				<% end %>
 
 				<!-- register button -->
-        <%= link_to "Register", new_user_path, class: 'btn btn-primary' %>
+					<%= link_to "Register", new_user_path, class: 'btn btn-success col-sm-2 btn-register' %>
 
 			<% else %>
 				Hello, <%= link_to @user.username, user_path(session[:user_id]) %>!
-
-					<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-default' %>
-				<% end %>
-				<% end %>
-      <%= link_to(@order.nil? ? orders_path : order_path(@order), options = { id: session[:order_id] }, html_options = { class: "btn btn-default" }) do %>
-        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-        <span class="badge"> <%= @cart_quantity %> </span>
-      <% end %>
+				<!-- logout button -->
+				<%= link_to "Log Out", logout_path, method: :delete, class: 'btn btn-default logout' %>
+			<% end %>
 		</div>
 	</div>
 </nav>
