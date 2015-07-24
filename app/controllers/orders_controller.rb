@@ -24,6 +24,19 @@ class OrdersController < ApplicationController
 
   # same as :show; any way to conslidate?
   def payment
+    # Guard: Throws flash errors if buyer clicks checkout while items in cart
+    # have a greater requested qty than the listed product inventory in database.
+    @order.order_items.each do |item|
+      product = Product.find(item.product_id)
+      if product.inventory < item.quantity
+        flash[item.product.name] = "#{item.product.name} only has #{item.product.inventory} item(s) in stock."
+      end
+    end
+    unless flash.empty?
+      redirect_to order_path(@order)
+    end
+    # End of Guard
+
     @order_items = @order.order_items
     @user = User.find(session[:user_id]) if session[:user_id]
   end
