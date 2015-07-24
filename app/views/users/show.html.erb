@@ -134,9 +134,11 @@
 				<% end %>
 		</table>
 
-	<% else %>
-				<h4 class="no_orders">You don't have any orders. Sorry.</h4>
-	<% end %>
+		<%= link_to "All Orders", users_orders_path %>
 
-	<span class="text-center"><%= link_to "All Orders", users_orders_path %></span>
+	<% else %>
+		<tr>
+			<h1 class="text-center"><small>You don't have any orders yet, sorry. :(</small></h1>
+		</tr>
+	<% end %>
 </div>
