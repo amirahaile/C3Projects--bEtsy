@@ -1,9 +1,6 @@
 <% subtotal = 0 %>
-<!-- need '@order_items.first' because '@order_items is an
-ActiveRecord::Associations' object -->
-<!-- <% order = Order.find(@order_items.first.order_id) %> -->
 
-<h4>Order Placed: <%= @purchase_time.strftime("%b %e, %Y") %></h4>
+<h4>Order Placed: <%= @purchase_time.strftime("%b %e, %Y at %l:%M %p") %></h4>
 <h4>Order Status: <%= @order.status.capitalize %></h4>
 
 <table class="table">
@@ -14,7 +11,7 @@ ActiveRecord::Associations' object -->
     <th>Email</th>
     <th>Mailing Address</th>
     <th>Credit Card</th>
-    <th>CC Expiration</th>
+    <th>Expires</th>
     <th>CCV Code</th>
     <!-- security code! -->
   </tr>
@@ -23,7 +20,7 @@ ActiveRecord::Associations' object -->
     <td><%= @order.email %></td>
     <td><%= @order.address1 %></td>
     <td>XXXX-XXXX-<%= @order.card_last_4 %></td>
-    <td><%= @order.card_exp %></td>
+    <td><%= @order.card_exp.strftime("%m/%y") %></td>
     <td><%= @order.ccv %></td>
   </tr>
   <% end %>
