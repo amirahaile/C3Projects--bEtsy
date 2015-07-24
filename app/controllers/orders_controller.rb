@@ -8,10 +8,14 @@ class OrdersController < ApplicationController
   def index; end
 
   def show
-    if @cart_quantity > 0
-      @order_items = @order.order_items
+    if session[:order_id] == @order.id
+      if @cart_quantity > 0
+        @order_items = @order.order_items
+      else
+        render :index
+      end
     else
-      render :index
+      redirect_to root_path
     end
   end
 
@@ -49,6 +53,7 @@ class OrdersController < ApplicationController
   end
 
   def confirmation
+    session[:order_id] = nil # clears cart
     @purchase_time = Time.now
     @order_items = @order.order_items
   end
