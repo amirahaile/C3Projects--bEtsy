@@ -43,7 +43,7 @@ class OrdersController < ApplicationController
 
   def update
     # check for appropriate amount of inventory before accepting payment
-    update_inventory(@order)
+    check_inventory(@order)
 
     if @enough_inventory
       @order.email = params[:order][:email]
@@ -57,6 +57,7 @@ class OrdersController < ApplicationController
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
       if @order.save # move and account for whether the order is cancelled?
+        update_inventory(@order)
         session[:order_id] = nil # emptying the cart after confirming order
         redirect_to order_confirmation_path(@order)
       else
@@ -106,18 +107,23 @@ class OrdersController < ApplicationController
     Order
   end # USED FOR RSPEC SHARED EXAMPLES
 
-  def update_inventory(order)
+  def check_inventory(order)
+    @enough_inventory = true
     order.order_items.each do |order_item|
       product = Product.find(order_item.product_id)
-      @enough_inventory = true
 
-      if product.inventory >= order_item.quantity
-        product.inventory -= order_item.quantity
-        product.save
-      else
+      if product.inventory < order_item.quantity
         @enough_inventory = false
         @order_item = order_item
       end
+    end
+  end
+
+  def update_inventory(order)
+    order.order_items.each do |order_item|
+      product = Product.find(order_item.product_id)
+      product.inventory -= order_item.quantity
+      product.save
     end
   end
 end
