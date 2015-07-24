@@ -58,6 +58,28 @@ RSpec.describe OrdersController, type: :controller do
     end
   end
 
+  # I worked on this for a long time and didn't get it figured out. :( -SM
+  # describe "PUT update/:id" do
+  #   before :each do
+  #     @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zipcode: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
+  #     @thing = OrderItem.create!(quantity: 2, order_id: 2, product_id: 1)
+  #     @order.order_items << @thing
+  #
+  #     put :update, id: @order.id, :order => { email: "mymail@mail.com", city: "Seattle" }
+  #     @order.reload
+  #   end
+  #
+  #   it "updates the order record" do
+  #     expect(response).to redirect_to(@order)
+  #
+  #     expect(@order.email).to eq("mymail@mail.com")
+  #   end
+  #
+  #   it "redirects to the order show page" do
+  #     expect(subject).to redirect_to order_path(@order)
+  #   end
+  # end
+
   # describe "order status" do
   #   it "changes from 'pending' to 'paid' after payment info is input" do
   #     put :update, id: @order.id
