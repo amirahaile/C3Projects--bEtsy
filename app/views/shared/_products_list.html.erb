@@ -4,7 +4,7 @@
 
       <div class="product-card">
         <%= link_to(product_path(item)) do %>
-          <%= image_tag(item.photo_url, alt: "Image of #{item.name}", height: 200, class: "center-block" ) %>
+          <%= image-url(item.photo_url, alt: "Image of #{item.name}", height: 200, class: "center-block" ) %>
         <% end %>
 
         <div class="product-card-details">
