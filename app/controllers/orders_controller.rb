@@ -43,11 +43,14 @@ class OrdersController < ApplicationController
       @order.ccv = params[:order][:ccv]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
-      @order.save! # move and account for whether the order is cancelled?
-      session[:order_id] = nil # emptying the cart after confirming order
-      redirect_to order_confirmation_path(@order)
+      if @order.save # move and account for whether the order is cancelled?
+        session[:order_id] = nil # emptying the cart after confirming order
+        redirect_to order_confirmation_path(@order)
+      else
+        render :payment
+      end
     else
-      redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item in stock."
+      redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
     end
   end
 
