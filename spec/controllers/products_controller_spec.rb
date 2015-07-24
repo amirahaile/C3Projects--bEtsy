@@ -27,20 +27,6 @@ RSpec.describe ProductsController, type: :controller do
       invalid: { user: { username: "" } }
     }
   end
-  # let(:valid_params) do
-  #   {
-  #     product: {
-  #       name: "A product",
-  #       price: 20.95,
-  #       photo_url: "a_photo.jpg",
-  #       inventory: 4,
-  #       user_id: 1
-  #     }
-  #   }
-  # end
-  let(:invalid_params) do
-    { product: { name: "" } }
-  end
 
   describe "delete product" do
     it_behaves_like "controller destroy action"
