@@ -3,17 +3,7 @@ require 'rails_helper'
 RSpec.describe ProductsController, type: :controller do
   it_behaves_like "index show controller"
   it_behaves_like "a basic new-create controller"
-  let(:params) do
-    {
-      product: {
-        name: "A product",
-        price: 20.95,
-        photo_url: "a_photo.jpg",
-        inventory: 4,
-        user_id: 1
-      }
-    }
-  end
+
   let(:params) do # Ugliest params ever...
     {
       product: {
@@ -34,7 +24,7 @@ RSpec.describe ProductsController, type: :controller do
       },
       invalid: { user: { username: "" } }
     }
-
+  end
   # let(:valid_params) do
   #   {
   #     product: {
@@ -62,8 +52,41 @@ RSpec.describe ProductsController, type: :controller do
       }
       end
 
+    let(:session_key) { :user_id }
+
     before :each do
+      @path_hash = { id: params[:user_id] }
       @path = my_user_products_path(params[:user_id])
+    end
+  end
+
+  describe "PUT update/:id" do
+    let(:params) do
+      {  name: "A product",
+        price: 20.95,
+        photo_url: "a_photo.jpg",
+        inventory: 4,
+        user_id: 1
+      }
+    end
+
+    before :each do
+      @product = Product.create(params)
+      @user = User.create(username: "user", email: "email@email.com", password: "heloo", password_confirmation: "heloo")
+      session[:user_id] = 1
+
+      put :update, user_id: params[:user_id], id: 1, :product => { name: "New Name", price: 25.95, inventory: 8 }
+      @product.reload
+    end
+
+    it "updates the product record" do
+      expect(response).to redirect_to(@product)
+
+      expect(@product.name).to eq("New Name")
+    end
+
+    it "redirects to the product show page" do
+      expect(subject).to redirect_to product_path(@product)
     end
   end
 
@@ -144,9 +167,5 @@ RSpec.describe ProductsController, type: :controller do
       expect(products.count).to eq 2
     end
   end
-
-  describe "GET #merchant" do
-  end
-
 
 end

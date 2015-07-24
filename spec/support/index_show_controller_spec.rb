@@ -19,7 +19,10 @@ RSpec.shared_examples "index show controller" do
 
   describe "GET #show" do
     before :each do
+      # described_class returns the OrdersController
+      # model returns Order so that it reads "Order.create()"
       @object = described_class.model.create(params.values.first.values.first)
+      # creates signed in user for shared specs
       User.create!(
         username: "Test",
         email: "test@test.com",

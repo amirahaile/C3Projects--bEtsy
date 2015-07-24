@@ -35,14 +35,14 @@ RSpec.shared_examples "a basic new-create controller" do
   describe "#create" do
 
     context "valid #{described_class.model} params" do
-      it "creates a review" do
+      it "creates a #{described_class.model}" do
         post :create, params[:valid]
         expect(described_class.model.count).to eq 1
       end
     end
 
     context "invalid #{described_class.model} params" do
-      it "does not create a review" do
+      it "does not create a #{described_class.model}" do
         post :create, params[:invalid]
         expect(described_class.model.count).to eq 0
       end

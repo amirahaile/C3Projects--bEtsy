@@ -24,13 +24,26 @@ class OrdersController < ApplicationController
 
   # same as :show; any way to conslidate?
   def payment
+    # Guard: Throws flash errors if buyer clicks checkout while items in cart
+    # have a greater requested qty than the listed product inventory in database.
+    @order.order_items.each do |item|
+      product = Product.find(item.product_id)
+      if product.inventory < item.quantity
+        flash[item.product.name] = "#{item.product.name} only has #{item.product.inventory} item(s) in stock."
+      end
+    end
+    unless flash.empty?
+      redirect_to order_path(@order)
+    end
+    # End of Guard
+
     @order_items = @order.order_items
     @user = User.find(session[:user_id]) if session[:user_id]
   end
 
   def update
     # check for appropriate amount of inventory before accepting payment
-    update_inventory(@order)
+    check_inventory(@order)
 
     if @enough_inventory
       @order.email = params[:order][:email]
@@ -40,15 +53,18 @@ class OrdersController < ApplicationController
       @order.state = params[:order][:state]
       @order.zipcode = params[:order][:zipcode]
       @order.card_last_4 = params[:order][:card_number][-4, 4]
-      @order.ccv = params[:order][:ccv]
+      # @order.ccv = params[:order][:ccv]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
-      @order.save! # move and account for whether the order is cancelled?
-      session[:order_id] = nil # emptying the cart after confirming order
-      redirect_to order_confirmation_path(@order)
+      if @order.save # move and account for whether the order is cancelled?
+        update_inventory(@order)
+        session[:order_id] = nil # emptying the cart after confirming order
+        redirect_to order_confirmation_path(@order)
+      else
+        render :payment
+      end
     else
-      redirect_to :back rescue redirect_to order_path(@order)
-      flash.now[:error] = "#{@order_item.product} only has #{@order_item.quantity} item in stock."
+      redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
     end
   end
 
@@ -70,16 +86,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  # def shipped_item
-  #   @shipped_items = []
-  #   @shipped = @order.order_items.find_by(product_id: :product_id)
-  #   @shipped_items << @shipped
-  #   return @shipped_items
-  # end
-
   def completed
-    # if @order.order_items.count == @shipped_items.count
-
       @order.status = "complete"
       @order.save!
     redirect_to user_path(@user), notice: "You've shipped and completed order ##{@order.id}!"
@@ -91,18 +98,23 @@ class OrdersController < ApplicationController
     Order
   end # USED FOR RSPEC SHARED EXAMPLES
 
-  def update_inventory(order)
+  def check_inventory(order)
+    @enough_inventory = true
     order.order_items.each do |order_item|
       product = Product.find(order_item.product_id)
-      @enough_inventory = true
 
-      if product.inventory >= order_item.quantity
-        product.inventory -= order_item.quantity
-        product.save
-      else
+      if product.inventory < order_item.quantity
         @enough_inventory = false
         @order_item = order_item
       end
+    end
+  end
+
+  def update_inventory(order)
+    order.order_items.each do |order_item|
+      product = Product.find(order_item.product_id)
+      product.inventory -= order_item.quantity
+      product.save
     end
   end
 end

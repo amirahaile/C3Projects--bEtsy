@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   def sorted_orders # variables shared by :show & :index
     # associations
     product_ids = User.product_ids_from_user(@user)
-    @order_items = User.order_items_from_products(product_ids)
+    @order_items = User.order_items_from_products(product_ids).nil? ? [] : User.order_items_from_products(product_ids)
     @orders = User.orders_from_order_items(@order_items)
     # needed for a count of orders based on status
     # an array of Order objects

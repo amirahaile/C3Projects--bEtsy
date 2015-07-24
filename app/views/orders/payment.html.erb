@@ -2,51 +2,44 @@
 <!-- so the method should be put, right? Not the default 'post'… -->
 <%= form_for(@order, method: :put) do |f| %>
   <div class="form-group">
-  <%= f.label :email %>
-  <%= f.text_field :email %>
-  </div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <p class="text-field-error"><%= order_error_check_for(:name) %></p>
 
-  <div class="form-group">
-  <%= f.label :address1 %>
-  <%= f.text_field :address1 %>
-  </div>
+    <%= f.label :email %>
+    <%= f.text_field :email, class: "form-control" %>
+    <p class="text-field-error"><%= order_error_check_for(:email) %></p>
 
-  <div class="form-group">
-  <%= f.label :address2 %>
-  <%= f.text_field :address2 %>
-  </div>
+    <%= f.label :address1 %>
+    <%= f.text_field :address1, class: "form-control" %>
+    <p class="text-field-error"><%= order_error_check_for(:address1) %></p>
 
-  <div class="form-group">
-  <%= f.label :city %>
-  <%= f.text_field :city %>
-  </div>
+    <%= f.label :address2 %>
+    <%= f.text_field :address2, class: "form-control" %>
+    <p class="text-field-error"><%= order_error_check_for(:address2) %></p>
 
-  <div class="form-group">
-  <%= f.label :state %>
-  <%= f.text_field :state %>
-  </div>
+    <%= f.label :city %>
+    <%= f.text_field :city, class: "form-control" %>
+    <p class="text-field-error"><%= order_error_check_for(:city) %></p>
 
-  <div class="form-group">
-  <%= f.label :zipcode %>
-  <%= f.text_field :zipcode %>
-  </div>
+    <%= f.label :state %>
+    <%= f.text_field :state, class: "form-control" %>
+    <p class="text-field-error"><%= order_error_check_for(:state) %></p>
 
-  <!-- WIP -->
-  <!-- :name_on_card -->
+    <%= f.label :zipcode %>
+    <%= f.text_field :zipcode, class: "form-control" %>
+    <p class="text-field-error"><%= order_error_check_for(:zipcode) %></p>
 
-  <div class="form-group">
-  <%= f.label :card_number %>
-  <%= f.text_field :card_number %>
-  </div>
+    <%= f.label :card_number %>
+    <%= f.text_field :card_number, class: "form-control" %>
+    <p class="text-field-error"><%= order_error_check_for(:card_number) %></p>
 
-  <div class="form-group">
-    <%= f.label :ccv, class: 'text-uppercase' %>
-    <%= f.text_field :ccv %>
-  </div>
+    <label for="cvv">CVV</label>:
+    <input id="cvv" name="cvv" type="text" /><br />
 
-  <div class="form-group">
-  <%= f.label :card_exp %>
-  <%= f.text_field :card_exp %>
+    <%= f.label :card_exp %>
+    <%= f.text_field :card_exp, class: "form-control" %>
+    <p class="text-field-error"><%= order_error_check_for(:card_exp) %></p>
   </div>
 
   <%= f.submit "Submit Order", class: 'btn btn-primary' %>
