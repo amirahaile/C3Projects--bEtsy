@@ -4,16 +4,18 @@ RSpec.describe OrdersController, type: :controller do
   it_behaves_like "index show controller"
   let(:params) do
     {
-      order: {
-        email: "test@test.com",
-        address1: "1 Test",
-        address2: "Apt Test",
-        city: "Testcity",
-        state: "WA",
-        zipcode: "55555",
-        card_number: "123456789988",
-        card_last_4: "6789",
-        card_exp: Time.now
+      valid: {
+        order: {
+          email: "test@test.com",
+          address1: "1 Test",
+          address2: "Apt Test",
+          city: "Testcity",
+          state: "WA",
+          zipcode: "55555",
+          card_number: "123456789988",
+          card_last_4: "6789",
+          card_exp: Time.now
+        }
       }
     }
   end
@@ -92,4 +94,17 @@ RSpec.describe OrdersController, type: :controller do
   #     expect(response).to redirect_to(order_confirmation_path(@order))
   #   end
   # end
+
+  describe "order status" do
+    it "changes from 'pending' to 'paid' after payment info is input" do
+      put :update, id: @order.id
+      @order.reload
+      expect(@order.status).to eq("paid")
+    end
+
+    it "redirects to the home page after confirmation" do
+      post :update, id: @order.id
+      expect(response).to redirect_to(order_confirmation_path(@order))
+    end
+  end
 end

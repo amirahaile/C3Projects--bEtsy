@@ -2,6 +2,10 @@
 <!-- so the method should be put, right? Not the default 'post'… -->
 <%= form_for(@order, method: :put) do |f| %>
   <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <p class="text-field-error"><%= order_error_check_for(:name) %></p>
+
     <%= f.label :email %>
     <%= f.text_field :email, class: "form-control" %>
     <p class="text-field-error"><%= order_error_check_for(:email) %></p>
@@ -26,16 +30,12 @@
     <%= f.text_field :zipcode, class: "form-control" %>
     <p class="text-field-error"><%= order_error_check_for(:zipcode) %></p>
 
-    <!-- WIP -->
-    <!-- :name_on_card -->
-
     <%= f.label :card_number %>
     <%= f.text_field :card_number, class: "form-control" %>
     <p class="text-field-error"><%= order_error_check_for(:card_number) %></p>
 
-    <%= f.label :ccv, class: 'text-uppercase' %>
-    <%= f.text_field :ccv, class: "form-control" %>
-    <p class="text-field-error"><%= order_error_check_for(:ccv) %></p>
+    <label for="cvv">CVV</label>:
+    <input id="cvv" name="cvv" type="text" /><br />
 
     <%= f.label :card_exp %>
     <%= f.text_field :card_exp, class: "form-control" %>

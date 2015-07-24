@@ -53,7 +53,7 @@ class OrdersController < ApplicationController
       @order.state = params[:order][:state]
       @order.zipcode = params[:order][:zipcode]
       @order.card_last_4 = params[:order][:card_number][-4, 4]
-      @order.ccv = params[:order][:ccv]
+      # @order.ccv = params[:order][:ccv]
       @order.card_exp = params[:order][:card_exp]
       @order.status = "paid"
       if @order.save # move and account for whether the order is cancelled?
@@ -86,16 +86,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  # def shipped_item
-  #   @shipped_items = []
-  #   @shipped = @order.order_items.find_by(product_id: :product_id)
-  #   @shipped_items << @shipped
-  #   return @shipped_items
-  # end
-
   def completed
-    # if @order.order_items.count == @shipped_items.count
-
       @order.status = "complete"
       @order.save!
     redirect_to user_path(@user), notice: "You've shipped and completed order ##{@order.id}!"

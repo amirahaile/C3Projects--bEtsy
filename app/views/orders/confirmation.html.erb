@@ -11,8 +11,6 @@
     <th>Mailing Address</th>
     <th>Credit Card</th>
     <th>Expires</th>
-    <th>CCV Code</th>
-    <!-- security code! -->
   </tr>
   <tr>
     <td><%= @order.name.upcase %></td>
@@ -20,7 +18,6 @@
     <td><%= @order.address1 %></td>
     <td>XXXX-XXXX-<%= @order.card_last_4 %></td>
     <td><%= @order.card_exp.strftime("%m/%y") %></td>
-    <td><%= @order.ccv %></td>
   </tr>
   <% end %>
 </table>

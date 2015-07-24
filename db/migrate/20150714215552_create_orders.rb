@@ -7,7 +7,6 @@ class CreateOrders < ActiveRecord::Migration
       t.string :city
       t.string :state
       t.string :zipcode
-      t.string :name_on_card
       t.string :card_number
       t.string :card_last_4
       t.datetime :card_exp
