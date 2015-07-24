@@ -93,7 +93,8 @@
 		<%= link_to "All Products", my_user_products_path(@user) %>
 
 	<% else %>
-		<h1 class="text-center"><small>You don't have any products. Make some!</small></h1>
+		<h1 class="text-center"><small>You haven't sold any products!</small></h1>
+		<%= link_to "All Products", my_user_products_path(@user) %>
 	<% end %>
 		<%= button_to "Add Product", new_user_product_path(@user), method: :get, class: 'btn btn-primary float-right' %>
 </div>
