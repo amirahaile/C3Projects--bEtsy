@@ -1,9 +1,10 @@
 <!-- this information is updating an existing Order -->
 <!-- so the method should be put, right? Not the default 'post'… -->
-<%= form_for(@order, method: :put) do |f| %>
+<div class="payment-form">
+<%= form_for(@order, method: :put, html: { class: 'col-sm-4' }) do |f| %>
   <div class="form-group">
     <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, class:"form-control"%>
     <p class="text-field-error"><%= order_error_check_for(:name) %></p>
 
     <%= f.label :email %>
@@ -35,7 +36,7 @@
     <p class="text-field-error"><%= order_error_check_for(:card_number) %></p>
 
     <label for="cvv">CVV</label>:
-    <input id="cvv" name="cvv" type="text" /><br />
+    <input id="cvv" name="cvv" type="text" class="form-control" /><br />
 
     <%= f.label :card_exp %>
     <%= f.text_field :card_exp, class: "form-control" %>
@@ -45,3 +46,4 @@
   <%= f.submit "Submit Order", class: 'btn btn-primary' %>
 
   <% end %>
+</div>
