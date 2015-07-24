@@ -36,7 +36,7 @@ class UsersController < ApplicationController
     @paid_revenue = User.orders_items_from_order(@paid_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@paid_orders, @user))
     @completed_revenue = User.orders_items_from_order(@completed_orders, @user).nil? ? 0 : revenue(User.orders_items_from_order(@completed_orders, @user))
 
-    @products = Product.top_5(@user.products.to_a)
+    @products = Product.top_5(@order_items) if !@order_items.empty?
     @latest_orders = Order.latest_5(@orders)
   end
 
