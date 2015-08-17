@@ -1,4 +1,4 @@
-### Team Malenkiy https://shopbitsy.herokuapp.com/
+### Amira & Michelle -- Team Malenkiy https://shopbitsy.herokuapp.com/
 - Team members are:
   - Brittany W
   - Elia G
