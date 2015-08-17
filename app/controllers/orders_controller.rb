@@ -12,10 +12,10 @@ class OrdersController < ApplicationController
       if @cart_quantity > 0
         @order_items = @order.order_items
       else
-        render :index
+        render :index # there is session[:order_id], but no items in cart
       end
     else
-      redirect_to root_path
+      redirect_to root_path # no session[:order_id]
     end
   end
 
