@@ -24,7 +24,15 @@ class OrdersController < ApplicationController
     render :show
   end
 
-  def index
+  def quotes
+    render :shipping_quotes
+  end
+
+  def quotes=
+    redirect_to buyer_confirmation_path(@buyer.order_id)
+  end
+
+  def index # merchant
     @all_items = @merchant.order_items
 
     @pend = @all_items.where(status: "pending")
@@ -36,7 +44,7 @@ class OrdersController < ApplicationController
     @ship_total = @all_items.where(status: "complete").pluck(:total_price)
   end
 
-  def show
+  def show # shopping cart
     @order_items = current_order.order_items
     @order = Order.find(session[:order_id])
     @total = @order.subtotal

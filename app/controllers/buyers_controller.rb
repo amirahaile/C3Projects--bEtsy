@@ -38,7 +38,7 @@ class BuyersController < ApplicationController
     @buyer.shipping_zip     = shipping_info[:shipping_zip]
     @buyer.save(:validate => false)
 
-    redirect_to buyer_confirmation_path(@buyer.order_id)
+    redirect_to shipping_quotes_path(@buyer.order_id)
   end
 
   def confirmation

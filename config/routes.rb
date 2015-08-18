@@ -45,8 +45,12 @@ Rails.application.routes.draw do
   get  '/checkout' => 'buyers#new'
   post '/checkout' => 'buyers#create'
 
-  get  '/checkout/:id/shipping_info' => 'buyers#edit', as: 'shipping_info'
+  # checkout - shipping info
+  get   '/checkout/:id/shipping_info' => 'buyers#edit', as: 'shipping_info'
   patch '/checkout/:id/shipping_info' => 'buyers#update'
+  # checkout - shipping quotes
+  get '/checkout/:id/quotes' => 'orders#quotes', as: 'shipping_quotes'
+  put '/checkout/:id/quotes' => 'orders#quotes='
 
   get '/confirmation/:order_id' =>'buyers#confirmation', as: 'buyer_confirmation'
 
