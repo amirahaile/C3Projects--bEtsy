@@ -18,7 +18,8 @@ class BuyersController < ApplicationController
     end
   end
 
-  def edit
+  def edit # adds shipping info to @buyer
+    # NOTE: Kind of screws you over if you wanted to add edit functionality for a buyer's profile/info.
     @buyer = Buyer.find(params[:id])
     render :shipping
   end
@@ -30,6 +31,7 @@ class BuyersController < ApplicationController
     # The credit card is reduced to 4 digits after it's validated
     # during the first save of @buyer. Thus, we need to skip any
     # validations here, because they'd always fail the CC length.
+    # NOTE: Should CC validation change to allow for shipping info to be validated?
     @buyer.shipping_address = shipping_info[:shipping_address]
     @buyer.shipping_city    = shipping_info[:shipping_city]
     @buyer.shipping_state   = shipping_info[:shipping_state]
