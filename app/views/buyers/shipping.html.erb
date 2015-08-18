@@ -7,8 +7,7 @@
   <div class = "col-md-4 col-md-offset-4">
     <!-- in form_for :buyer, telling us below are in the params[:session] hash -->
     <!-- url for the POST url after they click submit -->
-    <!-- NOTE URL! -->
-    <%= form_for @buyer, url: checkout_path do |f| %>
+    <%= form_for @buyer, url: shipping_info_path do |f| %>
       <%= render partial: "shared/error_messages", locals: { data_type: @buyer } %>
 
       <div class="form-group">
