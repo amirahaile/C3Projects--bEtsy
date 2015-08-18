@@ -61,6 +61,8 @@ group :development, :test do
   gem 'simplecov', require: false
   gem "factory_girl_rails", '~> 4.0'
 
+  # ERD Diagram
+  gem 'rails-erd', '~> 1.4.2'
 end
 
 group :production do
