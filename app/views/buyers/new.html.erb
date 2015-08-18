@@ -20,23 +20,23 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :address, class:"required" %>
-        <%= f.text_field :address, class: "form-control" %>
+        <%= f.label :billing_address, "Address", class:"required" %>
+        <%= f.text_field :billing_address, class: "form-control" %>
       </div>
 
       <div class="form-group">
-        <%= f.label :city, class:"required" %>
-        <%= f.text_field :city, class: "form-control" %>
+        <%= f.label :billing_city, "City", class:"required" %>
+        <%= f.text_field :billing_city, class: "form-control" %>
       </div>
 
       <div class="form-group">
-        <%= f.label :state, class:"required" %>
-        <%= f.select :state, us_states, include_blank: "--Select a State--", class: "form-control" %>
+        <%= f.label :billing_state, "State", class:"required" %>
+        <%= f.select :billing_state, us_states, include_blank: "--Select a State--", class: "form-control" %>
       </div>
 
       <div class="form-group">
-        <%= f.label :zip, "Zip Code", class:"required" %>
-        <%= f.text_field :zip, class: "form-control" %>
+        <%= f.label :billing_zip, "Zip Code", class:"required" %>
+        <%= f.text_field :billing_zip, class: "form-control" %>
       </div>
 
 

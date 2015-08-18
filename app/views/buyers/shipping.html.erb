@@ -1,0 +1,39 @@
+<div class="row no-jumbo form-header">
+  <div class = "col-md-4 col-md-offset-4">
+      <h1>Shipping Information</h1>
+  </div>
+</div>
+<div class="row">
+  <div class = "col-md-4 col-md-offset-4">
+    <!-- in form_for :buyer, telling us below are in the params[:session] hash -->
+    <!-- url for the POST url after they click submit -->
+    <!-- NOTE URL! -->
+    <%= form_for @buyer, url: checkout_path do |f| %>
+      <%= render partial: "shared/error_messages", locals: { data_type: @buyer } %>
+
+      <div class="form-group">
+        <%= f.label :shipping_address, "Address", class:"required" %>
+        <%= f.text_field :shipping_address, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :shipping_city, "City", class:"required" %>
+        <%= f.text_field :shipping_city, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :shipping_state, "State", class:"required" %>
+        <%= f.select :shipping_state, us_states, include_blank: "--Select a State--", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :shipping_zip, "Zip Code", class:"required" %>
+        <%= f.text_field :shipping_zip, class: "form-control" %>
+      </div>
+
+      <%= f.hidden_field :order_id, value: session[:order_id] %>
+
+      <%= f.submit "Continue", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
