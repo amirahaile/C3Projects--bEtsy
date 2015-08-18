@@ -20,7 +20,7 @@ class BuyersController < ApplicationController
 
   def confirmation
     @order = Order.find(session[:order_id])
-    transaction
+    transaction # application helper
   end
 
   private
