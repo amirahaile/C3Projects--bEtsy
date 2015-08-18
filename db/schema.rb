@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818205938) do
+ActiveRecord::Schema.define(version: 20150818234624) do
 
   create_table "buyers", force: :cascade do |t|
     t.string   "name"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20150818205938) do
     t.string   "billing_address"
     t.string   "billing_city"
     t.string   "billing_state"
-    t.integer  "billing_zip"
+    t.string   "billing_zip"
     t.integer  "credit_card",      limit: 8
     t.integer  "cvv"
     t.string   "exp"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20150818205938) do
     t.string   "shipping_address"
     t.string   "shipping_city"
     t.string   "shipping_state"
-    t.integer  "shipping_zip"
+    t.string   "shipping_zip"
   end
 
   add_index "buyers", ["order_id"], name: "index_buyers_on_order_id"
@@ -67,6 +67,9 @@ ActiveRecord::Schema.define(version: 20150818205938) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float    "subtotal"
+    t.string   "shipper"
+    t.integer  "rate"
+    t.string   "service"
   end
 
   create_table "products", force: :cascade do |t|
@@ -79,6 +82,10 @@ ActiveRecord::Schema.define(version: 20150818205938) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.boolean  "retired",    default: false
+    t.float    "weight"
+    t.float    "height"
+    t.float    "length"
+    t.float    "width"
   end
 
   add_index "products", ["user_id"], name: "index_products_on_user_id"
@@ -99,6 +106,10 @@ ActiveRecord::Schema.define(version: 20150818205938) do
     t.string   "password_digest"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
   end
 
 end

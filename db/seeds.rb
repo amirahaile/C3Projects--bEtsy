@@ -8,12 +8,25 @@ CSV.foreach("db/categories.csv", headers: true) do |row|
  end
 
  CSV.foreach("db/users.csv", headers: true) do |row|
+   address = [
+     ['5545 Cooper Street', 'Randolph', 'MA', '02368'],
+     ['7939 Cedar Avenue', 'Chapel Hill', 'NC', '27516'],
+     ['2739 Park Drive', 'Park Forest', 'IL', '60466'],
+     ['8125 Park Avenue', 'Miami Gardens', 'FL', '33056'],
+     ['6140 Edgewood Road', 'Uniondale', 'NY', '11553'],
+     ['430 Glenwood Avenue', 'Berwyn', 'IL', '60402']
+   ].sample
+
 
    User.create(
      name: row[0],
      email: row[1],
      password: row[2],
-     password_confirmation: row[3]
+     password_confirmation: row[3],
+     address: address[0],
+     city: address[1],
+     state: address[2],
+     zip: address[3]
    )
   end
 
@@ -25,7 +38,11 @@ CSV.foreach("db/products.csv", headers: true) do |row|
     desc: row[2],
     stock: row[3],
     photo_url: row[4],
-    user_id: row[5]
+    user_id: row[5],
+    weight: ([1, 2, 5, 3, 2.5, 1.2].sample * 16),
+    height: [1.2, 3, 5.4, 6.2, 2, 4].sample,
+    length: [3, 5.2, 2, 2.1, 3, 5].sample,
+    width: [4, 5, 2.4, 3.2, 4.4].sample
   )
  end
 
