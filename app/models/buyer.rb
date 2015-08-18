@@ -5,19 +5,19 @@ class Buyer < ActiveRecord::Base
   after_validation :convert_to_last_four
 
   # VALIDATIONS ----------------------------------------------------------
-  validates :name,        presence: true
-  validates :email,       presence: true, format: /@/
-  validates :address,     presence: true
-  validates :zip,         presence: true,
-                          numericality: { only_integer: true },
-                          length: { in: 4..5}
-  validates :state,       presence: true,
-                          length: { is: 2 }
-  validates :city,        presence: true
-  validates :exp,         presence: true
-  validates :credit_card, presence: true,
-                          numericality: { only_integer: true },
-                          length: { in: 14..16 }
+  validates :name,                presence: true
+  validates :email,               presence: true, format: /@/
+  validates :billing_address,     presence: true
+  validates :billing_zip,         presence: true,
+                                  numericality: { only_integer: true },
+                                  length: { in: 4..5}
+  validates :billing_state,       presence: true,
+                                  length: { is: 2 }
+  validates :billing_city,        presence: true
+  validates :exp,                 presence: true
+  validates :credit_card,         presence: true,
+                                  numericality: { only_integer: true },
+                                  length: { in: 14..16 }
 
   private
 

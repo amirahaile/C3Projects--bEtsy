@@ -12,10 +12,31 @@ class BuyersController < ApplicationController
   def create
     @buyer = Buyer.new(buyer_params)
     if @buyer.save
-      redirect_to buyer_confirmation_path(@buyer.order_id)
+      redirect_to shipping_info_path(@buyer.id)
     else
       render 'new'
     end
+  end
+
+  def edit
+    @buyer = Buyer.find(params[:id])
+    render :shipping
+  end
+
+  def update
+    @buyer = Buyer.find(params[:id])
+    shipping_info = buyer_params
+
+    # The credit card is reduced to 4 digits after it's validated
+    # during the first save of @buyer. Thus, we need to skip any
+    # validations here, because they'd always fail the CC length.
+    @buyer.shipping_address = shipping_info[:shipping_address]
+    @buyer.shipping_city    = shipping_info[:shipping_city]
+    @buyer.shipping_state   = shipping_info[:shipping_state]
+    @buyer.shipping_zip     = shipping_info[:shipping_zip]
+    @buyer.save(:validate => false)
+
+    redirect_to buyer_confirmation_path(@buyer.order_id)
   end
 
   def confirmation
@@ -26,6 +47,21 @@ class BuyersController < ApplicationController
   private
 
     def buyer_params
-      params.require(:buyer).permit(:name, :email, :address, :city, :state, :zip, :credit_card, :cvv, :exp, :order_id)
+      params.require(:buyer).permit(
+        :name,
+        :email,
+        :billing_address,
+        :billing_city,
+        :billing_state,
+        :billing_zip,
+        :credit_card,
+        :cvv,
+        :exp,
+        :order_id,
+        :shipping_address,
+        :shipping_city,
+        :shipping_state,
+        :shipping_zip
+      )
     end
 end
