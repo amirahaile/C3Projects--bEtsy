@@ -19,9 +19,9 @@ class BuyersController < ApplicationController
   end
 
   def edit # adds shipping info to @buyer
-    # NOTE: Kind of screws you over if you wanted to add edit functionality for a buyer's profile/info.
+    # NOTE: Kind of screws you over if you wanted to add the functionality to edit a buyer's profile/info.
     @buyer = Buyer.find(params[:id])
-    render :shipping
+    render :shipping_info
   end
 
   def update
