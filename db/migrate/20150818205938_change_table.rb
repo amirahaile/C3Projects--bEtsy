@@ -8,6 +8,6 @@ class ChangeTable < ActiveRecord::Migration
     t.string  :shipping_address
     t.string  :shipping_city
     t.string  :shipping_state
-    t.integer :shipping_zip
+    t.string :shipping_zip
   end
 end
