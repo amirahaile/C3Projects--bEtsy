@@ -11,21 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723204312) do
+ActiveRecord::Schema.define(version: 20150818205938) do
 
   create_table "buyers", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
-    t.string   "address"
-    t.string   "city"
-    t.string   "state"
-    t.integer  "zip"
-    t.integer  "credit_card", limit: 8
+    t.string   "billing_address"
+    t.string   "billing_city"
+    t.string   "billing_state"
+    t.integer  "billing_zip"
+    t.integer  "credit_card",      limit: 8
     t.integer  "cvv"
     t.string   "exp"
     t.integer  "order_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "shipping_address"
+    t.string   "shipping_city"
+    t.string   "shipping_state"
+    t.integer  "shipping_zip"
   end
 
   add_index "buyers", ["order_id"], name: "index_buyers_on_order_id"
