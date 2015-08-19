@@ -55,6 +55,9 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
 
+  # Factory girl
+  gem 'factory_girl_rails', '~> 4.0'
+
 end
 
 group :production do
