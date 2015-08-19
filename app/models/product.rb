@@ -22,4 +22,14 @@ class Product < ActiveRecord::Base
   def retire_toggle!
     self.retired ? self.retired = false : self.retired = true
   end
+
+  def for_shipping
+    product = self
+    json = {
+      weight: product[:weight],
+      width:  product[:width],
+      height: product[:height],
+      length: product[:length]
+    }
+  end
 end
