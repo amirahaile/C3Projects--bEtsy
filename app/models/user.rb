@@ -4,10 +4,14 @@ class User < ActiveRecord::Base
   has_many :products
 
 # Validations ------------------------------------------------------------------
+  FIVE_DIGIT_STRING_REGEX = /\A\d{5}\z/
+
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
   validates_format_of :email, with: /\A[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\Z/i #, on: :create
   validates :password, presence: true, confirmation: true
+  validates :country, :state, :city, :zip, presence: true
+  validates_format_of :zip, with: FIVE_DIGIT_STRING_REGEX
 
 # Scopes -----------------------------------------------------------------------
   def self.product_ids_from_user(user)
