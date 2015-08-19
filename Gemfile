@@ -50,7 +50,7 @@ group :development, :test do
 
   gem 'traceroute'
 
-  gem 'pry'
+  gem 'pry-rails'
 
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'

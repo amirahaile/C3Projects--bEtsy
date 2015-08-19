@@ -60,10 +60,9 @@ ActiveRecord::Schema.define(version: 20150819164046) do
     t.integer  "user_id",                                            null: false
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
-    t.float    "weight",                                             null: false
-    t.float    "height",                                             null: false
-    t.float    "width",                                              null: false
-    t.float    "depth"
+    t.float    "weight",                              default: 32.5, null: false
+    t.float    "height",                              default: 4.3,  null: false
+    t.float    "width",                               default: 10.0, null: false
   end
 
   create_table "reviews", force: :cascade do |t|

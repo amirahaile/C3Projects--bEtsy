@@ -11,7 +11,6 @@ class OrdersController < ApplicationController
     if session[:order_id] == @order.id
       if @cart_quantity > 0
         @order_items = @order.order_items
-        raise
       else
         render :index
       end
