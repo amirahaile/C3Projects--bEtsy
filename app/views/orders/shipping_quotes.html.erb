@@ -1,0 +1,7 @@
+<h1>Shipping Quotes</h1>
+
+<%= form_for @order do |f| %>
+<% @ups.each do |service| %>
+<%= f.label :service, "#{service[0]} #{service[1]}" %>
+<%= f.check_box :servce %>
+<%= f.label  %>
