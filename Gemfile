@@ -36,6 +36,9 @@ gem 'bootstrap-sass'
 # bcrypt
 gem 'bcrypt'
 
+# HTTP requests
+gem 'httparty', '~> 0.13.5'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
