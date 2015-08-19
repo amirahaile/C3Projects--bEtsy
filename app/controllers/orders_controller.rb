@@ -29,7 +29,7 @@ class OrdersController < ApplicationController
     buyer = order.buyer
     products = order.order_items.map { |item| item.product }
     merchants = products.map { |product| product.user }
-    responses = []
+    parsed_responses = []
 
     merchants.each do |merchant|
       merchant_products = products.map { |product|  product if product.user_id == merchant.id}
@@ -48,7 +48,7 @@ class OrdersController < ApplicationController
       }
 
       response = HTTParty.post('heroku url', shipping_info)
-      responses << response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+      parsed_responses << response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
     end
 
     # NOTE: how will we separate UPS from USPS, etc. for the view
