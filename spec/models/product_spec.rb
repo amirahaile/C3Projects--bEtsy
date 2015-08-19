@@ -118,16 +118,21 @@ RSpec.describe Product, type: :model do
         )
       end
 
-      it "weight must be a number" do
-        product.valid?
-        expect(product.errors.keys).to_not include :weight_in_gms
+      weight_and_dimensions = [:weight_in_gms, :length_in_cms, :width_in_cms, :height_in_cms]
+
+      weight_and_dimensions.each do |attribute|
+        it "#{attribute} can be a number" do
+          product.valid?
+          expect(product.errors.keys).to_not include attribute
+        end
       end
 
-      # negative test
-      it "weight cannot be alphabetical" do
-        product.weight_in_gms = "hello"
-        product.valid?
-        expect(product.errors.keys).to include :weight_in_gms
+      weight_and_dimensions.each do |attribute|
+        it "#{attribute} cannot be alphabetical" do
+          product[attribute] = "hello"
+          product.valid?
+          expect(product.errors.keys).to include attribute
+        end
       end
     end
 
