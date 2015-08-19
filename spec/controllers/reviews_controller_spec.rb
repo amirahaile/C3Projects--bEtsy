@@ -8,7 +8,11 @@ RSpec.describe ReviewsController, type: :controller do
       price: 20.00,
       photo_url: "a_photo.jpg",
       inventory: 10,
-      user_id: 1
+      user_id: 1,
+      weight_in_gms: 100,
+      length_in_cms: 10,
+      width_in_cms: 5,
+      height_in_cms: 15
     )
   end
 

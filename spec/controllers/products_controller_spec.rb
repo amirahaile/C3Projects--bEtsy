@@ -13,7 +13,11 @@ RSpec.describe ProductsController, type: :controller do
           price: 20.95,
           photo_url: "a_photo.jpg",
           inventory: 4,
-          user_id: 1
+          user_id: 1,
+          weight_in_gms: 100,
+          length_in_cms: 10,
+          width_in_cms: 5,
+          height_in_cms: 15
         }
       },
       create_user: true,
@@ -31,7 +35,11 @@ RSpec.describe ProductsController, type: :controller do
         price: 20.95,
         photo_url: "a_photo.jpg",
         inventory: 4,
-        user_id: 1
+        user_id: 1,
+        weight_in_gms: 100,
+        length_in_cms: 10,
+        width_in_cms: 5,
+        height_in_cms: 15
       }
       end
 
@@ -49,7 +57,11 @@ RSpec.describe ProductsController, type: :controller do
         price: 20.95,
         photo_url: "a_photo.jpg",
         inventory: 4,
-        user_id: 1
+        user_id: 1,
+        weight_in_gms: 100,
+        length_in_cms: 10,
+        width_in_cms: 5,
+        height_in_cms: 15
       }
     end
 
@@ -91,21 +103,33 @@ RSpec.describe ProductsController, type: :controller do
         price: 49.95,
         photo_url: "a_photo.jpg",
         inventory: 7,
-        user_id: 1
+        user_id: 1,
+        weight_in_gms: 100,
+        length_in_cms: 10,
+        width_in_cms: 5,
+        height_in_cms: 15
       )
       Product.create(
         name: "B product - different vendor",
         price: 22.95,
         photo_url: "b_photo.jpg",
         inventory: 71,
-        user_id: 2
+        user_id: 2,
+        weight_in_gms: 100,
+        length_in_cms: 10,
+        width_in_cms: 5,
+        height_in_cms: 15
       )
       Product.create(
         name: "C product",
         price: 30.00,
         photo_url: "c_photo.jpg",
         inventory: 13,
-        user_id: 1
+        user_id: 1,
+        weight_in_gms: 100,
+        length_in_cms: 10,
+        width_in_cms: 5,
+        height_in_cms: 15
       )
       @products = Product.all
     end
@@ -129,7 +153,11 @@ RSpec.describe ProductsController, type: :controller do
         price: 49.95,
         photo_url: "a_photo.jpg",
         inventory: 7,
-        user_id: 1
+        user_id: 1,
+        weight_in_gms: 100,
+        length_in_cms: 10,
+        width_in_cms: 5,
+        height_in_cms: 15
       )
       product_a.categories << cat_a
       product_a.categories << cat_b
@@ -139,7 +167,11 @@ RSpec.describe ProductsController, type: :controller do
         price: 4.95,
         photo_url: "B_photo.jpg",
         inventory: 5,
-        user_id: 2
+        user_id: 2,
+        weight_in_gms: 100,
+        length_in_cms: 10,
+        width_in_cms: 5,
+        height_in_cms: 15
       )
       product_b.categories << cat_a
 
