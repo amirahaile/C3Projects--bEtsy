@@ -78,7 +78,14 @@ RSpec.describe Order, type: :model do
     context "country validation" do
       let(:order) { create :order }
       let(:countryless_order) { create :countryless_order }
-      
+
+      it "requires a country" do
+        order
+        order_without_country = build :order, country: nil
+        expect(Order.count).to eq 1
+        expect(order_without_country).to be_invalid
+      end
+
       it "has a default value of 'US' for country" do
         expect(order.errors.keys).not_to include(:country)
         expect(countryless_order.country).to eq('US')
