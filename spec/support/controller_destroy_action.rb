@@ -7,7 +7,8 @@ RSpec.shared_examples "controller destroy action" do
 
     before :each do
       @object = described_class.model.create(params)
-      @user = User.create(username: "user", email: "email@email.com", password: "heloo", password_confirmation: "heloo")
+      @user = User.create(username: "user", email: "email@email.com", password: "heloo", password_confirmation: "heloo",
+                          city: "Seattle", state: "WA", zip: 98101, country: "US")
       session[session_key] = 1
     end
 

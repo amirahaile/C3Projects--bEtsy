@@ -30,7 +30,11 @@ RSpec.describe ReviewsController, type: :controller do
         username: "Test",
         email: "test@test.com",
         password: "test",
-        password_confirmation: "test"
+        password_confirmation: "test",
+        city: "Seattle",
+        state: "WA",
+        zip: 98101,
+        country: "US"
       )
       get :new, {product_id: 1}
 

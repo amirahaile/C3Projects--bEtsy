@@ -114,7 +114,7 @@ class UsersController < ApplicationController
   end # USED FOR RSPEC SHARED EXAMPLES
 
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :city, :state, :zip, :country)
   end
 
   def nil_flash_errors

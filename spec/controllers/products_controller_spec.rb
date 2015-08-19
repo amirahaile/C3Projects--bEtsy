@@ -67,7 +67,8 @@ RSpec.describe ProductsController, type: :controller do
 
     before :each do
       @product = Product.create(params)
-      @user = User.create(username: "user", email: "email@email.com", password: "heloo", password_confirmation: "heloo")
+      @user = User.create(username: "user", email: "email@email.com", password: "heloo", password_confirmation: "heloo",
+                          city: "Seattle", state: "WA", zip: 98101, country: "US")
       session[:user_id] = 1
 
       put :update, user_id: params[:user_id], id: 1, :product => { name: "New Name", price: 25.95, inventory: 8 }
@@ -91,7 +92,11 @@ RSpec.describe ProductsController, type: :controller do
         username: "vendor",
         email: "email@email.com",
         password: "password",
-        password_confirmation: "password"
+        password_confirmation: "password",
+        city: "Seattle",
+        state: "WA",
+        zip: 98101,
+        country: "US"
         )
       Product.create(
         name: "A product",
