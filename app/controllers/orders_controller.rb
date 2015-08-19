@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
+  COUNTRY = "US"
+  PENGUIN_ALL_RATES_URI = "http://localhost:4000/get_all_rates?q="
 
   def find_order
     @order = Order.find(params[:id])
@@ -85,17 +87,20 @@ class OrdersController < ApplicationController
 
     destination = create_location(@order)
 
+    all_rates = []
     origin_package_pairs.each do |distinct_origin|
       distinct_origin["destination"] = destination
       shipment = {}
       shipment["shipment"] = distinct_origin
-      json_shipment = shipment.to_json
-    end
-    ## grab all the location and package info
-    ## make origin, destination, and package objects for each vendor
+      json_shipment = []
+      json_shipment << shipment
+      json_shipment = json_shipment.to_json
 
-    ## => add to shipment object
-    ## => serialize shipment object
+      response = HTTParty.get(PENGUIN_ALL_RATES_URI + json_shipment)
+      all_rates += response
+    end
+    raise
+
     ## make API calls
 
     ## render order details and list of shipping options
@@ -166,7 +171,7 @@ class OrdersController < ApplicationController
 
   def create_location(object)
     location = {}
-    location["country"] = object.country
+    location["country"] = COUNTRY
     location["state"] = object.state
     location["city"] = object.city
     location["zip"] = object.zip
