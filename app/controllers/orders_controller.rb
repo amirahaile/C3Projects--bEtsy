@@ -56,13 +56,10 @@ class OrdersController < ApplicationController
       @order.state = params[:order][:state]
       @order.zip = params[:order][:zip]
       @order.card_last_4 = params[:order][:card_number][-4, 4]
-      # @order.ccv = params[:order][:ccv]
+      @order.ccv = params[:order][:ccv]
       @order.card_exp = params[:order][:card_exp]
-      # @order.status = "paid"
       if @order.save # move and account for whether the order is cancelled?
-        update_inventory(@order)
-        session[:order_id] = nil # emptying the cart after confirming order
-        redirect_to order_confirmation_path(@order)
+        redirect_to shipping_path(@order)
       else
         render :payment
       end
@@ -70,6 +67,27 @@ class OrdersController < ApplicationController
       redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
     end
   end
+
+  def shipping
+    @order_items = @order.order_items
+    ## grab all the location and package info
+    ## make API calls
+
+    ## render order details and list of shipping options
+    ## be able to choose shipping option and see updated total
+    ## submit final order with chosen shipping option
+
+    ## redirect to finalize_path
+  end
+
+  # def finalize
+  #   @order.status = "paid"
+  #   session[:order_id] = nil # emptying the cart after confirming order
+  #   update_inventory(@order)
+
+  #   ## make API call to log chosen shipping
+  #   ## redirect_to order_confirmation_path
+  # end
 
   def confirmation
     session[:order_id] = nil # clears cart
