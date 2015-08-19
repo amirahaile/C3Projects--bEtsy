@@ -5,11 +5,13 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
   end
 
-  def index; end
+  def index
+  end
 
   def show
     if session[:order_id] == @order.id
-      if @cart_quantity > 0
+      # if @cart_quantity > 0
+      if @order.order_items
         @order_items = @order.order_items
       else
         render :index # there is session[:order_id], but no items in cart
@@ -17,6 +19,7 @@ class OrdersController < ApplicationController
     else
       redirect_to root_path # no session[:order_id]
     end
+    # raise
   end
 
   # view for an empty cart
