@@ -14,6 +14,8 @@
 
   <% if session[:user_id] && @product.user_id == session[:user_id] %>
     <p>Status: <%= @status %></p>
+    <p>Weight: <%= @product.weight_in_gms %> grams</p>
+    <p>Dimensions (L X W X H): <%= dimensions(@product) %></p>
   <% end %>
 
   <% unless @product.user_id == session[:user_id] %>
