@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723234737) do
+ActiveRecord::Schema.define(version: 20150819164046) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       null: false
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20150723234737) do
     t.datetime "updated_at",                      null: false
     t.string   "ccv"
     t.string   "name",        default: "guest",   null: false
+    t.string   "country",     default: "US",      null: false
   end
 
   create_table "products", force: :cascade do |t|
@@ -59,6 +60,10 @@ ActiveRecord::Schema.define(version: 20150723234737) do
     t.integer  "user_id",                                            null: false
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
+    t.float    "weight",                                             null: false
+    t.float    "height",                                             null: false
+    t.float    "width",                                              null: false
+    t.float    "depth",                                              null: false
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -75,11 +80,15 @@ ActiveRecord::Schema.define(version: 20150723234737) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "username",        null: false
-    t.string   "email",           null: false
-    t.string   "password_digest", null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "username",                       null: false
+    t.string   "email",                          null: false
+    t.string   "password_digest",                null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "country",         default: "US", null: false
+    t.string   "state",                          null: false
+    t.string   "city",                           null: false
+    t.string   "zip",                            null: false
   end
 
 end
