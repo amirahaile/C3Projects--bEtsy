@@ -59,10 +59,10 @@ ActiveRecord::Schema.define(version: 20150819004202) do
     t.integer  "user_id",                                              null: false
     t.datetime "created_at",                                           null: false
     t.datetime "updated_at",                                           null: false
-    t.decimal  "weight_in_gms", precision: 7, scale: 2
-    t.decimal  "length_in_cms", precision: 7, scale: 2
-    t.decimal  "width_in_cms",  precision: 7, scale: 2
-    t.decimal  "height_in_cms", precision: 7, scale: 2
+    t.integer  "weight_in_gms"
+    t.decimal  "length_in_cms", precision: 6, scale: 1
+    t.decimal  "width_in_cms",  precision: 6, scale: 1
+    t.decimal  "height_in_cms", precision: 6, scale: 1
   end
 
   create_table "reviews", force: :cascade do |t|
