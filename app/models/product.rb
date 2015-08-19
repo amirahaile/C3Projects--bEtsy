@@ -17,6 +17,7 @@ class Product < ActiveRecord::Base
   validates :name, uniqueness: true
   validates :price, numericality: { greater_than: 0 }
   validates :inventory, numericality: { only_integer: true, greater_than: 0 }
+  validates :weight_in_gms, numericality: { only_integer: true, greater_than: 0 }
 
 # SCOPES -----------------------------------------------------------------------
   scope :by_vendor, -> (vendor) { where(user_id: vendor) }

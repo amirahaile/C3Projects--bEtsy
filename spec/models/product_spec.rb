@@ -104,6 +104,33 @@ RSpec.describe Product, type: :model do
       expect(@product_a.inventory.class).to eq Fixnum
     end
 
+    context "weight and dimension attribute validations" do
+      let(:product) do Product.new(
+        name: "A product",
+        price: 20.95,
+        photo_url: "a_photo.jpg",
+        inventory: 4,
+        user_id: 1,
+        weight_in_gms: 100,
+        length_in_cms: 15,
+        width_in_cms: 10,
+        height_in_cms: 10
+        )
+      end
+
+      it "weight must be a number" do
+        product.valid?
+        expect(product.errors.keys).to_not include :weight_in_gms
+      end
+
+      # negative test
+      it "weight cannot be alphabetical" do
+        product.weight_in_gms = "hello"
+        product.valid?
+        expect(product.errors.keys).to include :weight_in_gms
+      end
+    end
+
     # OTHERS:
     # active is boolean & defaults to true?
 
