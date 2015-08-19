@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723234737) do
+ActiveRecord::Schema.define(version: 20150819004202) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       null: false
@@ -50,15 +50,19 @@ ActiveRecord::Schema.define(version: 20150723234737) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string   "name",                                               null: false
+    t.string   "name",                                                 null: false
     t.string   "description"
-    t.decimal  "price",       precision: 7, scale: 2,                null: false
-    t.string   "photo_url",                                          null: false
-    t.integer  "inventory",                                          null: false
-    t.boolean  "active",                              default: true, null: false
-    t.integer  "user_id",                                            null: false
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.decimal  "price",         precision: 7, scale: 2,                null: false
+    t.string   "photo_url",                                            null: false
+    t.integer  "inventory",                                            null: false
+    t.boolean  "active",                                default: true, null: false
+    t.integer  "user_id",                                              null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.integer  "weight_in_gms"
+    t.decimal  "length_in_cms", precision: 6, scale: 1
+    t.decimal  "width_in_cms",  precision: 6, scale: 1
+    t.decimal  "height_in_cms", precision: 6, scale: 1
   end
 
   create_table "reviews", force: :cascade do |t|

@@ -8,7 +8,8 @@ class Product < ActiveRecord::Base
   has_many :reviews
 
 # Validations ------------------------------------------------------------------
-  required_attributes = [ :name, :price, :photo_url, :inventory, :user_id ]
+  required_attributes = [ :name, :price, :photo_url, :inventory, :user_id, 
+    :weight_in_gms, :length_in_cms, :width_in_cms, :height_in_cms ]
   required_attributes.each do |attribute|
     validates attribute, presence: true
   end

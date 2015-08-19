@@ -99,6 +99,10 @@ class ProductsController < ApplicationController
       :inventory,
       :active,
       :user_id,
+      :weight_in_gms,
+      :length_in_cms,
+      :width_in_cms,
+      :height_in_cms,
       category_ids: []
     )
   end
