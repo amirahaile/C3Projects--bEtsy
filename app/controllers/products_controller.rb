@@ -99,7 +99,7 @@ class ProductsController < ApplicationController
       :inventory,
       :active,
       :user_id,
-      category_ids: []
+      category_ids: [],
     )
   end
 

@@ -34,11 +34,11 @@ ActiveRecord::Schema.define(version: 20150819164046) do
 
   create_table "orders", force: :cascade do |t|
     t.string   "email"
-    t.string   "address1",                        null: false
+    t.string   "address1"
     t.string   "address2"
-    t.string   "city",                            null: false
-    t.string   "state",                           null: false
-    t.string   "zipcode",                         null: false
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
     t.string   "card_number"
     t.string   "card_last_4"
     t.datetime "card_exp"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20150819164046) do
     t.datetime "updated_at",                      null: false
     t.string   "ccv"
     t.string   "name",        default: "guest",   null: false
-    t.string   "country",     default: "US",      null: false
+    t.string   "country",     default: "US"
   end
 
   create_table "products", force: :cascade do |t|
