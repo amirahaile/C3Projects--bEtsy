@@ -6,7 +6,8 @@ RSpec.describe UsersController, type: :controller do
 
   describe "GET #show and GET #new" do
     before :each do
-      @user = User.create(name: "first_user", email: "name@email.com", password_digest: "foobar")
+      @user = User.create(name: "first_user", email: "name@email.com", password_digest: "foobar",
+                          address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
       session[:user_id] = @user.id
     end
 
@@ -36,7 +37,11 @@ RSpec.describe UsersController, type: :controller do
             name: 'second_user',
             email: 'first_user@email.com',
             password: 'ComplicatedPassword',
-            password_confirmation: 'ComplicatedPassword'
+            password_confirmation: 'ComplicatedPassword',
+            address: "8135 Devonshire Drive",
+            city: "Oakland Gardens",
+            state: "NY",
+            zip: "11364"
           }
         }
       end
@@ -63,7 +68,11 @@ RSpec.describe UsersController, type: :controller do
             name: '',
             email: 'third_user@email.com',
             password: 'ComplicatedPassword',
-            password_confirmation: 'ComplicatedPassword'
+            password_confirmation: 'ComplicatedPassword',
+            address: "8135 Devonshire Drive",
+            city: "Oakland Gardens",
+            state: "NY",
+            zip: "11364"
           }
         }
       end

@@ -17,7 +17,8 @@ RSpec.describe ProductsController, type: :controller do
 
   describe "GET #show" do
     before :each do
-      @product = Product.create(name: 'product', price: 10, user_id: 1, stock: 1)
+      @product = Product.create(name: 'product', price: 10, user_id: 1, stock: 1,
+                                weight: 5, height: 3.4, width: 4.6, length: 3)
     end
 
     it "returns successfully with an HTTP 200 status code" do
@@ -37,7 +38,8 @@ RSpec.describe ProductsController, type: :controller do
 
   describe "GET #new" do
     before :each do
-      @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword")
+      @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword",
+                          address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
       session[:user_id] = @user.id
     end
 
@@ -53,7 +55,8 @@ RSpec.describe ProductsController, type: :controller do
   describe "POST #create" do
     context "valid params" do
       before :each do
-        @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword")
+        @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword",
+                            address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
         session[:user_id] = @user.id
         @product = Product.new(product_params[:product])
       end
@@ -65,6 +68,10 @@ RSpec.describe ProductsController, type: :controller do
               price: 10.99,
               stock: 5,
               user_id: 1,
+              weight: 5,
+              height: 3.4,
+              width: 4.6,
+              length: 3
             }
           }
         end
@@ -83,7 +90,8 @@ RSpec.describe ProductsController, type: :controller do
 
       context "invalid params" do
         before :each do
-          @user = User.create(name: "vikushonok2", email: "vika2@email.com", password_digest: "VerySmartPassword")
+          @user = User.create(name: "vikushonok2", email: "vika2@email.com", password_digest: "VerySmartPassword",
+                              address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
           session[:user_id] = @user.id
           @product = Product.new(product_params[:product])
         end
@@ -95,6 +103,10 @@ RSpec.describe ProductsController, type: :controller do
                 price: 10.99,
                 stock: -1,
                 user_id: 1,
+                weight: 5,
+                height: 3.4,
+                width: 4.6,
+                length: 3
               }
             }
           end
@@ -118,7 +130,8 @@ RSpec.describe ProductsController, type: :controller do
 
   describe "GET #edit" do
     before :each do
-      @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword")
+      @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword",
+                          address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
       session[:user_id] = @user.id
     end
 
@@ -134,9 +147,11 @@ RSpec.describe ProductsController, type: :controller do
   describe "PUT #update" do
     context "valid params" do
       before :each do
-        @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword")
+        @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword",
+                            address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
         session[:user_id] = @user.id
-        @product = Product.create(name: 'product', price: 10, user_id: 1, stock: 1)
+        @product = Product.create(name: 'product', price: 10, user_id: 1, stock: 1,
+                                  user_id: 1, weight: 5, height: 3.4, width: 4.6, length: 3)
       end
 
       let(:product_params) do
@@ -145,7 +160,11 @@ RSpec.describe ProductsController, type: :controller do
             name: 'product_changed_name',
             price: 10.99,
             stock: 10,
-            user_id: 1
+            user_id: 1,
+            weight: 5,
+            height: 3.4,
+            width: 4.6,
+            length: 3
           }
         }
       end
@@ -167,9 +186,11 @@ RSpec.describe ProductsController, type: :controller do
 
     context "invalid product params" do
       before :each do
-        @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword")
+        @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword",
+                            address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
         session[:user_id] = @user.id
-        @product = Product.create(name: 'product', price: 10, user_id: 1, stock: 1)
+        @product = Product.create(name: 'product', price: 10, user_id: 1, stock: 1,
+                                  user_id: 1, weight: 5, height: 3.4, width: 4.6, length: 3)
       end
 
       let(:product_params) do
@@ -178,7 +199,11 @@ RSpec.describe ProductsController, type: :controller do
             name: "",
             price: 10.99,
             stock: 10,
-            user_id: 1
+            user_id: 1,
+            weight: 5,
+            height: 3.4,
+            width: 4.6,
+            length: 3
           }
         }
       end
@@ -204,9 +229,11 @@ RSpec.describe ProductsController, type: :controller do
   describe "PATCH#retire" do
 
     before :each do
-      @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword")
+      @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword",
+                          address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
       session[:user_id] = @user.id
-      @product = Product.create(name: 'product', price: 10, user_id: 1, stock: 1)
+      @product = Product.create(name: 'product', price: 10, user_id: 1, stock: 1,
+                                weight: 5, height: 3.4, width: 4.6, length: 3)
     end
 
     it "retires product and redirects to the merchant product page " do
@@ -223,7 +250,8 @@ RSpec.describe ProductsController, type: :controller do
   describe "GET#merchant_products" do
 
     before :each do
-      @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword")
+      @user = User.create(name: "vikushonok", email: "vika@email.com", password_digest: "VerySmartPassword",
+                          address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
       session[:user_id] = @user.id
     end
 

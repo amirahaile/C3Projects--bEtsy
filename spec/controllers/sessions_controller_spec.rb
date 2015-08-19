@@ -7,7 +7,8 @@ RSpec.describe SessionsController, type: :controller do
       { :email => 'b@mail.com', :password => '1234' }
     end
     before(:each) do
-      @user = User.create(name: "Beez", email: "b@mail.com", password: "1234", password_confirmation: "1234")
+      @user = User.create(name: "Beez", email: "b@mail.com", password: "1234", password_confirmation: "1234",
+                          address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
     end
 
     it "redirect_to user_path" do
@@ -26,7 +27,8 @@ RSpec.describe SessionsController, type: :controller do
 
   describe "DELETE #destroy" do
     before(:each) do
-        @user = User.create(name: "Beez", email: "b@mail.com", password: "1234", password_confirmation: "1234")
+        @user = User.create(name: "Beez", email: "b@mail.com", password: "1234", password_confirmation: "1234",
+                            address: "8135 Devonshire Drive", city: "Oakland Gardens", state: "NY", zip: "11364")
         @user =   User.find_by(email: "b@mail.com")
         session[:user_id] = @user.id
       end
