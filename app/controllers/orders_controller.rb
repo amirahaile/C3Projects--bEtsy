@@ -29,10 +29,13 @@ class OrdersController < ApplicationController
     buyer = order.buyer
     products = order.order_items.map { |item| item.product }
     merchants = products.map { |product| product.user }
+    # response per merchant; should be all the shipping for the order
+    # TODO: Figure out if API is sending back responses for one or all shippers
     parsed_responses = []
 
     merchants.each do |merchant|
       merchant_products = products.map { |product|  product if product.user_id == merchant.id}
+      merchant_products.compact! # removes nils inserted by map
       products_hash = {}
       merchant_products.each do |product|
         products_hash[merchant_products.index(product)] = product.for_shipping
@@ -47,11 +50,10 @@ class OrdersController < ApplicationController
         }
       }
 
-      response = HTTParty.post('heroku url', shipping_info)
+      response = HTTParty.post('heroku url', shipping_info) # TODO: Deploy Shipping API to Heroku
       parsed_responses << response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
     end
 
-    # NOTE: how will we separate UPS from USPS, etc. for the view
     # send the API response to view
     render :shipping_quotes
   end
