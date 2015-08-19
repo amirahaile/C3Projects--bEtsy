@@ -25,10 +25,39 @@ class OrdersController < ApplicationController
   end
 
   def quotes
+    order = Order.find(params[:id])
+    buyer = order.buyer
+    products = order.order_items.map { |item| item.product }
+    merchants = products.map { |product| product.user }
+    responses = []
+
+    merchants.each do |merchant|
+      merchant_products = products.map { |product|  product if product.user_id == merchant.id}
+      products_hash = {}
+      merchant_products.each do |product|
+        products_hash[merchant_products.index(product)] = product.for_shipping
+      end
+
+      # body for API request
+      shipping_info = {
+        body: {
+          merchant: merchant.for_shipping,
+          buyer: buyer.for_shipping,
+          products: products_hash
+        }
+      }
+
+      response = HTTParty.post('heroku url', shipping_info)
+      responses << response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+    end
+
+    # NOTE: how will we separate UPS from USPS, etc. for the view
+    # send the API response to view
     render :shipping_quotes
   end
 
   def quotes=
+    # saves the shipping selection to the db
     redirect_to buyer_confirmation_path(@buyer.order_id)
   end
 
