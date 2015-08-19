@@ -73,6 +73,17 @@ RSpec.describe Order, type: :model do
     # Test status and default should be "pending"!
 
     # Check card exp must be in the future.
+
+    # COUNTRY VALIDATION TEST ADDED BY FEDAX TEAM
+    context "country validation" do
+      let(:order) { create :order }
+      let(:countryless_order) { create :countryless_order }
+      
+      it "has a default value of 'US' for country" do
+        expect(order.errors.keys).not_to include(:country)
+        expect(countryless_order.country).to eq('US')
+      end
+    end
   end
 
   describe "scope" do

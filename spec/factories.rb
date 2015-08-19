@@ -33,11 +33,25 @@ FactoryGirl.define do
   end
 
   factory :order do
+    email "email@example.com"
     address1 "123 Main St."
     status "pending"
     country "CA"
     state "BC"
     city "Vancouver"
-    zip "60652"
+    zipcode "60652"
+    card_last_4 1234
+    card_exp "10/17"
+  end
+
+  factory :countryless_order, class: Order do
+    email "email@example.com"
+    address1 "123 Main St."
+    status "pending"
+    state "BC"
+    city "Vancouver"
+    zipcode "60652"
+    card_last_4 1234
+    card_exp "10/17"
   end
 end
