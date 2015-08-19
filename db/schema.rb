@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20150819164046) do
     t.float    "weight",                                             null: false
     t.float    "height",                                             null: false
     t.float    "width",                                              null: false
-    t.float    "depth",                                              null: false
+    t.float    "depth"
   end
 
   create_table "reviews", force: :cascade do |t|
