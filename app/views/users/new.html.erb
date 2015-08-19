@@ -13,11 +13,11 @@
     <p class="text-field-error"><%= error_check_for(:email) %></p>
 
     <%= f.label :password %>
-    <%= f.text_field :password, class: "form-control" %>
+    <%= f.password_field :password, class: "form-control" %>
     <p class="text-field-error"><%= error_check_for(:password) %></p>
 
     <%= f.label :password_confirmation, "Password Confirmation" %>
-    <%= f.text_field :password_confirmation, class: "form-control" %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
     <p class="text-field-error"><%= error_check_for(:password_confirmation) %></p>
 
     <fieldset>
