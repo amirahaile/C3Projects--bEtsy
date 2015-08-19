@@ -46,7 +46,7 @@ RSpec.describe OrderItemsController, type: :controller do
     let(:session_key) { :order_id }
 
     before :each do
-      @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zipcode: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
+      @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zip: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
       @thing = OrderItem.create!(quantity: 2, order_id: 1, product_id: 1)
       @order.order_items << @thing
       @path_hash = { id: @thing.id, order_id: @order.id }
@@ -56,7 +56,7 @@ RSpec.describe OrderItemsController, type: :controller do
 
   # describe "DELETE #destroy" do
   #   before(:each) do
-  #     @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zipcode: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
+  #     @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zip: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
   #     @thing = OrderItem.create!(quantity: 2, order_id: 1, product_id: 1)
   #     @order.order_items << @thing
   #   end

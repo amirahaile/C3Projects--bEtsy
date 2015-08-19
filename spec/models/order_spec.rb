@@ -5,10 +5,10 @@ RSpec.describe Order, type: :model do
   describe "model validations" do
     let(:invalid_empty_order) { Order.new(status: nil) } # because status defaults to "pending"
     let(:invalid_order) { Order.new }
-    let(:valid_order) { Order.new(email: "somedude@someplace.com", address1: "1111 Someplace Ave.", city: "Seattle", state: "WA", zipcode: "55555", card_last_4: "1234", card_exp: Time.new(2017, 11)) }
+    let(:valid_order) { Order.new(email: "somedude@someplace.com", address1: "1111 Someplace Ave.", city: "Seattle", state: "WA", zip: "55555", card_last_4: "1234", card_exp: Time.new(2017, 11)) }
 
     required_fields =
-      [:email, :address1, :city, :state, :zipcode,
+      [:email, :address1, :city, :state, :zip,
        :card_last_4, :card_exp, :status]
 
     required_fields.each do |field|
@@ -79,12 +79,12 @@ RSpec.describe Order, type: :model do
     before(:each) do
       # paid
       3.times do
-        Order.create(email: "example@fake.com", address1: "1234 St", address2: "Apt. A", city: "Plainsville", state: "NA", zipcode: "12345", card_number: nil, card_last_4: "0987", card_exp: "05/06", status: "paid" )
+        Order.create(email: "example@fake.com", address1: "1234 St", address2: "Apt. A", city: "Plainsville", state: "NA", zip: "12345", card_number: nil, card_last_4: "0987", card_exp: "05/06", status: "paid" )
       end
 
       # pending
       3.times do
-        Order.create(email: "example@fake.com", address1: "1234 St", address2: "Apt. A", city: "Plainsville", state: "NA", zipcode: "12345", card_number: nil, card_last_4: "0987", card_exp: "05/06", status: "pending" )
+        Order.create(email: "example@fake.com", address1: "1234 St", address2: "Apt. A", city: "Plainsville", state: "NA", zip: "12345", card_number: nil, card_last_4: "0987", card_exp: "05/06", status: "pending" )
       end
 
       @orders = Order.all
