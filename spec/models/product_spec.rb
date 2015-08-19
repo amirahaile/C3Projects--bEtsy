@@ -19,14 +19,20 @@ RSpec.describe Product, type: :model do
         price: 20.95,
         photo_url: "a_photo.jpg",
         inventory: 4,
-        user_id: 1
+        user_id: 1,
+        weight: 38.5,
+        height: 5,
+        width: 10.2
       )
       @product_b = Product.new(
         name: "A product",
         price: 21.95,
         photo_url: "b_photo.jpg",
         inventory: 2,
-        user_id: 2
+        user_id: 2,
+        weight: 38.5,
+        height: 5,
+        width: 10.2
       )
     end
     # Name attribute
@@ -47,7 +53,10 @@ RSpec.describe Product, type: :model do
         price: "bloop",
         photo_url: "c_photo.jpg",
         inventory: 22,
-        user_id: 2
+        user_id: 2,
+        weight: 38.5,
+        height: 5,
+        width: 10.2
       )
       expect(product_c).to_not be_valid
       expect(product_c.errors.keys).to include(:price)
@@ -59,7 +68,10 @@ RSpec.describe Product, type: :model do
         price: 30,
         photo_url: "c_photo.jpg",
         inventory: 22,
-        user_id: 2
+        user_id: 2,
+        weight: 38.5,
+        height: 5,
+        width: 10.2
       )
       expect(product_c.price.to_s).to eq "30.0"
     end
@@ -70,7 +82,10 @@ RSpec.describe Product, type: :model do
         price: -30.95,
         photo_url: "c_photo.jpg",
         inventory: 22,
-        user_id: 2
+        user_id: 2,
+        weight: 38.5,
+        height: 5,
+        width: 10.2
       )
       expect(product_c).to_not be_valid
       expect(product_c.errors.keys).to include(:price)
@@ -85,7 +100,10 @@ RSpec.describe Product, type: :model do
           price: 34.20,
           photo_url: "c_photo.jpg",
           inventory: value,
-          user_id: 2
+          user_id: 2,
+          weight: 38.5,
+          height: 5,
+          width: 10.2
         )
         expect(product).to_not be_valid
         expect(product.errors.keys).to include(:inventory)
@@ -94,6 +112,20 @@ RSpec.describe Product, type: :model do
 
     it "inventory is a Fixnum" do
       expect(@product_a.inventory.class).to eq Fixnum
+    end
+
+    context "package validations (weight, height, width)" do
+      let (:product) { create :product }
+      package_fields = [:weight, :height, :width]
+
+      package_fields.each do |package_field|
+        it "requires a #{package_field}" do
+        product_without_attribute = build :product, package_field => nil
+        expect(product.errors.keys).not_to include(package_field)
+        expect(product_without_attribute).to be_invalid
+        end
+      end
+
     end
 
     # OTHERS:
@@ -116,21 +148,27 @@ RSpec.describe Product, type: :model do
         price: 22.95,
         photo_url: "b_photo.jpg",
         inventory: 71,
-        user_id: 2
+        user_id: 2,
+        weight: 38.5,
+        height: 5,
+        width: 10.2
       )
       @product_c = Product.create(
         name: "C product",
         price: 30.00,
         photo_url: "c_photo.jpg",
         inventory: 13,
-        user_id: 1
+        user_id: 1,
+        weight: 38.5,
+        height: 5,
+        width: 10.2
       )
 
-      Product.create(name: "A product", price: 40.05, photo_url: "a_photo.jpg", inventory: 2, user_id: 2)
-      Product.create(name: "D product", price: 20.05, photo_url: "d_photo.jpg", inventory: 2, user_id: 2)
-      Product.create(name: "E product", price: 30.05, photo_url: "e_photo.jpg", inventory: 2, user_id: 2)
-      Product.create(name: "F product", price: 45.05, photo_url: "f_photo.jpg", inventory: 2, user_id: 2)
-      Product.create(name: "G product", price: 32.05, photo_url: "g_photo.jpg", inventory: 2, user_id: 2)
+      Product.create(name: "A product", price: 40.05, photo_url: "a_photo.jpg", inventory: 2, user_id: 2, weight: 38.5, height: 5, width: 10.2)
+      Product.create(name: "D product", price: 20.05, photo_url: "d_photo.jpg", inventory: 2, user_id: 2, weight: 38.5, height: 5, width: 10.2)
+      Product.create(name: "E product", price: 30.05, photo_url: "e_photo.jpg", inventory: 2, user_id: 2, weight: 38.5, height: 5, width: 10.2)
+      Product.create(name: "F product", price: 45.05, photo_url: "f_photo.jpg", inventory: 2, user_id: 2, weight: 38.5, height: 5, width: 10.2)
+      Product.create(name: "G product", price: 32.05, photo_url: "g_photo.jpg", inventory: 2, user_id: 2, weight: 38.5, height: 5, width: 10.2)
     end
 
     describe "#by_vendor" do
