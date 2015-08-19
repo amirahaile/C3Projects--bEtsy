@@ -37,5 +37,45 @@ RSpec.describe User, type: :model do
         expect(user.errors.keys).to include(:password_confirmation)
       end
     end
+
+    it "requires a city" do
+      user = User.new(username: "aname", email: "hi@email.com", password: "password",
+        password_confirmation: "password", city: nil, state: "WA", zip: 98101,
+        country: "US")
+      user.valid?
+      expect(user.errors.keys).to include(:city)
+    end
+
+    it "requires a state" do
+      user = User.new(username: "aname", email: "hi@email.com", password: "password",
+        password_confirmation: "password", city: "Seattle", state: nil, zip: 98101,
+        country: "US")
+      user.valid?
+      expect(user.errors.keys).to include(:state)
+    end
+
+    it "requires a zip" do
+      user = User.new(username: "aname", email: "hi@email.com", password: "password",
+        password_confirmation: "password", city: "Seattle", state: "WA", zip: nil,
+        country: "US")
+      user.valid?
+      expect(user.errors.keys).to include(:zip)
+    end
+
+    it "requires zip to be a number" do
+      user = User.new(username: "aname", email: "hi@email.com", password: "password",
+        password_confirmation: "password", city: "Seattle", state: "WA", zip: "abcdef",
+        country: "US")
+      user.valid?
+      expect(user.errors.messages).to include(:zip => ["is not a number"])
+    end
+
+    it "requires a country" do
+      user = User.new(username: "aname", email: "hi@email.com", password: "password",
+        password_confirmation: "password", city: "Seattle", state: "WA", zip: 98101,
+        country: nil)
+      user.valid?
+      expect(user.errors.keys).to include(:country)
+    end
   end
 end
