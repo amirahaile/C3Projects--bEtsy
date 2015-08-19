@@ -13,12 +13,24 @@
     <p class="text-field-error"><%= error_check_for(:email) %></p>
 
     <%= f.label :password %>
-    <%= f.text_field :password, class: "form-control" %>
+    <%= f.password_field :password, class: "form-control" %>
     <p class="text-field-error"><%= error_check_for(:password) %></p>
 
     <%= f.label :password_confirmation, "Password Confirmation" %>
-    <%= f.text_field :password_confirmation, class: "form-control" %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
     <p class="text-field-error"><%= error_check_for(:password_confirmation) %></p>
+
+    <%= f.label :state %>
+    <%= f.select :state, us_states, include_blank: "--Select a State--", class: "form-control" %>
+    <p class="text-field-error"><%= error_check_for(:state) %></p>
+
+    <%= f.label :city %>
+    <%= f.text_field :city, class: "form-control" %>
+    <p class="text-field-error"><%= error_check_for(:city) %></p>
+
+    <%= f.label :zip, "Zip Code" %>
+    <%= f.text_field :zip, class: "form-control" %>
+    <p class="text-field-error"><%= error_check_for(:zip) %></p>
     </div>
   </fieldset>
 

@@ -52,6 +52,7 @@ class UsersController < ApplicationController
 
   def create # create a new logged in user
     @user = User.new(user_params)
+    raise
 
     if @user.save
       session[:user_id] = @user.id # creates a session - they are logged in
@@ -114,7 +115,7 @@ class UsersController < ApplicationController
   end # USED FOR RSPEC SHARED EXAMPLES
 
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :state, :city, :zip)
   end
 
   def nil_flash_errors
