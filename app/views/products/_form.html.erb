@@ -6,30 +6,52 @@
 
       <%= f.label :name %>
       <%= f.text_field :name, class: "form-control" %>
-
+      <br>
       <%= f.label :description %>
       <%= f.text_area :desc, class: "form-control" %>
-
+      <br>
       <%= f.label :categories %><br>
       <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) do |b| %>
         <%= b.label class: "checkbox-inline" do %>
           <%= b.check_box + b.text.capitalize %>
         <% end %>
       <% end %>
+      <br><br>
+      <%= f.label :photo_url %><br>
+      <%= f.collection_select :photo_url, Product.all, :photo_url, :photo_url, include_blank: "--Select a Photo--" %>
+
     </div>
 
 
   <div class="col-md-4">
     <h3>Add product details</h3>
 
-    <%= f.label :stock %>
-    <%= f.number_field :stock, class: "form-control" %>
-
     <div class="form-group">
-      <%= f.label :price %>
-      <%= f.number_field :price, class: "form-control", step: 0.01 %>
+      <%= f.label :weight, "Weight (lbs)" %>
+      <%= f.number_field :weight, class: "form-control" %>
     </div>
 
+    <div class="form-group">
+      <%= f.label :width, "Width (inches)" %>
+      <%= f.number_field :width, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :height, "Width (inches)" %>
+      <%= f.number_field :height, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :length, "Width (inches)" %>
+      <%= f.number_field :length, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :stock %>
+      <%= f.number_field :stock, class: "form-control" %>
+    </div>
+
+    <br>
     <% if form_type %>
       <div class="form-group">
         <%= f.label :retired %>
@@ -37,11 +59,7 @@
       </div>
     <% end %>
 
-    <%= f.label :photo_url %><br>
-    <%= f.collection_select :photo_url, Product.all, :photo_url, :photo_url, include_blank: "--Select a Photo--" %>
-
     <%= f.hidden_field :user_id, value: @product.user_id %>
-    <br><br>
     <%= f.submit class: "btn btn-default" %>
   <% end %>
   </div>

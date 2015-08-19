@@ -13,6 +13,26 @@
       </div>
 
       <div class="form-group">
+        <%= f.label :address, class: "required" %>
+        <%= f.password_field :address, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :city, class: "required" %>
+        <%= f.password_field :city, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :state, class: "required" %>
+        <%= f.password_field :state, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :zip, "Zipcode", class: "required" %>
+        <%= f.password_field :zip, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
         <%= f.label :email, class: "required" %>
         <%= f.email_field :email, class: "form-control" %>
       </div>
