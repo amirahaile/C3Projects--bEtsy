@@ -25,9 +25,9 @@ class OrdersController < ApplicationController
   end
 
   def quotes
-    order = Order.find(params[:id])
+    @order = Order.find(params[:id])
     buyer = order.buyer
-    products = order.order_items.map { |item| item.product }
+    products = @order.order_items.map { |item| item.product }
     merchants = products.map { |product| product.user }
     parsed_responses = []
 
