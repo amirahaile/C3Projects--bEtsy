@@ -1,0 +1,23 @@
+<div class="col-md-4 col-md-offset-4">
+  <%= form_for @order do |f| %>
+
+  <h3>Where is this order going?</h3>
+    <fieldset>
+      <div class="form-group">
+      <%= f.label :city %>
+      <%= f.text_field :city, class: "form-control" %>
+      <br>
+      <%= f.label :state %>
+      <%= f.select :state, us_states, include_blank: "--Select a State--", class: "form-control" %>
+      <br><br>
+      <%= f.label :zipcode %>
+      <%= f.text_field :zipcode, class: "form-control" %>
+      <%= f.hidden_field :card_number, value: 1234 %>
+      <%= f.hidden_field :card_exp, value: "12/15" %>
+      </div>
+    </fieldset>
+
+    <%= f.submit "Estimate!", class: "btn btn-success" %>
+
+  <% end %>
+</div>

@@ -39,5 +39,17 @@
 </table>
 
 <% if @order.status == "pending" %>
-  <%= button_to("Checkout", "/orders/#{@order.id}/payment", method: :get, id: @order, class: "btn btn-primary") %> </td>
+  <%= link_to("Checkout", "/orders/#{@order.id}/payment", method: :get, 
+    id: @order, class: "btn btn-primary") %>
+  <% if params[:status] != 'estimate' %>
+    <%= link_to("Estimate Shipping", order_path(status: 'estimate'), 
+      class: "btn btn-info") %>
+  <% end %>
+  </td>
 <% end %>
+
+<div class="row">
+  <% if params[:status] == 'estimate' %>
+    <%= render template: "orders/shipping", layout: false %>
+  <% end %>
+</div>

@@ -92,6 +92,10 @@ class OrdersController < ApplicationController
     redirect_to user_path(@user), notice: "You've shipped and completed order ##{@order.id}!"
   end
 
+  def shipping
+    @order
+  end
+
   private
 
   def self.model
