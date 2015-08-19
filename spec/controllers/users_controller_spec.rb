@@ -11,7 +11,11 @@ RSpec.describe UsersController, type: :controller do
           username: "Testwoman",
           email: "test@testing.com",
           password: "test",
-          password_confirmation: "test"
+          password_confirmation: "test",
+          city: "Seattle",
+          state: "WA",
+          zip: 98101,
+          country: "US"
         }
       },
       create_user: false,
@@ -26,7 +30,11 @@ RSpec.describe UsersController, type: :controller do
         username: "Test",
         email: "test@test.com",
         password: "test",
-        password_confirmation: "test"
+        password_confirmation: "test",
+        city: "Seattle",
+        state: "WA",
+        zip: 98101,
+        country: "US"
       )
       session[:user_id] = 1
       get :new
@@ -39,7 +47,11 @@ RSpec.describe UsersController, type: :controller do
         username: "Test",
         email: "test@test.com",
         password: "test",
-        password_confirmation: "test"
+        password_confirmation: "test",
+        city: "Seattle",
+        state: "WA",
+        zip: 98101,
+        country: "US"
       )
       session[:user_id] = 1
       get :new

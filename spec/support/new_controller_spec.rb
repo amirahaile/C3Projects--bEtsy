@@ -10,7 +10,11 @@ RSpec.shared_examples "a new controller" do
         username: "Logged In",
         email: "test@test.com",
         password: "test",
-        password_confirmation: "test"
+        password_confirmation: "test",
+        city: "Seattle",
+        state: "WA",
+        zip: 98101,
+        country: "US"
       )
       session[:user_id] = 1
     end
