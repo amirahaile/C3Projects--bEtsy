@@ -1,7 +1,20 @@
 <h1>Shipping Quotes</h1>
 
 <%= form_for @order do |f| %>
-<% @ups.each do |service| %>
-<%= f.label :service, "#{service[0]} #{service[1]}" %>
-<%= f.check_box :servce %>
-<%= f.label  %>
+  <% @parsed_responses.each do |service| %>
+    <%= f.label :service, "#{service[0]} #{service[1]}" %>
+    <%= f.check_box :servce %>
+    <br>
+  <% end %>
+
+  <% f.hidden_field :shipper, :value => params[:shipper] %>
+
+  <!-- TODO: Assign rate value to @order -->
+
+  <!-- not a link because the current selection needs to be saved -->
+  <% if params[:shipper] == 'usps' %>
+    <%= f.submit "More Quotes", shipper: 'ups' %>
+  <% end %>
+
+  <%= f.submit "Checkout" %>
+<% end %>

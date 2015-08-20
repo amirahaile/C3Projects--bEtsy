@@ -19,19 +19,27 @@ class OrdersController < ApplicationController
     end
   end
 
+  # NOTE: What directs to this action…? Merchant side?
   def update
     @order.update(order_params)
-    render :show
+
+    if !params[:shipper].nil?
+      redirect_to shipping_quotes_path(params[:shipper]) # buyer side
+    elsif params[:shipper].nil?
+      redirect_to buyer_confirmation_path(@buyer.order_id)
+    else
+      render :show # merchant side
+    end
   end
 
   def quotes
     @order = Order.find(params[:id])
-    buyer = order.buyer
+    buyer = @order.buyer
     products = @order.order_items.map { |item| item.product }
     merchants = products.map { |product| product.user }
     # response per merchant; should be all the shipping for the order
     # TODO: Figure out if API is sending back responses for one or all shippers
-    parsed_responses = []
+    @parsed_responses = []
 
     merchants.each do |merchant|
       merchant_products = products.map { |product|  product if product.user_id == merchant.id}
@@ -50,18 +58,18 @@ class OrdersController < ApplicationController
         }
       }
 
-      response = HTTParty.post('heroku url', shipping_info) # TODO: Deploy Shipping API to Heroku
-      parsed_responses << response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+      # response = HTTParty.post('heroku url', shipping_info) # TODO: Deploy Shipping API to Heroku
+      # @parsed_responses << response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
     end
 
-    # send the API response to view
-    render :shipping_quotes
+    # NOTE: :shipper shouldn't be hardcoded - where do we assign this?
+    render :action => "shipping_quotes", :id => @order.id, :shipper => 'usps'
   end
 
-  def quotes=
-    # saves the shipping selection to the db
-    redirect_to buyer_confirmation_path(@buyer.order_id)
-  end
+  # def quotes=
+  #   # saves the shipping selection to the db
+  #   redirect_to buyer_confirmation_path(@buyer.order_id)
+  # end
 
   def index # merchant
     @all_items = @merchant.order_items
@@ -94,26 +102,26 @@ class OrdersController < ApplicationController
 
   private
 
-    def order_params
-      params.require(:order).permit(:id)
-    end
+  def order_params
+    params.require(:order).permit(:id, :shipper, :service, :rate)
+  end
 
-    def find_order
-      @order = Order.find(id: order_params[:id])
-    end
+  def find_order
+    @order = Order.find(id: order_params[:id])
+  end
 
-    def empty_cart?
-      if session[:order_id].nil?
+  def empty_cart?
+    if session[:order_id].nil?
+      render :empty
+    elsif session[:order_id].nil? == false
+      @order = Order.find(session[:order_id])
+      if @order.order_items.count == 0
         render :empty
-      elsif session[:order_id].nil? == false
-        @order = Order.find(session[:order_id])
-        if @order.order_items.count == 0
-          render :empty
-        end
       end
     end
+  end
 
-    def find_merchant
-      @merchant = User.find(params[:user_id])
-    end
+  def find_merchant
+    @merchant = User.find(params[:user_id])
+  end
 end
