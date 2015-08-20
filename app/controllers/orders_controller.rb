@@ -7,8 +7,7 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
   end
 
-  def index
-  end
+  def index; end
 
   def show
     if session[:order_id] == @order.id
@@ -21,7 +20,6 @@ class OrdersController < ApplicationController
     else
       redirect_to root_path # no session[:order_id]
     end
-    # raise
   end
 
   # view for an empty cart
@@ -109,6 +107,8 @@ class OrdersController < ApplicationController
       @calculated_rates << rate
     end
 
+    @subtotal = 0
+    @shipping_cost = session[:shipping_option] ? session[:shipping_option]["total_price"]/100.0 : 0
     ## be able to choose shipping option and see updated total
     ## submit final order with chosen shipping option
 
@@ -117,19 +117,22 @@ class OrdersController < ApplicationController
   end
 
   def update_total
-    raise
     ## this is how :shipping_option is getting passed in the params
     ## "{\"service_name\"=>\"UPS Next Day Air\", \"total_price\"=>15985, \"delivery_date\"=>\"2015-08-21T00:00:00.000+00:00\"}"
+    session[:shipping_option] = eval(params["shipping_option"])
+    # eval is an unsafe method as it will run commands in the evaluated object
+
+    redirect_to :shipping
   end
 
-  # def finalize
-  #   @order.status = "paid"
-  #   session[:order_id] = nil # emptying the cart after confirming order
-  #   update_inventory(@order)
+  def finalize
+    @order.status = "paid"
+    session[:order_id] = nil # emptying the cart after confirming order
+    update_inventory(@order)
 
-  #   ## make API call to log chosen shipping
-  #   ## redirect_to order_confirmation_path
-  # end
+    ## make API call to log chosen shipping
+    ## redirect_to order_confirmation_path
+  end
 
   def confirmation
     session[:order_id] = nil # clears cart
