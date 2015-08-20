@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819035954) do
+ActiveRecord::Schema.define(version: 20150820001908) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20150819035954) do
     t.string   "address2"
     t.string   "city"
     t.string   "state"
-    t.string   "zipcode"
+    t.integer  "zip"
     t.string   "card_number"
     t.string   "card_last_4"
     t.datetime "card_exp"
@@ -60,9 +60,9 @@ ActiveRecord::Schema.define(version: 20150819035954) do
     t.datetime "created_at",                                           null: false
     t.datetime "updated_at",                                           null: false
     t.integer  "weight_in_gms"
-    t.decimal  "length_in_cms", precision: 6, scale: 1
-    t.decimal  "width_in_cms",  precision: 6, scale: 1
-    t.decimal  "height_in_cms", precision: 6, scale: 1
+    t.integer  "length_in_cms"
+    t.integer  "width_in_cms"
+    t.integer  "height_in_cms"
   end
 
   create_table "reviews", force: :cascade do |t|

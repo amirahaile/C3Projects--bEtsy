@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
+  COUNTRY = "US"
+  PENGUIN_ALL_RATES_URI = "http://localhost:4000/get_all_rates"
 
   def find_order
     @order = Order.find(params[:id])
@@ -54,15 +56,12 @@ class OrdersController < ApplicationController
       @order.address2 = params[:order][:address2]
       @order.city = params[:order][:city]
       @order.state = params[:order][:state]
-      @order.zipcode = params[:order][:zipcode]
+      @order.zip = params[:order][:zip]
       @order.card_last_4 = params[:order][:card_number][-4, 4]
-      # @order.ccv = params[:order][:ccv]
+      @order.ccv = params[:order][:ccv]
       @order.card_exp = params[:order][:card_exp]
-      @order.status = "paid"
       if @order.save # move and account for whether the order is cancelled?
-        update_inventory(@order)
-        session[:order_id] = nil # emptying the cart after confirming order
-        redirect_to order_confirmation_path(@order)
+        redirect_to shipping_path(@order)
       else
         render :payment
       end
@@ -70,6 +69,60 @@ class OrdersController < ApplicationController
       redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
     end
   end
+
+  def shipping
+    @order_items = @order.order_items
+    grouped_items = @order_items.group_by { |order_item| order_item.product.user }
+
+    origin_package_pairs = []
+    grouped_items.each do |merchant, items|
+      origin_package = {}
+      origin_package["origin"] = create_location(merchant)
+      origin_package["packages"] = []
+      items.each do |item|
+        origin_package["packages"] << create_package(item)
+      end
+      origin_package_pairs << origin_package
+    end
+
+    destination = create_location(@order)
+
+    all_rates = []
+    origin_package_pairs.each do |distinct_origin|
+      distinct_origin["destination"] = destination
+      shipment = {}
+      shipment["shipment"] = distinct_origin
+
+      json_shipment = shipment.to_json
+
+      response = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } )
+      all_rates += response
+    end
+
+    @calculated_rates = []
+    grouped_rates = all_rates.group_by { |rate| rate["service_name"] }
+    grouped_rates.each do |service, service_rate_pairs|
+      rate = {}
+      rate["service_name"] = service
+      rate["total_price"] = service_rate_pairs.inject(0) { |sum, rate| sum + rate["total_price"] }
+      @calculated_rates << rate
+    end
+
+    ## be able to choose shipping option and see updated total
+    ## submit final order with chosen shipping option
+
+    ## render shipping view
+    ## button on page will redirect to finalize
+  end
+
+  # def finalize
+  #   @order.status = "paid"
+  #   session[:order_id] = nil # emptying the cart after confirming order
+  #   update_inventory(@order)
+
+  #   ## make API call to log chosen shipping
+  #   ## redirect_to order_confirmation_path
+  # end
 
   def confirmation
     session[:order_id] = nil # clears cart
@@ -119,5 +172,24 @@ class OrdersController < ApplicationController
       product.inventory -= order_item.quantity
       product.save
     end
+  end
+
+  def create_location(object)
+    location = {}
+    location["country"] = COUNTRY
+    location["state"] = object.state
+    location["city"] = object.city
+    location["zip"] = object.zip
+    return location
+  end
+
+  def create_package(item)
+    package = {}
+    product = item.product
+    package["weight"] = product.weight_in_gms
+
+    dimensions = [product.length_in_cms, product.width_in_cms, product.height_in_cms]
+    package["dimensions"] = dimensions
+    return package
   end
 end
