@@ -3,135 +3,101 @@ require 'rails_helper'
 RSpec.describe Product, type: :model do
   describe "model validations" do
     # Required attributes
-    required_attributes = [:name, :price, :photo_url, :inventory,
-      :user_id, :weight_in_gms, :length_in_cms, :width_in_cms, :height_in_cms]
+    required_attributes = [:photo_url, :user_id, :weight_in_gms, :length_in_cms,
+      :width_in_cms, :height_in_cms]
     required_attributes.each do |attribute|
       it "requires #{attribute}" do
-        product = Product.new
-        expect(product).to_not be_valid
+        product = build :product
+        product[attribute] = nil
+        product.valid?
         expect(product.errors.keys).to include(attribute)
       end
     end
 
-    before :each do
-      @product_a = Product.create(
-        name: "A product",
-        price: 20.95,
-        photo_url: "a_photo.jpg",
-        inventory: 4,
-        user_id: 1,
-        weight_in_gms: 100,
-        length_in_cms: 15,
-        width_in_cms: 10,
-        height_in_cms: 10
-      )
-      @product_b = Product.new(
-        name: "A product",
-        price: 21.95,
-        photo_url: "b_photo.jpg",
-        inventory: 2,
-        user_id: 2,
-        weight_in_gms: 100,
-        length_in_cms: 15,
-        width_in_cms: 10,
-        height_in_cms: 10
-      )
-    end
-    # Name attribute
-    it "name must be unique" do
+    context "name" do
+      it "requires name" do
+        product = build :product, name: nil
+        product.valid?
+        expect(product.errors.keys).to include(:name)
+      end
 
-      expect(@product_b).to_not be_valid
-      expect(@product_b.errors.keys).to include(:name)
-    end
-
-    # Price attribute
-    it "price is a decimal" do
-      expect(@product_a.price.class).to eq BigDecimal
-    end
-
-    it "does not allow non-numeric input for price" do
-      product_c = Product.new(
-        name: "C product",
-        price: "bloop",
-        photo_url: "c_photo.jpg",
-        inventory: 22,
-        user_id: 2
-      )
-      expect(product_c).to_not be_valid
-      expect(product_c.errors.keys).to include(:price)
-    end
-
-    it "non-decimals are converted to decimals by adding .0" do
-      product_c = Product.new(
-        name: "C product",
-        price: 30,
-        photo_url: "c_photo.jpg",
-        inventory: 22,
-        user_id: 2
-      )
-      expect(product_c.price.to_s).to eq "30.0"
-    end
-
-    it "price must be greater than 0" do
-      product_c = Product.new(
-        name: "C product",
-        price: -30.95,
-        photo_url: "c_photo.jpg",
-        inventory: 22,
-        user_id: 2
-      )
-      expect(product_c).to_not be_valid
-      expect(product_c.errors.keys).to include(:price)
-    end
-
-    # Inventory attribute
-    invalid_inventories = [ -4, 4.53, "bloop" ]
-    it "does not allow invalid input for inventory" do
-      invalid_inventories.each do |value|
-        product = Product.new(
-          name: "a product",
-          price: 34.20,
-          photo_url: "c_photo.jpg",
-          inventory: value,
-          user_id: 2
-        )
-        expect(product).to_not be_valid
-        expect(product.errors.keys).to include(:inventory)
+      it "name must be unique" do
+        create :product
+        product = build :product
+        product.valid?
+        expect(product.errors.keys).to include(:name)
       end
     end
 
-    it "inventory is a Fixnum" do
-      expect(@product_a.inventory.class).to eq Fixnum
+    context "price" do
+      it "requires price" do
+        product = build :product, price: nil
+        product.valid?
+        expect(product.errors.keys).to include(:price)
+      end
+
+      it "price is a decimal" do
+        product = build :product
+        expect(product.price.class).to eq BigDecimal
+      end
+
+      it "does not allow non-numeric input for price" do
+        product = build :product, price: "bloop"
+        product.valid?
+        expect(product.errors.messages).to eq(:price=>["is not a number"])
+      end
+
+      it "non-decimals are converted to decimals by adding .0" do
+        product = build :product, price: 30
+        expect(product.price).to eq 30.0
+      end
+
+      it "price must be greater than 0" do
+        product = build :product, price: -30.23
+        product.valid?
+        expect(product.errors.keys).to include(:price)
+      end
+    end
+
+    context "inventory" do
+      it "requires inventory" do
+        product = build :product, inventory: nil
+        product.valid?
+        expect(product.errors.keys).to include(:inventory)
+      end
+
+      [-4, 4.53, "bloop"].each do |value|
+      it "does not validate #{value} for inventory" do
+          product = build :product, inventory: value
+          product.valid?
+          expect(product.errors.keys).to include(:inventory)
+        end
+      end
+
+      it "inventory is a Fixnum" do
+        product = create :product
+        expect(product.inventory.class).to eq Fixnum
+      end
     end
 
     context "weight and dimension attribute validations" do
-      let(:product) do Product.new(
-        name: "A product",
-        price: 20.95,
-        photo_url: "a_photo.jpg",
-        inventory: 4,
-        user_id: 1,
-        weight_in_gms: 100,
-        length_in_cms: 15,
-        width_in_cms: 10,
-        height_in_cms: 10
-        )
+      before :each do
+        @product = build :product
       end
-
       weight_and_dimensions = [:weight_in_gms, :length_in_cms, :width_in_cms, :height_in_cms]
 
       weight_and_dimensions.each do |attribute|
         it "#{attribute} can be a number" do
-          product.valid?
-          expect(product.errors.keys).to_not include attribute
+          @product.valid?
+          expect(@product.errors.keys).to_not include attribute
         end
       end
 
       weight_and_dimensions.each do |attribute|
         it "#{attribute} cannot be alphabetical" do
-          product[attribute] = "hello"
-          product.valid?
-          expect(product.errors.keys).to include attribute
+          @product[attribute] = "hello"
+          @product.valid?
+          expect(@product.errors.keys).to include attribute
         end
       end
     end
@@ -151,26 +117,16 @@ RSpec.describe Product, type: :model do
   # Scopes - WIP
   describe "scope" do
     before :each do
-      @product_b = Product.create(
-        name: "B product - different vendor",
-        price: 22.95,
-        photo_url: "b_photo.jpg",
-        inventory: 71,
+      @product_a = create :product, name: "B product - different vendor",
         user_id: 2
-      )
-      @product_c = Product.create(
-        name: "C product",
-        price: 30.00,
-        photo_url: "c_photo.jpg",
-        inventory: 13,
-        user_id: 1
-      )
 
-      Product.create(name: "A product", price: 40.05, photo_url: "a_photo.jpg", inventory: 2, user_id: 2)
-      Product.create(name: "D product", price: 20.05, photo_url: "d_photo.jpg", inventory: 2, user_id: 2)
-      Product.create(name: "E product", price: 30.05, photo_url: "e_photo.jpg", inventory: 2, user_id: 2)
-      Product.create(name: "F product", price: 45.05, photo_url: "f_photo.jpg", inventory: 2, user_id: 2)
-      Product.create(name: "G product", price: 32.05, photo_url: "g_photo.jpg", inventory: 2, user_id: 2)
+      @product_b = create :product
+
+      create :product, name: "C product", user_id: 2
+      create :product, name: "D product", user_id: 2
+      create :product, name: "E product", user_id: 2
+      create :product, name: "F product", user_id: 2
+      create :product, name: "G product", user_id: 2
     end
 
     describe "#by_vendor" do
@@ -186,8 +142,8 @@ RSpec.describe Product, type: :model do
       # end
 
       it "by_vendor does not return false positives" do
-        expect(Product.by_vendor(1)).to_not include(@product_b)
-        expect(Product.by_vendor(2)).to_not include(@product_a)
+        expect(Product.by_vendor(1)).to_not include(@product_a)
+        expect(Product.by_vendor(2)).to_not include(@product_b)
       end
     end
 
@@ -252,7 +208,7 @@ RSpec.describe Product, type: :model do
     #   end
 
     #   # I tried, but I just ended up rewriting the scope
-      
+
     #   # it "selects the most popular products" do
     #   #   product1 = @order_items.map { |item| item if item.product_id == 1 }
     #   #   product2 = @order_items.map { |item| item if item.product_id == 2 }

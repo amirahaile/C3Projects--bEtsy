@@ -9,6 +9,6 @@ class Category < ActiveRecord::Base
   before_validation :normalize_names!
 
   def normalize_names!
-    self.name = self.name.titlecase
+    self.name = self.name.titlecase unless name == nil
   end
 end
