@@ -7,12 +7,15 @@
 <div class="col-md-8 no-float center-block">
   <%= form_for @order do |f| %>
     <% @parsed_responses.each do |service| %>
-      <%= f.radio_button :service, "#{service[0]}" %>
-      <%= f.label :service, "#{service[0]} – #{usd_convert(service[1])}" %>
+      <%= fields_for :service do |ff| %>
+        <%= ff.hidden_field :rate, :value => service[1] %>
+        <%= ff.radio_button :name, "#{service[0]}" %>
+        <%= ff.label :name, "#{service[0]} – #{usd_convert(service[1])}" %>
+      <% end %>
       <br>
     <% end %>
 
-    <% f.hidden_field :shipper, :value => params[:shipper] %>
+    <%= f.hidden_field :shipper, :value => params[:shipper] %>
 
     <!-- TODO: Assign rate value to @order -->
 

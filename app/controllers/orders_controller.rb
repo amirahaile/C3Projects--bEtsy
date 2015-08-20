@@ -23,8 +23,15 @@ class OrdersController < ApplicationController
 
   # NOTE: What directs to this action…? Merchant side?
   def update
-    @order.update(order_params)
     @buyer = Order.find(params[:id]).buyer
+    @order.update(order_params)
+
+    selected_service = params[:service]
+    service = selected_service[:name]
+    rate = selected_service[:rate]
+    @order.service = service
+    @order.rate = rate
+    @order.save
 
     if params[:shipper] != "none"
       redirect_to shipping_quotes_path(id: @order.id, shipper: params[:shipper]) # buyer side
@@ -112,7 +119,7 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:id, :shipper, :service, :rate)
+    params.require(:order).permit(:id, :shipper)
   end
 
   def find_order
