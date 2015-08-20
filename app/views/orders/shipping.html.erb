@@ -5,4 +5,8 @@
 
 <h4>Shipping Options</h4>
 
-<!-- Display shipping options here -->
+<ul>
+  <% @calculated_rates.each do |rate| %>
+    <li><%= "#{rate["service_name"]}, $#{rate["total_price"]/100.0}" %></li>
+  <% end %>
+</ul>
