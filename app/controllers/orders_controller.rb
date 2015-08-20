@@ -1,7 +1,10 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
+
   COUNTRY = "US"
-  PENGUIN_ALL_RATES_URI = "http://localhost:4000/get_all_rates"
+
+  PENGUIN_ALL_RATES_URI   = "http://localhost:4000/get_all_rates"
+  PENGUIN_LOG_CHOICE_URI  = "http://localhost:4000/log_shipping_choice"
 
   def find_order
     @order = Order.find(params[:id])
@@ -93,7 +96,8 @@ class OrdersController < ApplicationController
 
       json_shipment = shipment.to_json
 
-      results = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } ).parsed_response
+      response = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } )
+      results = response.parsed_response
       all_rates += results
     end
 
@@ -138,7 +142,17 @@ class OrdersController < ApplicationController
       if @order.save # move and account for whether the order is cancelled?
         update_inventory(@order)
         redirect_to order_confirmation_path(@order)
-        ## TODO make API call to log chosen shipping
+
+        shipping_choice = {}
+        shipping_choice["shipping_choice"] = {} # create wrapper for JSON
+        shipping_choice["shipping_choice"]["shipping_service"] = @order.shipping_service
+        # multiply by 100 since PenguinShipper stores costs in cents 
+        shipping_choice["shipping_choice"]["shipping_cost"] = @order.shipping_cost * 100
+        shipping_choice["shipping_choice"]["order_id"] = @order.id
+        shipping_choice = shipping_choice.to_json
+
+        response = HTTParty.post(PENGUIN_LOG_CHOICE_URI, query: { json_data: shipping_choice })
+        raise
       else
         redirect_to :shipping, notice: "Order could not be saved. Please try again."
       end
