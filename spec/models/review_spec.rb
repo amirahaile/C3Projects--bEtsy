@@ -1,62 +1,43 @@
 require 'rails_helper'
 
-# These RSpecs are not DRY at all. :(
 RSpec.describe Review, type: :model do
 
-  describe "model validations:" do
-    let(:review) { Review.new }
-
-    context "rating" do
-      it "is required" do
-        expect(review).to_not be_valid
+  describe "model validations" do
+    context "rating validations" do
+      it "requires rating" do
+        review = build :review, rating: nil
+        review.valid?
         expect(review.errors.keys).to include(:rating)
       end
 
-      ["one", 0.0, 4.5, nil].each do |invalid_rating|
-        it "required to be an integer" do
-          invalid_review = review
-          invalid_review.attributes = {
-            rating: invalid_rating,
-            description: "Tests",
-            product_id: 1
-          }
-
-          expect(invalid_review).to_not be_valid
+      ["one", 0.0, 4.5].each do |invalid_rating|
+        it "requires rating to be an integer" do
+          invalid_review = build :review, rating: invalid_rating
+          invalid_review.valid?
           expect(invalid_review.errors.keys).to include(:rating)
         end
       end
 
-      [-5, -1, 0, 6].each do |invalid_rating|
-        it "required to be 1 - 5" do
-          invalid_review = review
-          invalid_review.attributes = {
-            rating: invalid_rating,
-            description: "Tests",
-            product_id: 1
-          }
-
-          expect(invalid_review).to_not be_valid
+      [-1, 0, 6].each do |invalid_rating|
+        it "requires rating to be between 1 - 5" do
+          invalid_review = build :review, rating: invalid_rating
+          invalid_review.valid?
           expect(invalid_review.errors.keys).to include(:rating)
         end
       end
     end
 
-    context "product_id" do
-      it "required" do
-        expect(review).to_not be_valid
+    context "product_id validations" do
+      it "requires product_id" do
+        review = build :review, product_id: nil
+        review.valid?
         expect(review.errors.keys).to include(:product_id)
       end
 
-      ["one", 0.0, 4.5, nil].each do |invalid_id|
-        it "required to be an integer" do
-          invalid_review = review
-          invalid_review.attributes = {
-            rating: invalid_id,
-            description: "Tests",
-            product_id: 1
-          }
-
-          expect(invalid_review).to_not be_valid
+      ["one", 0.0, 4.5].each do |invalid_id|
+        it "requires product_id to be an integer" do
+          invalid_review = build :review, rating: invalid_id
+          invalid_review.valid?
           expect(invalid_review.errors.keys).to include(:rating)
         end
       end
@@ -65,7 +46,7 @@ RSpec.describe Review, type: :model do
     context "scopes" do
       before :each do
         rating = ["3", "2", "4", "5", "1"]
-        rating.each { |rate| Review.create!(rating: rate, product_id: 1) }
+        rating.each { |rate| create :review, rating: rate }
       end
 
       it "ratings_by_1" do
