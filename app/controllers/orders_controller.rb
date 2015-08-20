@@ -97,8 +97,11 @@ class OrdersController < ApplicationController
       json_shipment = shipment.to_json
 
       response = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } )
-      results = response.parsed_response
-      all_rates += results
+      case response.code
+      when 200
+        results = response.parsed_response
+        all_rates += results
+      end
     end
 
     @calculated_rates = []
@@ -136,23 +139,31 @@ class OrdersController < ApplicationController
       shipping_option = session[:shipping_option]
       @order.shipping_service = shipping_option["service_name"]
       @order.shipping_cost = shipping_option["total_price"]/100.0
-      
+
       @order.status = "paid"
-      
+
       if @order.save # move and account for whether the order is cancelled?
-        update_inventory(@order)
-        redirect_to order_confirmation_path(@order)
 
         shipping_choice = {}
         shipping_choice["shipping_choice"] = {} # create wrapper for JSON
         shipping_choice["shipping_choice"]["shipping_service"] = @order.shipping_service
-        # multiply by 100 since PenguinShipper stores costs in cents 
+        # multiply by 100 since PenguinShipper stores costs in cents
         shipping_choice["shipping_choice"]["shipping_cost"] = @order.shipping_cost * 100
         shipping_choice["shipping_choice"]["order_id"] = @order.id
         shipping_choice = shipping_choice.to_json
 
         response = HTTParty.post(PENGUIN_LOG_CHOICE_URI, query: { json_data: shipping_choice })
-        raise
+        case response.code
+        when 201
+          update_inventory(@order)
+          redirect_to order_confirmation_path(@order)
+        when 422
+          redirect_to :shipping, notice: "Error in shipping choice. Please try again."
+        when 408
+          redirect_to :shipping, notice: "We could not process your request in a timely manner. Please try again later."
+        else
+          redirect_to :shipping, notice: "NOPE. Please try again."
+        end
       else
         redirect_to :shipping, notice: "Order could not be saved. Please try again."
       end
