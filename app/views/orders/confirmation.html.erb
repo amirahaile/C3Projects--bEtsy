@@ -1,4 +1,3 @@
-<% subtotal = 0 %>
 <h4>Order Placed: <%= @purchase_time.strftime("%b %e, %Y at %l:%M %p") %></h4>
 <h4>Order Status: <%= @order.status.capitalize %></h4>
 
@@ -28,48 +27,36 @@
     <th>Price</th>
     <th>Qty</th>
     <th>Total</th>
-    <th><%= "Shipped?" if session[:user_id] %></th>
   </tr>
     <% @order_items.each do |item| %>
-    <tr>
-      <% product = Product.find(item.product_id) %>
-      <td> <%= link_to product.name, product_path(product) %> </td>
-      <td> <%= number_to_currency(product.price) %> </td>
-      <td>
-        <%= item.quantity %>
-      </td>
-      <td> <%= number_to_currency(product.price * item.quantity) %> </td>
-		    <% subtotal += (product.price * item.quantity) %>
-      <td><% if @order.status == "complete" %>
-          <%= "\u2718" %>
-          <% else %>
-            <%= "\u274F" %>
-          <% end %>
-      </td>
-    </tr>
-
-      <% end %>
-
+      <tr>
+        <% product = Product.find(item.product_id) %>
+        <td> <%= link_to product.name, product_path(product) %> </td>
+        <td> <%= number_to_currency(product.price) %> </td>
+        <td>
+          <%= item.quantity %>
+        </td>
+        <td><%= number_to_currency(product.price * item.quantity) %> </td>
+  		    <% @subtotal += (product.price * item.quantity) %>
+      </tr>
+    <% end %>
 	<tr>
 		<td colspan="2"></td>
 		<td>Subtotal:</td>
-		<td>
-			<%= number_to_currency(subtotal) %>
-		</td>
+		<td><%= number_to_currency(@subtotal) %></td>
 	</tr>
 	<tr>
 		<td colspan="2"></td>
-		<td>Tax:</td>
+		<td>Shipping:</td>
 		<td>
-			<% tax = subtotal * 0.095 %>
-			<%= number_to_currency(tax) %>
+			<%= number_to_currency(@order.shipping_cost) %>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2"></td>
 		<td>Total:</td>
 		<td>
-			<%= number_to_currency(subtotal + tax) %>
+			<%= number_to_currency(@subtotal + @order.shipping_cost) %>
 		</td>
 	</tr>
 </table>
