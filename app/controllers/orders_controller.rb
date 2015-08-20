@@ -95,8 +95,8 @@ class OrdersController < ApplicationController
 
       json_shipment = shipment.to_json
 
-      response = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } )
-      all_rates += response
+      results = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } ).parsed_response
+      all_rates += results
     end
 
     @calculated_rates = []
@@ -105,6 +105,7 @@ class OrdersController < ApplicationController
       rate = {}
       rate["service_name"] = service
       rate["total_price"] = service_rate_pairs.inject(0) { |sum, rate| sum + rate["total_price"] }
+      rate["delivery_date"] = service_rate_pairs.last["delivery_date"]
       @calculated_rates << rate
     end
 
@@ -113,6 +114,12 @@ class OrdersController < ApplicationController
 
     ## render shipping view
     ## button on page will redirect to finalize
+  end
+
+  def update_total
+    raise
+    ## this is how :shipping_option is getting passed in the params
+    ## "{\"service_name\"=>\"UPS Next Day Air\", \"total_price\"=>15985, \"delivery_date\"=>\"2015-08-21T00:00:00.000+00:00\"}"
   end
 
   # def finalize
