@@ -6,6 +6,8 @@ class OrdersController < ApplicationController
 
   include ApplicationHelper
 
+  SHIPPING_API = 'http://localhost:3001/' #'https://rocky-reef-8090.herokuapp.com/'
+
   def new
     @order = Order.new
   end
@@ -22,13 +24,14 @@ class OrdersController < ApplicationController
   # NOTE: What directs to this action…? Merchant side?
   def update
     @order.update(order_params)
+    @buyer = Order.find(params[:id]).buyer
 
-    if !params[:shipper].nil?
-      redirect_to shipping_quotes_path(params[:shipper]) # buyer side
-    elsif params[:shipper].nil?
+    if params[:shipper] != "none"
+      redirect_to shipping_quotes_path(id: @order.id, shipper: params[:shipper]) # buyer side
+    elsif params[:shipper] == 'none'
       redirect_to buyer_confirmation_path(@buyer.order_id)
     else
-      render :show # merchant side
+      render :show # merchant side?
     end
   end
 
@@ -37,10 +40,9 @@ class OrdersController < ApplicationController
     buyer = @order.buyer
     products = @order.order_items.map { |item| item.product }
     merchants = products.map { |product| product.user }
-    # response per merchant; should be all the shipping for the order
-    # TODO: Figure out if API is sending back responses for one or all shippers
-    @parsed_responses = []
+    shipper = params[:shipper].nil? ? 'usps' : params[:shipper]
 
+    # TODO: works for 1 merchant; make it work for multiple
     merchants.each do |merchant|
       merchant_products = products.map { |product|  product if product.user_id == merchant.id}
       merchant_products.compact! # removes nils inserted by map
@@ -49,21 +51,28 @@ class OrdersController < ApplicationController
         products_hash[merchant_products.index(product)] = product.for_shipping
       end
 
-      # body for API request
       shipping_info = {
-        body: {
-          merchant: merchant.for_shipping,
-          buyer: buyer.for_shipping,
-          products: products_hash
-        }
-      }
+        shipper: shipper,
+        merchant: merchant.for_shipping,
+        buyer: buyer.for_shipping,
+        products: products_hash
+      }.to_json
 
-      # response = HTTParty.post('heroku url', shipping_info) # TODO: Deploy Shipping API to Heroku
-      # @parsed_responses << response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+      response = HTTParty.post(
+        SHIPPING_API, {
+          headers: { "Content-Type" => 'application/json', "Accept" => "application/json" },
+          body: shipping_info
+        }
+      )
+
+      @parsed_responses = response
     end
 
-    # NOTE: :shipper shouldn't be hardcoded - where do we assign this?
-    render :action => "shipping_quotes", :id => @order.id, :shipper => 'usps'
+    if !params[:shipper]
+      render :action => "shipping_quotes", :id => @order.id, :shipper => 'usps'
+    else
+      render :action => "shipping_quotes", :id => @order.id, :shipper => 'ups'
+    end
   end
 
   # def quotes=
@@ -107,7 +116,7 @@ class OrdersController < ApplicationController
   end
 
   def find_order
-    @order = Order.find(id: order_params[:id])
+    @order = params[:id] ? Order.find(params[:id]) : Order.find(id: order_params[:id])
   end
 
   def empty_cart?

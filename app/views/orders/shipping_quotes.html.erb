@@ -1,20 +1,29 @@
-<h1>Shipping Quotes</h1>
+<div class="row no-jumbo form-header">
+  <div class = "col-md-4 col-md-offset-4">
+      <h1> <%= "#{params[:shipper].upcase}" %> Shipping Quotes</h1>
+  </div>
+</div>
 
-<%= form_for @order do |f| %>
-  <% @parsed_responses.each do |service| %>
-    <%= f.label :service, "#{service[0]} #{service[1]}" %>
-    <%= f.check_box :servce %>
-    <br>
+<div class="col-md-8 no-float center-block">
+  <%= form_for @order do |f| %>
+    <% @parsed_responses.each do |service| %>
+      <%= f.radio_button :service, "#{service[0]}" %>
+      <%= f.label :service, "#{service[0]} – #{usd_convert(service[1])}" %>
+      <br>
+    <% end %>
+
+    <% f.hidden_field :shipper, :value => params[:shipper] %>
+
+    <!-- TODO: Assign rate value to @order -->
+
+    <% if params[:shipper] == 'usps' %>
+      <!-- not a link b/c the current selection needs to be saved -->
+      <%= hidden_field_tag :shipper, 'ups' %>
+      <%= f.submit "More Quotes", class: 'btn btn-default' %>
+    <% else %>
+      <%= hidden_field_tag :shipper, 'none' %>
+    <% end %>
+
+    <%= f.submit "Checkout", class: 'btn btn-primary' %>
   <% end %>
-
-  <% f.hidden_field :shipper, :value => params[:shipper] %>
-
-  <!-- TODO: Assign rate value to @order -->
-
-  <!-- not a link because the current selection needs to be saved -->
-  <% if params[:shipper] == 'usps' %>
-    <%= f.submit "More Quotes", shipper: 'ups' %>
-  <% end %>
-
-  <%= f.submit "Checkout" %>
-<% end %>
+</div>
