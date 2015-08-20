@@ -44,6 +44,7 @@
   <% if params[:status] != 'estimate' %>
     <%= link_to("Estimate Shipping", order_path(status: 'estimate'), 
       class: "btn btn-info") %>
+    <% raise %>
   <% end %>
   </td>
 <% end %>

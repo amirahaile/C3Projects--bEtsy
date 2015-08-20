@@ -1,5 +1,9 @@
+require 'httparty'
+
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
+
+  CALLBACK_URL = "http://localhost:4000/quote"
 
   def find_order
     @order = Order.find(params[:id])
@@ -93,7 +97,65 @@ class OrdersController < ApplicationController
   end
 
   def shipping
-    @order
+    items = @order.order_items
+    products = []
+    order_items.each { |item| products << Product.find_by(id: item.product_id) }
+
+    packages = []
+    origin = {}
+    products.each do |product|
+      packages <<
+      {
+        weight: product.weight,
+        height: product.height,
+        width: product.width
+      }
+
+      user = User.find_by(id: product.user_id)
+
+      origin[:city] = user.city
+      origin[:state] = user.state
+      origin[:country] = user.country
+      origin[:zip] = user.zip
+      endpp
+
+    response = HTTParty.get(CALLBACK_URL,
+      body: { packages: packages, 
+              origin: origin, 
+              destination: { 
+              country: "US", 
+              state: params[:state],
+              city: params[:city],
+              zip: params[:zip]
+              }, 
+            }.to_json,
+      headers: { 'Content-Type' => 'application/json' } )
+    end
+
+ 
+    # send a get request to /quote
+    # get "/quote" => "fed_ax_api#quote"
+
+    # send in the body of your request the following params:
+
+    # result[:origin] = params.require(:origin).permit(:country, :state, :city, :zip)
+    # result[:destination] = params.require(:destination).permit(:country, :state, :city, :zip)
+    # result[:packages] = params.permit(:packages => [:weight, :width, :height, :depth])[:packages]
+
+    # packages is an array of package hashes
+    # some example data so you can see what it should look like:
+
+    # let(:valid_package) { { weight: "1.5", height: "1.5", width: "1.5", depth: "1.5" } }
+    # let(:another_valid_package) { { weight: "2.5", height: "2.5", width: "2.5", depth: "2.5" } }
+    # let(:valid_packages) { [valid_package, another_valid_package] }
+    # let(:valid_origin) { { country: "US", state: "WA", city: "Seattle", zip: "98101" } }
+    # let(:valid_destination) { { country: "US", state: "IL", city: "Chicago", zip: "60652" } }
+    
+    # how I call it in the specs:
+    # get :quote, packages: valid_packages, origin: valid_origin, destination: valid_destination
+    # only the quote endpoint is up and running
+
+    render order_path
   end
 
   private
