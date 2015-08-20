@@ -138,7 +138,7 @@ class OrdersController < ApplicationController
       if @order.save # move and account for whether the order is cancelled?
         update_inventory(@order)
         redirect_to order_confirmation_path(@order)
-        ## make API call to log chosen shipping
+        ## TODO make API call to log chosen shipping
       else
         redirect_to :shipping, notice: "Order could not be saved. Please try again."
       end
