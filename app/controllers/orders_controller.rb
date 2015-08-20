@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
+  COUNTRY = "US"
+  PENGUIN_ALL_RATES_URI = "http://localhost:4000/get_all_rates"
 
   def find_order
     @order = Order.find(params[:id])
@@ -70,7 +72,33 @@ class OrdersController < ApplicationController
 
   def shipping
     @order_items = @order.order_items
-    ## grab all the location and package info
+    grouped_items = @order_items.group_by { |order_item| order_item.product.user }
+
+    origin_package_pairs = []
+    grouped_items.each do |merchant, items|
+      origin_package = {}
+      origin_package["origin"] = create_location(merchant)
+      origin_package["packages"] = []
+      items.each do |item|
+        origin_package["packages"] << create_package(item)
+      end
+      origin_package_pairs << origin_package
+    end
+
+    destination = create_location(@order)
+
+    all_rates = []
+    origin_package_pairs.each do |distinct_origin|
+      distinct_origin["destination"] = destination
+      shipment = {}
+      shipment["shipment"] = distinct_origin
+
+      json_shipment = shipment.to_json
+
+      response = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } )
+      all_rates += response
+    end
+
     ## make API calls
 
     ## render order details and list of shipping options
@@ -137,5 +165,24 @@ class OrdersController < ApplicationController
       product.inventory -= order_item.quantity
       product.save
     end
+  end
+
+  def create_location(object)
+    location = {}
+    location["country"] = COUNTRY
+    location["state"] = object.state
+    location["city"] = object.city
+    location["zip"] = object.zip
+    return location
+  end
+
+  def create_package(item)
+    package = {}
+    product = item.product
+    package["weight"] = product.weight_in_gms
+
+    dimensions = [product.length_in_cms, product.width_in_cms, product.height_in_cms]
+    package["dimensions"] = dimensions
+    return package
   end
 end
