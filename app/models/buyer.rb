@@ -15,9 +15,9 @@ class Buyer < ActiveRecord::Base
                                   length: { is: 2 }
   validates :billing_city,        presence: true
   validates :exp,                 presence: true
-  validates :credit_card,         presence: true,
-                                  numericality: { only_integer: true },
-                                  length: { in: 14..16 }
+  # validates :credit_card,         presence: true,
+  #                                 numericality: { only_integer: true },
+  #                                 length: { in: 14..16 }
 
 
   def for_shipping
@@ -28,7 +28,7 @@ class Buyer < ActiveRecord::Base
       zip: buyer[:shipping_zip]
     }
   end
-  
+
   private
 
   def convert_to_last_four
