@@ -44,7 +44,6 @@
   <% if params[:status] != 'estimate' %>
     <%= link_to("Estimate Shipping", order_path(status: 'estimate'), 
       class: "btn btn-info") %>
-    <% raise %>
   <% end %>
   </td>
 <% end %>
@@ -52,5 +51,7 @@
 <div class="row">
   <% if params[:status] == 'estimate' %>
     <%= render template: "orders/shipping", layout: false %>
+  <% elsif status == 'shipping' %>
+    <%= render template: "orders/estimate", layout: false %>
   <% end %>
 </div>
