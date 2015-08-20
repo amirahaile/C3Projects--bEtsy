@@ -1,7 +1,47 @@
 <h2>Select Shipping Option</h2>
 
 <h4>Order Details</h4>
-<%= render partial: "details" %>
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Qty</th>
+    <th>Total</th>
+  </tr>
+    <% @order_items.each do |item| %>
+      <tr>
+        <% product = Product.find(item.product_id) %>
+        <td> <%= link_to product.name, product_path(product) %> </td>
+        <td> <%= number_to_currency(product.price) %> </td>
+        <td>
+          <%= item.quantity %>
+        </td>
+        <td> <%= number_to_currency(product.price * item.quantity) %> </td>
+  		    <% @subtotal += (product.price * item.quantity) %>
+      </tr>
+    <% end %>
+	<tr>
+		<td colspan="2"></td>
+		<td>Subtotal:</td>
+		<td>
+			<%= number_to_currency(@subtotal) %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td>Shipping:</td>
+		<td>
+			<%= number_to_currency(@shipping_cost) %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td>Total:</td>
+		<td>
+			<%= number_to_currency(@subtotal + @shipping_cost) %>
+		</td>
+	</tr>
+</table>
 
 <h4>Shipping Options</h4>
 
@@ -14,3 +54,4 @@
   <% end %>
   <%= submit_tag "Update total price" %>
 <% end %>
+<%= link_to "Finalize Order", finalize_path, class: finalize_button %>
