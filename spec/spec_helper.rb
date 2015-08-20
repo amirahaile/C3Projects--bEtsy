@@ -1,3 +1,4 @@
+require 'factory_girl'
 require "simplecov"
 require "rails_helper"
 
