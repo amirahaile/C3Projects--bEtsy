@@ -10,17 +10,17 @@ RSpec.describe Review, type: :model do
         expect(review.errors.keys).to include(:rating)
       end
 
-      ["one", 0.0, 4.5].each do |invalid_rating|
-        it "requires rating to be an integer" do
-          invalid_review = build :review, rating: invalid_rating
+      ["one", 0.0, 4.5].each do |rating|
+        it "requires rating to be an integer, does not validate #{rating}" do
+          invalid_review = build :review, rating: rating
           invalid_review.valid?
           expect(invalid_review.errors.keys).to include(:rating)
         end
       end
 
-      [-1, 0, 6].each do |invalid_rating|
-        it "requires rating to be between 1 - 5" do
-          invalid_review = build :review, rating: invalid_rating
+      [-1, 0, 6].each do |rating|
+        it "requires rating to be between 1 - 5, does not validate #{rating}" do
+          invalid_review = build :review, rating: rating
           invalid_review.valid?
           expect(invalid_review.errors.keys).to include(:rating)
         end
@@ -34,9 +34,9 @@ RSpec.describe Review, type: :model do
         expect(review.errors.keys).to include(:product_id)
       end
 
-      ["one", 0.0, 4.5].each do |invalid_id|
-        it "requires product_id to be an integer" do
-          invalid_review = build :review, rating: invalid_id
+      ["one", 0.0, 4.5].each do |id|
+        it "requires product_id to be an integer, does not validate #{id}" do
+          invalid_review = build :review, rating: id
           invalid_review.valid?
           expect(invalid_review.errors.keys).to include(:rating)
         end
