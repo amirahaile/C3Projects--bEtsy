@@ -116,6 +116,12 @@ class OrdersController < ApplicationController
     ## button on page will redirect to finalize
   end
 
+  def update_total
+    raise
+    ## this is how :shipping_option is getting passed in the params
+    ## "{\"service_name\"=>\"UPS Next Day Air\", \"total_price\"=>15985, \"delivery_date\"=>\"2015-08-21T00:00:00.000+00:00\"}"
+  end
+
   # def finalize
   #   @order.status = "paid"
   #   session[:order_id] = nil # emptying the cart after confirming order
