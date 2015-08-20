@@ -11,7 +11,7 @@ FactoryGirl.define do
 
   factory :order do
     email "somedude@someplace.com"
-    address "1111 Someplace Ave."
+    address1 "1111 Someplace Ave."
     city "San Leandro"
     state "CA"
     zip 94578
