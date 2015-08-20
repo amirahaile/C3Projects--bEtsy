@@ -10,4 +10,8 @@ module OrdersHelper
   def shipping_option_label(shipping_option)
     "#{shipping_option["service_name"]}: $#{shipping_option["total_price"]/100.0}, Estimated delivery: #{shipping_option["delivery_date"] || "(none available)"}"
   end
+
+  def finalize_button
+    @shipping_cost == 0 ? "btn btn-default disabled" : "btn btn-success"
+  end
 end

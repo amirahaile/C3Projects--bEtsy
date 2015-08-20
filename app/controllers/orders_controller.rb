@@ -7,8 +7,7 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
   end
 
-  def index
-  end
+  def index; end
 
   def show
     if session[:order_id] == @order.id
@@ -21,7 +20,6 @@ class OrdersController < ApplicationController
     else
       redirect_to root_path # no session[:order_id]
     end
-    # raise
   end
 
   # view for an empty cart
@@ -47,28 +45,28 @@ class OrdersController < ApplicationController
   end
 
   def update
-    # check for appropriate amount of inventory before accepting payment
-    check_inventory(@order)
+     # check for appropriate amount of inventory before accepting payment
+     check_inventory(@order)
 
-    if @enough_inventory
-      @order.email = params[:order][:email]
-      @order.address1 = params[:order][:address1]
-      @order.address2 = params[:order][:address2]
-      @order.city = params[:order][:city]
-      @order.state = params[:order][:state]
-      @order.zip = params[:order][:zip]
-      @order.card_last_4 = params[:order][:card_number][-4, 4]
-      @order.ccv = params[:order][:ccv]
-      @order.card_exp = params[:order][:card_exp]
-      if @order.save # move and account for whether the order is cancelled?
-        redirect_to shipping_path(@order)
-      else
-        render :payment
-      end
-    else
-      redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
-    end
-  end
+     if @enough_inventory
+       @order.email = params[:order][:email]
+       @order.address1 = params[:order][:address1]
+       @order.address2 = params[:order][:address2]
+       @order.city = params[:order][:city]
+       @order.state = params[:order][:state]
+       @order.zip = params[:order][:zip]
+       @order.card_last_4 = params[:order][:card_number][-4, 4]
+       @order.ccv = params[:order][:ccv]
+       @order.card_exp = params[:order][:card_exp]
+       if @order.save # move and account for whether the order is cancelled?
+         redirect_to shipping_path(@order)
+       else
+         render :payment
+       end
+     else
+       redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
+     end
+   end
 
   def shipping
     @order_items = @order.order_items
@@ -109,32 +107,53 @@ class OrdersController < ApplicationController
       @calculated_rates << rate
     end
 
-    ## be able to choose shipping option and see updated total
-    ## submit final order with chosen shipping option
+    @subtotal = 0
+    @shipping_cost = session[:shipping_option] ? session[:shipping_option]["total_price"]/100.0 : 0
 
-    ## render shipping view
-    ## button on page will redirect to finalize
+    render :shipping
   end
 
   def update_total
-    raise
-    ## this is how :shipping_option is getting passed in the params
+    ## this is how :shipping_option is getting passed in the params before eval
     ## "{\"service_name\"=>\"UPS Next Day Air\", \"total_price\"=>15985, \"delivery_date\"=>\"2015-08-21T00:00:00.000+00:00\"}"
+
+    ## WARNING eval is an unsafe method as it will run commands in the evaluated object
+    ## FIXME change this to a safer way to convert the params data to something we can use
+    session[:shipping_option] = eval(params["shipping_option"])
+
+    redirect_to :shipping
   end
 
-  # def finalize
-  #   @order.status = "paid"
-  #   session[:order_id] = nil # emptying the cart after confirming order
-  #   update_inventory(@order)
+  def finalize
+    # secondary check for appropriate amount of inventory before accepting payment
+    check_inventory(@order)
 
-  #   ## make API call to log chosen shipping
-  #   ## redirect_to order_confirmation_path
-  # end
+    if @enough_inventory
+      shipping_option = session[:shipping_option]
+      @order.shipping_service = shipping_option["service_name"]
+      @order.shipping_cost = shipping_option["total_price"]/100.0
+      
+      @order.status = "paid"
+      
+      if @order.save # move and account for whether the order is cancelled?
+        update_inventory(@order)
+        redirect_to order_confirmation_path(@order)
+        ## TODO make API call to log chosen shipping
+      else
+        redirect_to :shipping, notice: "Order could not be saved. Please try again."
+      end
+    else # if not enough_inventory
+      redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
+    end
+  end
 
   def confirmation
     session[:order_id] = nil # clears cart
+    @subtotal = 0
     @purchase_time = Time.now
     @order_items = @order.order_items
+
+    render :confirmation
   end
 
   def destroy

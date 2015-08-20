@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   root 'products#index'
 
   get 'users/orders', to: 'users#list_of_orders', as: 'users_orders'
@@ -34,10 +33,11 @@ Rails.application.routes.draw do
 
   get 'orders/:id/payment', to: 'orders#payment', as: 'order_payment'
   put 'orders/:id/payment', to: 'orders#payment'
+
   get 'orders/:id/shipping', to: 'orders#shipping', as: 'shipping'
-
+  post 'orders/:id/update_total', to: 'orders#update_total', as: 'update_total'
+  put 'orders/:id/finalize', to: 'orders#finalize', as: 'finalize'
   get 'orders/:id/confirmation', to: 'orders#confirmation', as: 'order_confirmation'
-  get 'orders/:id/completed', to: 'orders#completed', as: 'shipped_order'
-  put 'orders/:id/update_total', to: 'orders#update_total', as: 'update_total'
 
+  get 'orders/:id/completed', to: 'orders#completed', as: 'shipped_order'
 end
