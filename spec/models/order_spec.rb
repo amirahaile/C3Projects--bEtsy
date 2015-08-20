@@ -3,35 +3,16 @@ require 'rails_helper'
 RSpec.describe Order, type: :model do
 
   describe "model validations" do
-    it "requires address1" do
-      user = build :order, address1: nil
-      user.valid?
-      expect(user.errors.keys).to include(:address1)
+    required_attributes = [:address1, :city, :state, :zip, :card_exp]
+    required_attributes.each do |attribute|
+      it "requires #{attribute}" do
+        order = build :order
+        order[attribute] = nil
+        order.valid?
+        expect(order.errors.keys).to include(attribute)
+      end
     end
-
-    it "requires city" do
-      user = build :order, city: nil
-      user.valid?
-      expect(user.errors.keys).to include(:city)
-    end
-
-    it "requires state" do # There is more to validate than only presence
-      user = build :order, state: nil
-      user.valid?
-      expect(user.errors.keys).to include(:state)
-    end
-
-    it "requires zip" do # There is more to validate than only presence
-      user = build :order, zip: nil
-      user.valid?
-      expect(user.errors.keys).to include(:zip)
-    end
-
-    it "requires card_exp" do
-      user = build :order, card_exp: nil
-      user.valid?
-      expect(user.errors.keys).to include(:card_exp)
-    end
+    # There is more to validate than only presence with state, zip
 
     context "card_last_4 field" do
       it "requires card_last_4" do
