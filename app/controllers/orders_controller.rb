@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
   COUNTRY = "US"
-  PENGUIN_ALL_RATES_URI = "http://localhost:4000/get_all_rates?q="
+  PENGUIN_ALL_RATES_URI = "http://localhost:4000/get_all_rates"
 
   def find_order
     @order = Order.find(params[:id])
@@ -92,14 +92,12 @@ class OrdersController < ApplicationController
       distinct_origin["destination"] = destination
       shipment = {}
       shipment["shipment"] = distinct_origin
-      json_shipment = []
-      json_shipment << shipment
-      json_shipment = json_shipment.to_json
 
-      response = HTTParty.get(PENGUIN_ALL_RATES_URI + json_shipment)
+      json_shipment = shipment.to_json
+
+      response = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } )
       all_rates += response
     end
-    raise
 
     ## make API calls
 
