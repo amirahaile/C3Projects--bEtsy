@@ -14,7 +14,8 @@
 
  @import "bootstrap-sprockets";
  @import "bootstrap";
- @import url(//fonts.googleapis.com/css?family=Cherry+Swash:400,700);
+ @import 'orders';
+ @import url('//fonts.googleapis.com/css?family=Cherry+Swash:400,700');
 
 $jumbo_color: #FF5454; /* red orange */
 $jumbo_shadow: #858585; /* darker grey */
