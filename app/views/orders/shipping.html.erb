@@ -45,7 +45,7 @@
 
 <h4>Shipping Options</h4>
 
-<%= form_tag update_total_path, method: :put, options: {class: "form-inline", role:"form"} do %>
+<%= form_tag update_total_path, options: {class: "form-inline", role:"form"} do %>
   <% @calculated_rates.each do |rate| %>
     <div class="form-group radio">
       <%= radio_button_tag :shipping_option, rate, class: "radio" %>
@@ -54,4 +54,5 @@
   <% end %>
   <%= submit_tag "Update total price" %>
 <% end %>
-<%= link_to "Finalize Order", finalize_path, class: finalize_button %>
+
+<%= link_to "Finalize Order", finalize_path, method: :put, class: finalize_button %>
