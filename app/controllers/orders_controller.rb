@@ -99,13 +99,20 @@ class OrdersController < ApplicationController
       all_rates += response
     end
 
-    ## make API calls
+    @calculated_rates = []
+    grouped_rates = all_rates.group_by { |rate| rate["service_name"] }
+    grouped_rates.each do |service, service_rate_pairs|
+      rate = {}
+      rate["service_name"] = service
+      rate["total_price"] = service_rate_pairs.inject(0) { |sum, rate| sum + rate["total_price"] }
+      @calculated_rates << rate
+    end
 
-    ## render order details and list of shipping options
     ## be able to choose shipping option and see updated total
     ## submit final order with chosen shipping option
 
-    ## redirect to finalize_path
+    ## render shipping view
+    ## button on page will redirect to finalize
   end
 
   # def finalize
