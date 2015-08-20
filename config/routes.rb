@@ -39,5 +39,5 @@ Rails.application.routes.draw do
   get 'orders/:id/confirmation', to: 'orders#confirmation', as: 'order_confirmation'
   get 'orders/:id/completed', to: 'orders#completed', as: 'shipped_order'
   put 'orders/:id/update_total', to: 'orders#update_total', as: 'update_total'
-
+  put 'orders/:id/finalize', to: 'orders#finalize', as: 'finalize'
 end
