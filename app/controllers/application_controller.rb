@@ -32,7 +32,6 @@ class ApplicationController < ActionController::Base
   def logged_in
     @user = User.find(session[:user_id]) unless session[:user_id].nil?
     # guards from errors when order hasn't been initalized yet
-    reset_session
     if session[:order_id] != nil
       @order = Order.find(session[:order_id])
       @cart_quantity = quantity_in_cart(@order)
