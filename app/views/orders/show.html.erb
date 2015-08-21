@@ -51,7 +51,7 @@
     <% if @order.shipping_price %>
       <tr>
         <td colspan="2"></td>
-        <td class="text-right">Subtotal:</td>
+        <td class="text-right">Total:</td>
         <td colspan="2" class="text-left">
           <%= number_to_currency((@order.shipping_price / 100) + subtotal) %>
         </td>

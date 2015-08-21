@@ -75,7 +75,6 @@ class OrdersController < ApplicationController
     session[:order_id] = nil # clears cart
     @purchase_time = Time.now
     @order_items = @order.order_items
-    raise
   end
 
   def destroy
@@ -91,8 +90,8 @@ class OrdersController < ApplicationController
   end
 
   def completed
-      @order.status = "complete"
-      @order.save!
+    @order.status = "complete"
+    @order.save!
     redirect_to user_path(@user), notice: "You've shipped and completed order ##{@order.id}!"
   end
 
@@ -129,6 +128,7 @@ class OrdersController < ApplicationController
       delivery_date: params[:order][:delivery_date],
       carrier: params[:order][:carrier]
       )
+    @order.save(validate: false)
     render :show
   end
 
