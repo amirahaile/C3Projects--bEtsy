@@ -26,6 +26,10 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'bootstrap-sass', '~> 3.3.5'
 
+gem 'httparty'
+
+gem 'font-awesome-rails'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
@@ -50,7 +54,7 @@ group :development, :test do
 
   gem 'traceroute'
 
-  gem 'pry'
+  gem 'pry-rails'
 
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'

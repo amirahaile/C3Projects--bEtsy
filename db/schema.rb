@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819164046) do
+ActiveRecord::Schema.define(version: 20150821022508) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       null: false
@@ -34,20 +34,24 @@ ActiveRecord::Schema.define(version: 20150819164046) do
 
   create_table "orders", force: :cascade do |t|
     t.string   "email"
-    t.string   "address1",                        null: false
+    t.string   "address1"
     t.string   "address2"
-    t.string   "city",                            null: false
-    t.string   "state",                           null: false
-    t.string   "zipcode",                         null: false
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
     t.string   "card_number"
     t.string   "card_last_4"
     t.datetime "card_exp"
-    t.string   "status",      default: "pending", null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.string   "status",         default: "pending", null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "ccv"
-    t.string   "name",        default: "guest",   null: false
-    t.string   "country",     default: "US",      null: false
+    t.string   "name",           default: "guest",   null: false
+    t.string   "country",        default: "US"
+    t.float    "shipping_price"
+    t.string   "shipping_type"
+    t.string   "delivery_date"
+    t.string   "carrier"
   end
 
   create_table "products", force: :cascade do |t|
@@ -60,10 +64,9 @@ ActiveRecord::Schema.define(version: 20150819164046) do
     t.integer  "user_id",                                            null: false
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
-    t.float    "weight",                                             null: false
-    t.float    "height",                                             null: false
-    t.float    "width",                                              null: false
-    t.float    "depth"
+    t.float    "weight",                              default: 32.5, null: false
+    t.float    "height",                              default: 4.3,  null: false
+    t.float    "width",                               default: 10.0, null: false
   end
 
   create_table "reviews", force: :cascade do |t|

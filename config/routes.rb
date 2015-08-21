@@ -38,4 +38,11 @@ Rails.application.routes.draw do
   get 'orders/:id/confirmation', to: 'orders#confirmation', as: 'order_confirmation'
   get 'orders/:id/completed', to: 'orders#completed', as: 'shipped_order'
 
+  # For interaction with FEDAX
+  get 'orders/:id/estimate_form', to: 'orders#shipping', as: 'new_estimate'
+
+  get 'orders/:id/estimate', to: 'orders#estimate', as: 'estimate'
+  patch 'orders/:id/estimate', to: 'orders#estimate'
+
+  patch 'orders/:id/shipping', to: 'orders#ship_update', as: "ship_update"
 end

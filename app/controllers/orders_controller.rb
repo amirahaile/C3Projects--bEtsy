@@ -1,5 +1,9 @@
+require 'httparty'
+
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
+
+  CALLBACK_URL = "http://fedax.herokuapp.com/quote"
 
   def find_order
     @order = Order.find(params[:id])
@@ -36,7 +40,6 @@ class OrdersController < ApplicationController
       redirect_to order_path(@order)
     end
     # End of Guard
-
     @order_items = @order.order_items
     @user = User.find(session[:user_id]) if session[:user_id]
   end
@@ -87,9 +90,46 @@ class OrdersController < ApplicationController
   end
 
   def completed
-      @order.status = "complete"
-      @order.save!
+    @order.status = "complete"
+    @order.save!
     redirect_to user_path(@user), notice: "You've shipped and completed order ##{@order.id}!"
+  end
+
+  def shipping; end
+
+  def estimate
+    packages, origin, destination = prepare_request
+    @order_items = @order.order_items
+
+    response = HTTParty.get(CALLBACK_URL,
+      body: { packages: packages, 
+              origin: origin, 
+              destination: destination, 
+            } 
+          )
+
+    if response["message"]
+      flash[:error] = response["message"]
+      return redirect_to order_path(status: 'estimate')
+    else
+      @quotes = (response["quotes"]["ups"] + response["quotes"]["usps"])
+      @quotes = @quotes.sort_by { |k| k["total_price"] }
+    end
+
+    params[:status] = 'shipping'
+    render :show
+  end
+
+  def ship_update
+    @order_items = @order.order_items
+    @order.update(
+      shipping_price: params[:order][:shipping_price],
+      shipping_type: params[:order][:shipping_type],
+      delivery_date: params[:order][:delivery_date],
+      carrier: params[:order][:carrier]
+      )
+    @order.save(validate: false)
+    render :show
   end
 
   private
@@ -116,5 +156,37 @@ class OrdersController < ApplicationController
       product.inventory -= order_item.quantity
       product.save
     end
+  end
+
+  def prepare_request
+    @order_items = @order.order_items
+    products = []
+    @order_items.each { |item| products << Product.find_by(id: item.product_id) }
+
+    packages = []
+    origin = {}
+    products.each do |product|
+      packages <<
+      {
+        weight: product.weight,
+        height: product.height,
+        width: product.width
+      }
+
+      user = User.find_by(id: product.user_id)
+
+      origin[:city] = user.city
+      origin[:state] = user.state
+      origin[:country] = user.country
+      origin[:zip] = user.zip
+    end
+
+    destination = {}
+    destination[:country] = "US"
+    destination[:state] = params[:order][:state]
+    destination[:city] = params[:order][:city]
+    destination[:zip] = params[:order][:zipcode]
+    
+    return packages, origin, destination
   end
 end
