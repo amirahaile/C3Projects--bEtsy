@@ -72,7 +72,7 @@ class OrdersController < ApplicationController
         }
       )
 
-      @parsed_responses = response
+      @parsed_response = response
     end
 
     if !params[:shipper]
@@ -81,11 +81,6 @@ class OrdersController < ApplicationController
       render :action => "shipping_quotes", :id => @order.id, :shipper => 'ups'
     end
   end
-
-  # def quotes=
-  #   # saves the shipping selection to the db
-  #   redirect_to buyer_confirmation_path(@buyer.order_id)
-  # end
 
   def index # merchant
     @all_items = @merchant.order_items

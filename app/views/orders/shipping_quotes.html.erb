@@ -6,7 +6,7 @@
 
 <div class="col-md-8 no-float center-block">
   <%= form_for @order do |f| %>
-    <% @parsed_responses.each do |service| %>
+    <% @parsed_response.each do |service| %>
       <%= fields_for :service do |ff| %>
         <%= ff.hidden_field :rate, :value => service[1] %>
         <%= ff.radio_button :name, "#{service[0]}" %>
