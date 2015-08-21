@@ -46,26 +46,32 @@ class OrdersController < ApplicationController
     # check for appropriate amount of inventory before accepting payment
     check_inventory(@order)
 
-    if @enough_inventory
-      @order.email = params[:order][:email]
-      @order.address1 = params[:order][:address1]
-      @order.address2 = params[:order][:address2]
-      @order.city = params[:order][:city]
-      @order.state = params[:order][:state]
-      @order.zipcode = params[:order][:zipcode]
-      @order.card_last_4 = params[:order][:card_number][-4, 4]
-      # @order.ccv = params[:order][:ccv]
-      @order.card_exp = params[:order][:card_exp]
-      @order.status = "paid"
-      if @order.save # move and account for whether the order is cancelled?
-        update_inventory(@order)
-        session[:order_id] = nil # emptying the cart after confirming order
-        redirect_to order_confirmation_path(@order)
-      else
-        render :payment
-      end
+    response = fed_ax_ship_order_request # tell FedAx API to ship it
+
+    if response.nil? || response["status"] != 201
+      redirect_to :back and return
     else
-      redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
+      if @enough_inventory
+        @order.email = params[:order][:email]
+        @order.address1 = params[:order][:address1]
+        @order.address2 = params[:order][:address2]
+        @order.city = params[:order][:city]
+        @order.state = params[:order][:state]
+        @order.zipcode = params[:order][:zipcode]
+        @order.card_last_4 = params[:order][:card_number][-4, 4]
+        # @order.ccv = params[:order][:ccv]
+        @order.card_exp = params[:order][:card_exp]
+        @order.status = "paid"
+        if @order.save # move and account for whether the order is cancelled?
+          update_inventory(@order)
+          session[:order_id] = nil # emptying the cart after confirming order
+          redirect_to order_confirmation_path(@order)
+        else
+          render :payment and return
+        end
+      else
+        redirect_to order_path(@order), notice: "#{@order_item.product.name} only has #{@order_item.product.inventory} item(s) in stock."
+      end
     end
   end
 
@@ -145,7 +151,7 @@ class OrdersController < ApplicationController
 
   def prepare_ship_update
     content = params.require(:order).require(:shipping_type)
-    content = eval(content.gsub(/\"/, "'")) # FIXME: this is extremely unsafe
+    content = JSON.parse content
 
     price = content["total_price"]
     type = content["service_type"]

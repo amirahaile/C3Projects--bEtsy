@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
           }
         )
       end
-      # raise
+
       return response
 
     rescue Timeout::Error => error
@@ -90,6 +90,7 @@ class ApplicationController < ActionController::Base
           }
         )
       end
+
       return response
 
     rescue Timeout::Error => error
