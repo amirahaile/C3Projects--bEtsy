@@ -1,7 +1,9 @@
 class PenguinShipperInterface
   COUNTRY = "US"
 
-  PENGUIN_ALL_RATES_URI   = "http://localhost:4000/get_all_rates"
+  PENGUIN_ALL_RATES_URI   = Rails.env.production? ? 
+    "https://whispering-shore-8365.herokuapp.com/get_all_rates" :
+    "http://localhost:4000/get_all_rates"
 
   def self.make_packages(grouped_items)
     origin_package_pairs = []
