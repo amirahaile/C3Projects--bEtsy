@@ -7,26 +7,70 @@
 <% if params[:shipper] == 'ups' %>
   <div class="alert alert-warning col-sm-8 no-float center-block">
     <p class="text-center">
-    You've currently selected <strong><%= @order.service %></strong> for <strong><%= usd_convert(@order.rate) %></strong>.
+    You've currently selected <%= params[:shipper].upcase %>'s <strong><%= @order.service %></strong> for <strong><%= usd_convert(@order.rate) %></strong>.
     </p>
   </div>
 <% end %>
 
 <div class="col-md-8 no-float center-block">
-  <%= form_for @order do |f| %>
-    <% @parsed_response.each do |service| %>
-      <%= fields_for :service do |ff| %>
-        <%= ff.hidden_field :rate, :value => service[1] %>
-        <%= ff.radio_button :name, "#{service[0]}" %>
-        <%= ff.label :name, "#{service[0]} – #{usd_convert(service[1])}" %>
+  <table class="table table-hover">
+    <tr>
+      <th>
+      </th>
+      <th>
+        Service
+      </th>
+      <th class="text-center">
+        Cost
+      </th>
+      <% if !@delivery.nil? %>
+      <th class="text-center">
+        Delivery Guarantee
+      </th>
+      <th class="text-center">
+        Delivery Time
+      </th>
       <% end %>
-      <br>
-    <% end %>
+    </tr>
+
+    <%= form_for @order do |f| %>
+
+      <% count = 0 %>
+      <% @services.each do |name, rate| %>
+
+        <%= fields_for :service do |ff| %>
+        <tr>
+          <td>
+            <%= ff.hidden_field :rate, :value => rate %>
+            <%= ff.radio_button :service, "#{name}" %>
+          </td>
+          <td>
+            <%= name %>
+          </td>
+          <td class="text-center">
+            <%= usd_convert(rate) %>
+          </td>
+        <% end %>
+
+        <% if !@delivery.nil? %>
+          <td class="text-center">
+            <!-- days for delivery -->
+            <%= @delivery[count][0].nil? ? "N/A" : @delivery[count][0] %>
+          </td>
+          <td class="text-center">
+            <!-- time of delivery -->
+            <%= @delivery[count][1].nil? ? "N/A" : @delivery[count][1] %>
+          </td>
+        <% end %>
+
+        <% count += 1 %>
+        </tr>
+      <% end %>
+  </table>
 
     <%= f.hidden_field :shipper, :value => params[:shipper] %>
 
-    <!-- TODO: Assign rate value to @order -->
-
+  <br>
     <% if params[:shipper] == 'usps' %>
       <!-- not a link b/c the current selection needs to be saved -->
       <%= hidden_field_tag :shipper, 'ups' %>
@@ -37,4 +81,5 @@
 
     <%= f.submit "Checkout", class: 'btn btn-primary' %>
   <% end %>
+  </table>
 </div>

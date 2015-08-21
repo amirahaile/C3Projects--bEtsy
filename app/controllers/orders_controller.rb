@@ -65,14 +65,15 @@ class OrdersController < ApplicationController
         products: products_hash
       }.to_json
 
-      response = HTTParty.post(
+      parsed_response = HTTParty.post(
         SHIPPING_API, {
           headers: { "Content-Type" => 'application/json', "Accept" => "application/json" },
           body: shipping_info
         }
       )
 
-      @parsed_response = response
+      @services = parsed_response["services"]
+      @delivery = parsed_response["delivery"]
     end
 
     if !params[:shipper]
