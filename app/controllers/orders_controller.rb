@@ -3,7 +3,7 @@ require 'httparty'
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
 
-  CALLBACK_URL = "http://localhost:3000/quote"
+  CALLBACK_URL = "http://fedax.herokuapp.com/quote"
 
   def find_order
     @order = Order.find(params[:id])
@@ -40,7 +40,6 @@ class OrdersController < ApplicationController
       redirect_to order_path(@order)
     end
     # End of Guard
-
     @order_items = @order.order_items
     @user = User.find(session[:user_id]) if session[:user_id]
   end
@@ -91,8 +90,8 @@ class OrdersController < ApplicationController
   end
 
   def completed
-      @order.status = "complete"
-      @order.save!
+    @order.status = "complete"
+    @order.save!
     redirect_to user_path(@user), notice: "You've shipped and completed order ##{@order.id}!"
   end
 
@@ -122,8 +121,14 @@ class OrdersController < ApplicationController
   end
 
   def ship_update
-    @order.update(shipping: params[:order][:shipping])
     @order_items = @order.order_items
+    @order.update(
+      shipping_price: params[:order][:shipping_price],
+      shipping_type: params[:order][:shipping_type],
+      delivery_date: params[:order][:delivery_date],
+      carrier: params[:order][:carrier]
+      )
+    @order.save(validate: false)
     render :show
   end
 

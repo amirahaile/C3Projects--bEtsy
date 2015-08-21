@@ -44,6 +44,11 @@
       <p class="text-field-error"><%= order_error_check_for(:card_exp) %></p>
     </div>
 
+      <%= f.hidden_field :shipping_price, value: @order.shipping_price %>
+      <%= f.hidden_field :shipping_type, value: @order.shipping_type %>
+      <%= f.hidden_field :delivery_date, value: @order.delivery_date %>
+      <%= f.hidden_field :carrier, value: @order.carrier %>
+
     <%= f.submit "Submit Order", class: 'btn btn-primary' %>
 
   <% end %>
