@@ -45,14 +45,14 @@
 
 <h4>Shipping Options</h4>
 
-<%= form_tag update_total_path, options: {class: "form-inline", role:"form"} do %>
-  <% @calculated_rates.each do |rate| %>
-    <div class="form-group radio">
-      <%= radio_button_tag :shipping_option, rate, class: "radio" %>
+<% @calculated_rates.each do |rate| %>
+  <%= form_tag update_total_path, options: {class: "form-inline", role:"form"} do %>
+    <div class="form-group">
       <%= label_tag :shipping_option, shipping_option_label(rate) %>
+      <%= hidden_field_tag :shipping_option, rate %>
+      <%= submit_tag "Choose", class: "btn btn-default" %>
     </div>
   <% end %>
-  <%= submit_tag "Update total price" %>
 <% end %>
 
 <%= link_to "Finalize Order", finalize_path, method: :put, class: finalize_button %>
