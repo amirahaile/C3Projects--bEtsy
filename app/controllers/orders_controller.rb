@@ -52,15 +52,8 @@ class OrdersController < ApplicationController
      check_inventory(@order)
 
      if @enough_inventory
-       @order.email = params[:order][:email]
-       @order.address1 = params[:order][:address1]
-       @order.address2 = params[:order][:address2]
-       @order.city = params[:order][:city]
-       @order.state = params[:order][:state]
-       @order.zip = params[:order][:zip]
-       @order.card_last_4 = params[:order][:card_number][-4, 4]
-       @order.ccv = params[:order][:ccv]
-       @order.card_exp = params[:order][:card_exp]
+       @order.update(order_params)
+       @order.card_last_4 = @order.card_number[-4, 4]
        if @order.save # move and account for whether the order is cancelled?
          redirect_to shipping_path(@order)
        else
@@ -189,6 +182,11 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def order_params
+    params.require(:order).permit(:email, :address1, :address2, :city, :state, 
+      :zip, :card_number, :ccv, :card_exp)
+  end
 
   def self.model
     Order
