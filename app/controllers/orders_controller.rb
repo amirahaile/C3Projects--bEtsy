@@ -121,6 +121,12 @@ class OrdersController < ApplicationController
     render :show
   end
 
+  def ship_update
+    @order.update(shipping: params[:order][:shipping])
+    @order_items = @order.order_items
+    render :show
+  end
+
   private
 
   def self.model

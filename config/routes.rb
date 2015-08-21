@@ -43,4 +43,6 @@ Rails.application.routes.draw do
 
   get 'orders/:id/estimate', to: 'orders#estimate', as: 'estimate'
   patch 'orders/:id/estimate', to: 'orders#estimate'
+
+  patch 'orders/:id/shipping', to: 'orders#ship_update', as: "ship_update"
 end

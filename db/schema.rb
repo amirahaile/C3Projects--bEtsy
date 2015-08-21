@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819164046) do
+ActiveRecord::Schema.define(version: 20150821022508) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       null: false
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20150819164046) do
     t.string   "ccv"
     t.string   "name",        default: "guest",   null: false
     t.string   "country",     default: "US"
+    t.float    "shipping"
   end
 
   create_table "products", force: :cascade do |t|

@@ -25,7 +25,9 @@
           <% end %>
         </td>
 
-        <td> <%= number_to_currency(product.price * item.quantity) %> </td>
+        <td> 
+          <%= number_to_currency(product.price * item.quantity) %> 
+        </td>
         <td>
           <% if @order.status == "pending" %>
           <%= button_to("Remove from Cart", order_order_item_path(order_id: @order.id, id: item.id), method: :delete, class: "btn btn-default") %>
@@ -35,14 +37,35 @@
     <% else %>
       <% item.destroy %>
     <% end %>
+    <tr>
+      <td colspan="2"></td>
+      <td class="text-right"><%= fa_icon "truck" %> Shipping:</td>
+      <td colspan="2">
+        <% if @order.shipping %>
+          <%= number_to_currency(@order.shipping / 100) %>
+        <% else %>
+          <%= link_to "select shipment method", order_path(status: 'estimate') %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td class="text-right">Subtotal:</td>
+      <td colspan="2" class="text-left">
+        <% if @order.shipping %>
+          <%= number_to_currency(@order.shipping / 100) %>
+        <% else %>
+          <%= link_to "select shipment method", order_path(status: 'estimate') %>
+        <% end %>
+      </td>
+    </tr>
+
   <% end %>
 </table>
 
 <% if @order.status == "pending" %>
-  <% if params[:status] != "shipping" %>
-    <%= link_to("Checkout", "/orders/#{@order.id}/payment", method: :get, 
-    id: @order, class: "btn btn-primary") %>
-  <% end %>
+  <%= link_to("Checkout", "/orders/#{@order.id}/payment", method: :get, 
+  id: @order, class: "btn btn-primary") %>
   <% if params[:status] != 'estimate' %>
     <%= link_to("Estimate Shipping", order_path(status: 'estimate'), 
       class: "btn btn-info") %>
