@@ -1,12 +1,14 @@
+require 'timeout'
+
 class OrdersController < ApplicationController
-  before_action :find_order, only: [:update, :destroy]
+  before_action :find_order, only: [:update, :quotes, :destroy]
   before_action :empty_cart?, only: [:show]
   before_action :correct_order, only: [:index, :buyer]
   before_action :find_merchant, only: [:index, :buyer]
 
   include ApplicationHelper
 
-  SHIPPING_API = 'http://localhost:3001/' #'https://rocky-reef-8090.herokuapp.com/'
+  SHIPPING_API_URL = 'http://localhost:3001/' #'https://rocky-reef-8090.herokuapp.com/'
 
   def new
     @order = Order.new
@@ -43,7 +45,7 @@ class OrdersController < ApplicationController
   end
 
   def quotes
-    @order = Order.find(params[:id])
+    # @order = Order.find(params[:id])
     buyer = @order.buyer
     products = @order.order_items.map { |item| item.product }
     merchants = products.map { |product| product.user }
@@ -65,18 +67,26 @@ class OrdersController < ApplicationController
         products: products_hash
       }.to_json
 
-      parsed_response = HTTParty.post(
-        SHIPPING_API, {
-          headers: { "Content-Type" => 'application/json', "Accept" => "application/json" },
-          body: shipping_info
+      begin
+        parsed_response = Timeout.timeout(1){
+          HTTParty.post(
+            SHIPPING_API_URL, {
+              headers: { "Content-Type" => 'application/json', "Accept" => "application/json" },
+              body: shipping_info
+            }
+          )
         }
-      )
 
-      services = parsed_response["services"]
-      all_merchant_services << services
-      # assumes all delivery days/times will be the same
-      # I'm ok w/ this cause it's only for special delivery at the moment
-      @delivery = parsed_response["delivery"]
+        services = parsed_response["services"]
+        all_merchant_services << services
+        # assumes all delivery days/times will be the same
+        # I'm ok w/ this cause it's only for special delivery at the moment
+        @delivery = parsed_response["delivery"]
+
+      rescue Timeout::Error
+        redirect_to buyer_confirmation_path(@order.id), notice: "Shipping quotes are not available at this time. The merchants will be in touch with you via email."
+        return # avoids render / redirect_to conflict
+      end
     end
 
     # CONSOLIDATING SERVICE PRICES FOR MULTIPLE MERCHANTS
