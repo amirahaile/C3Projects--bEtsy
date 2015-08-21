@@ -48,6 +48,7 @@ class OrdersController < ApplicationController
     products = @order.order_items.map { |item| item.product }
     merchants = products.map { |product| product.user }
     shipper = params[:shipper].nil? ? 'usps' : params[:shipper]
+    all_merchant_services = []
 
     # TODO: works for 1 merchant; make it work for multiple
     merchants.each do |merchant|
@@ -72,8 +73,50 @@ class OrdersController < ApplicationController
         }
       )
 
-      @services = parsed_response["services"]
+      services = parsed_response["services"]
+      all_merchant_services << services
+
+      # assumes all delivery days/times will be the same
+      # I'm ok w/ this cause it's only for special delivery at the moment
       @delivery = parsed_response["delivery"]
+    end
+
+    # CONSOLIDATING SERVICE PRICES FOR MULTIPLE MERCHANTS
+    unless merchants.count <= 1
+      num_of_services = all_merchant_services[0].count
+      categorized_services = []
+      # services organized by merchants
+      all_merchant_services.map do |merchant|
+        rates = []
+        num_of_services.times do |num|
+          # pulls out rates
+          rates << merchant[num][1]
+        end
+        # [[merchant1_rates], [merchant2_rates], etc.]
+        categorized_services << rates
+      end
+
+      # [[service1_rates], [service2_rates], etc.]
+      consolidated_rates = []
+      num_of_services.times do |num|
+        service_rates = []
+        merchants.count.times do |merchant|
+          service_rates << categorized_services[merchant][num]
+        end
+        consolidated_rates << service_rates
+      end
+
+      rates = []
+      num_of_services.times do |num|
+        rates << consolidated_rates[num].reduce { |sum, n| sum + n }
+      end
+
+      @services = all_merchant_services[0]
+      @services.each_with_index do |service, index|
+        service[1] = rates[index]
+      end
+    else
+      @services = all_merchant_services.flatten!
     end
 
     if !params[:shipper]
