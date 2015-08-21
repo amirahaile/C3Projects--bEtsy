@@ -65,15 +65,7 @@ class OrdersController < ApplicationController
   def shipping
     @order_items = @order.order_items
 
-    grouped_items = @order_items.group_by { |order_item| order_item.product.user }
-
-    origin_package_pairs = PenguinShipperInterface.make_packages(grouped_items)
-
-    destination = PenguinShipperInterface.create_location(@order)
-
-    all_rates = PenguinShipperInterface.request_rates_for_packages(origin_package_pairs, destination)
-
-    @calculated_rates = PenguinShipperInterface.process_rates(all_rates)
+    @calculated_rates = PenguinShipperInterface.process_order(@order)
 
     @subtotal = 0
     @shipping_cost = session[:shipping_option] ? session[:shipping_option]["total_price"]/100.0 : 0
