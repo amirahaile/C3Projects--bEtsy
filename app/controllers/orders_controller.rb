@@ -29,7 +29,7 @@ class OrdersController < ApplicationController
     selected_service = params[:service]
     service = selected_service[:name]
     rate = selected_service[:rate]
-    @order.service = service
+    @order.service = service.nil? ? params[:old_service] : service
     @order.rate = rate
     @order.save
 

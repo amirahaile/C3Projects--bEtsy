@@ -7,7 +7,7 @@
 <% if params[:shipper] == 'ups' %>
   <div class="alert alert-warning col-sm-8 no-float center-block">
     <p class="text-center">
-    You've currently selected <%= params[:shipper].upcase %>'s <strong><%= @order.service %></strong> for <strong><%= usd_convert(@order.rate) %></strong>.
+    You've currently selected <strong><%= @order.service %></strong> for <strong><%= usd_convert(@order.rate) %></strong>.
     </p>
   </div>
 <% end %>
@@ -42,7 +42,7 @@
         <tr>
           <td>
             <%= ff.hidden_field :rate, :value => rate %>
-            <%= ff.radio_button :service, "#{name}" %>
+            <%= ff.radio_button :name, "#{name}" %>
           </td>
           <td>
             <%= name %>
@@ -55,7 +55,7 @@
         <% if !@delivery.nil? %>
           <td class="text-center">
             <!-- days for delivery -->
-            <%= @delivery[count][0].nil? ? "N/A" : @delivery[count][0] %>
+            <%= @delivery[count][0].nil? ? "N/A" : pluralize(@delivery[count][0], 'day') %>
           </td>
           <td class="text-center">
             <!-- time of delivery -->
@@ -77,6 +77,8 @@
       <%= f.submit "More Quotes", class: 'btn btn-default' %>
     <% else %>
       <%= hidden_field_tag :shipper, 'none' %>
+      <!-- holds the old choice in case the user doesn't pick a new one -->
+      <%= hidden_field_tag :old_service, @order.service %>
     <% end %>
 
     <%= f.submit "Checkout", class: 'btn btn-primary' %>
