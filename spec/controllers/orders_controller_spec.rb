@@ -203,7 +203,10 @@ RSpec.describe OrdersController, type: :controller do
     end
 
     it "updates the existing order" do
-      patch :ship_update, id: @order.id
+      patch :ship_update, id: @order.id, 
+      order: {
+        
+      }
 
       expect(@order.shipping_price).to eq(14.55)
       expect(@order.carrier).to eq("UPS")

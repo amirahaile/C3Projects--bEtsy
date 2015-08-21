@@ -48,14 +48,14 @@ class OrderItemsController < ApplicationController
   def qty_decrease
     @order_item.quantity -= 1
     @order_item.save
-    redirect_to :back rescue redirect_to order_path(@order_items.order)
+    redirect_to :back rescue redirect_to order_path(@order_item.order)
   end
 
   def qty_increase
     @order_item.quantity += 1
     @order_item.save
 
-    redirect_to :back rescue redirect_to order_path(@order_items.order)
+    redirect_to :back rescue redirect_to order_path(@order_item.order)
   end
 
   private

@@ -19,7 +19,7 @@ RSpec.describe OrderItemsController, type: :controller do
 
     it "increases the quantity of an OrderItem by 1" do
       original_qty = @orderItem2.quantity
-      post :qty_increase, id: 2
+      post :qty_increase, id: @orderItem2.id
       @orderItem2.reload
 
       expect(@orderItem2.quantity).to eq original_qty + 1
@@ -27,7 +27,7 @@ RSpec.describe OrderItemsController, type: :controller do
 
     it "decreases the quantity of an OrderItem by 1" do
       original_qty = @orderItem2.quantity
-      post :qty_decrease, id: 2
+      post :qty_decrease, id: @orderItem2.id
       @orderItem2.reload
 
       expect(@orderItem2.quantity).to eq original_qty - 1
