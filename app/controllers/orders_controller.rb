@@ -50,7 +50,6 @@ class OrdersController < ApplicationController
     shipper = params[:shipper].nil? ? 'usps' : params[:shipper]
     all_merchant_services = []
 
-    # TODO: works for 1 merchant; make it work for multiple
     merchants.each do |merchant|
       merchant_products = products.map { |product|  product if product.user_id == merchant.id}
       merchant_products.compact! # removes nils inserted by map
