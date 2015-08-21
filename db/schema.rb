@@ -42,13 +42,16 @@ ActiveRecord::Schema.define(version: 20150821022508) do
     t.string   "card_number"
     t.string   "card_last_4"
     t.datetime "card_exp"
-    t.string   "status",      default: "pending", null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.string   "status",         default: "pending", null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "ccv"
-    t.string   "name",        default: "guest",   null: false
-    t.string   "country",     default: "US"
-    t.float    "shipping"
+    t.string   "name",           default: "guest",   null: false
+    t.string   "country",        default: "US"
+    t.float    "shipping_price"
+    t.string   "shipping_type"
+    t.string   "delivery_date"
+    t.string   "carrier"
   end
 
   create_table "products", force: :cascade do |t|

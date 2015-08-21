@@ -40,7 +40,6 @@ class OrdersController < ApplicationController
       redirect_to order_path(@order)
     end
     # End of Guard
-
     @order_items = @order.order_items
     @user = User.find(session[:user_id]) if session[:user_id]
   end
@@ -76,6 +75,7 @@ class OrdersController < ApplicationController
     session[:order_id] = nil # clears cart
     @purchase_time = Time.now
     @order_items = @order.order_items
+    raise
   end
 
   def destroy
@@ -122,8 +122,13 @@ class OrdersController < ApplicationController
   end
 
   def ship_update
-    @order.update(shipping: params[:order][:shipping])
     @order_items = @order.order_items
+    @order.update(
+      shipping_price: params[:order][:shipping_price],
+      shipping_type: params[:order][:shipping_type],
+      delivery_date: params[:order][:delivery_date],
+      carrier: params[:order][:carrier]
+      )
     render :show
   end
 

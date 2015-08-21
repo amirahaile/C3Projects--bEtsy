@@ -2,7 +2,10 @@
 <%= form_for @order, url: ship_update_path do |f| %>
   <% @quotes.each do |quote| %>
     <p>
-      <%= f.radio_button :shipping, quote["total_price"] %>
+      <%= f.radio_button :shipping_price, quote["total_price"] %>
+      <%= f.hidden_field :shipping_type, value: quote["service_type"] %>
+      <%= f.hidden_field :delivery_date, value: quote["expected_delivery"] %>
+      <%= f.hidden_field :carrier, value: quote["carrier"] %>
       <span class="service_type">
         <%= quote["service_type"] %>
       </span>
@@ -14,6 +17,7 @@
       <%= quote["expected_delivery"] ? 
       pretty_date(quote["expected_delivery"]) : "No estimate available" %>
     </p>
+
   <% end %>
   <%= f.submit "Select Shipment", class: "btn btn-success" %>
 <% end %>
