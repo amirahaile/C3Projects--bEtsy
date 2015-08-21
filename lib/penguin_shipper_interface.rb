@@ -38,7 +38,19 @@ class PenguinShipperInterface
 
   def self.request_rates_from_API(json_shipment)
     response = HTTParty.get(PENGUIN_ALL_RATES_URI, query: { json_data: json_shipment } )
-    response.parsed_response
+    case response.code
+    when 200
+      return response.parsed_response
+    when 422
+      return [{error: "422"}]
+      # redirect_to :shipping, notice: "Error in shipping choice. Please try again."
+    when 408
+      return [{error: "408"}]
+      # redirect_to :shipping, notice: "We could not process your request in a timely manner. Please try again later."
+    else
+      return [{error: "bad"}]
+      # redirect_to :shipping, notice: "NOPE. Please try again."
+    end
   end
 
   def self.request_rates_for_packages(origin_package_pairs, destination)
@@ -58,6 +70,7 @@ class PenguinShipperInterface
   end
 
   def self.process_rates(all_rates)
+    return all_rates if all_rates.first.keys.include?(:error)
     calculated_rates = []
 
     grouped_rates = all_rates.group_by { |rate| rate["service_name"] }
