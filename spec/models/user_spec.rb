@@ -38,7 +38,8 @@ RSpec.describe User, type: :model do
       end
     end
 
-    # TESTS BELOW ADDED BY FEDAX TEAM
+    # FEDAX API INCORPORATION TESTING ------------------------------------------
+    
     context "origin (country, state, city, zip) validations" do
       let (:user) { create :user }
       let (:countryless_user) { build :countryless_user }

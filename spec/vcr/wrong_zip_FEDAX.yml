@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://fedax.herokuapp.com/quote
+    body:
+      encoding: UTF-8
+      string: packages[][weight]=32.5&packages[][height]=4.3&packages[][width]=10.0&packages[][product_id]=1&origin[city]=Dayton&origin[state]=OH&origin[country]=US&origin[zip]=45459&destination[country]=US&destination[state]=OH&destination[city]=Dayton&destination[zip]=12345&destination[order_id]=2
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 400
+      message: 'Bad Request '
+    headers:
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 4f709a5e-903e-46d0-aef5-7ba33b71d2d3
+      X-Runtime:
+      - '0.419106'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.0.0/2015-04-13)
+      Date:
+      - Fri, 21 Aug 2015 21:04:52 GMT
+      Content-Length:
+      - '77'
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"message":"Failure: The postal code 12345 is invalid for OH United
+        States."}'
+    http_version: 
+  recorded_at: Fri, 21 Aug 2015 21:04:53 GMT
+recorded_with: VCR 2.9.3

@@ -74,7 +74,8 @@ RSpec.describe Order, type: :model do
 
     # Check card exp must be in the future.
 
-    # COUNTRY VALIDATION TEST ADDED BY FEDAX TEAM
+    # FEDAX API INCORPORATION TESTING (country validation)----------------------
+
     context "country validation" do
       let(:order) { create :order }
       let(:countryless_order) { create :countryless_order }
@@ -91,6 +92,8 @@ RSpec.describe Order, type: :model do
         expect(countryless_order.country).to eq('US')
       end
     end
+  # END FEDAX ORDERSPEC TESTS --------------------------------------------------
+  
   end
 
   describe "scope" do
