@@ -51,7 +51,7 @@
 <div class="row">
   <% if params[:status] == 'estimate' %>
     <%= render template: "orders/shipping", layout: false %>
-  <% elsif status == 'shipping' %>
+  <% elsif params[:status] == 'shipping' %>
     <%= render template: "orders/estimate", layout: false %>
   <% end %>
 </div>

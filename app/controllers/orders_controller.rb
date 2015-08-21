@@ -116,7 +116,10 @@ class OrdersController < ApplicationController
       @ups = response["quotes"]["ups"]
       @usps = response["quotes"]["usps"]
     end
-    render :show, locals: { status: 'shipping' }
+
+    params[:status] = 'shipping'
+
+    render :show
   end
 
   private
