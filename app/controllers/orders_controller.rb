@@ -136,6 +136,7 @@ class OrdersController < ApplicationController
 
   def confirmation
     session[:order_id] = nil # clears cart
+    session[:shipping_option] = nil
     @subtotal = 0
     @purchase_time = Time.now
     @order_items = @order.order_items
