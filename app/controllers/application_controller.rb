@@ -1,3 +1,5 @@
+require 'penguin_shipper_interface'
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -29,10 +31,10 @@ class ApplicationController < ActionController::Base
 
     # guards from errors when order hasn't been initalized yet
     if session[:order_id] != nil
-      @order = Order.find(session[:order_id])
-      @cart_quantity = quantity_in_cart(@order)
-    else
-      @cart_quantity = 0
+      @order = Order.find_by(id: session[:order_id])
+      # @cart_quantity = quantity_in_cart(@order)
+    # else
+      # @cart_quantity = 0
     end
   end
 
@@ -42,7 +44,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def quantity_in_cart(order)
-    order.order_items.reduce(0) { |sum, n| sum + n.quantity }
-  end
+  # def quantity_in_cart(order)
+  #   order.order_items.reduce(0) { |sum, n| sum + n.quantity }
+  # end
 end

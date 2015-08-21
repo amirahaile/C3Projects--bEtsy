@@ -1,3 +1,4 @@
+require 'factory_girl'
 require "simplecov"
 require "rails_helper"
 
@@ -24,6 +25,8 @@ end
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  config.include FactoryGirl::Syntax::Methods
+  
   config.include Rails.application.routes.url_helpers
   Dir["./spec/support/**/*.rb"].sort.each { |f| require f}
   # rspec-expectations config goes here. You can use an alternate

@@ -15,6 +15,7 @@ class OrderItemsController < ApplicationController
   end
 
   def create
+    # FIXME is this checking for the current order_id? (it isn't!)
     if OrderItem.find_by(product_id: params[:id])
       @order_item = OrderItem.find_by(product_id: params[:product_id])
       @order_item.quantity += 1
@@ -24,6 +25,7 @@ class OrderItemsController < ApplicationController
       @order_item = OrderItem.create!(order_id: @order.id, product_id: params[:product_id])
       @order.order_items << @order_item
     end
+    # OPTIMIZE why do you need to specify the method get here?
     redirect_to order_path(@order), method: :get
   end
 

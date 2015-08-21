@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723234737) do
+ActiveRecord::Schema.define(version: 20150820165035) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       null: false
@@ -38,28 +38,33 @@ ActiveRecord::Schema.define(version: 20150723234737) do
     t.string   "address2"
     t.string   "city"
     t.string   "state"
-    t.string   "zipcode"
-    t.string   "name_on_card"
+    t.integer  "zip"
     t.string   "card_number"
     t.string   "card_last_4"
     t.datetime "card_exp"
-    t.string   "status",       default: "pending", null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.string   "status",           default: "pending", null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "ccv"
-    t.string   "name",         default: "guest",   null: false
+    t.string   "name",             default: "guest",   null: false
+    t.string   "shipping_service"
+    t.integer  "shipping_cost"
   end
 
   create_table "products", force: :cascade do |t|
-    t.string   "name",                                               null: false
+    t.string   "name",                                                 null: false
     t.string   "description"
-    t.decimal  "price",       precision: 7, scale: 2,                null: false
-    t.string   "photo_url",                                          null: false
-    t.integer  "inventory",                                          null: false
-    t.boolean  "active",                              default: true, null: false
-    t.integer  "user_id",                                            null: false
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.decimal  "price",         precision: 7, scale: 2,                null: false
+    t.string   "photo_url",                                            null: false
+    t.integer  "inventory",                                            null: false
+    t.boolean  "active",                                default: true, null: false
+    t.integer  "user_id",                                              null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.integer  "weight_in_gms"
+    t.integer  "length_in_cms"
+    t.integer  "width_in_cms"
+    t.integer  "height_in_cms"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -81,6 +86,10 @@ ActiveRecord::Schema.define(version: 20150723234737) do
     t.string   "password_digest", null: false
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "city"
+    t.string   "state"
+    t.integer  "zip"
+    t.string   "country"
   end
 
 end

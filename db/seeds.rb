@@ -26,15 +26,27 @@ users = [
   { username: "tacoparty",
     email: "taco@party.taco",
     password: "extraCheese",
-    password_confirmation: "extraCheese" },
+    password_confirmation: "extraCheese",
+    city: "Seattle",
+    state: "WA",
+    zip: 98101,
+    country: "US" },
   { username: "indubitably",
     email: "johnsnow@tennisrocks.uk",
     password: "aaronwilliams",
-    password_confirmation: "aaronwilliams" },
+    password_confirmation: "aaronwilliams",
+    city: "South San Francisco",
+    state: "CA",
+    zip: 94080,
+    country: "US" },
   { username: "mabel",
     email: "mabel@awesomedogs.woof",
     password: "growl",
-    password_confirmation: "growl" },
+    password_confirmation: "growl",
+    city: "Chicago",
+    state: "IL",
+    zip: 60614,
+    country: "US" },
 ]
 
 users.each do |user|
@@ -57,7 +69,11 @@ products = [
     inventory: 45,
     active: true,
     user_id: 1,
-    category_ids: 2 },
+    category_ids: 2,
+    weight_in_gms: 1500,
+    length_in_cms: 30,
+    width_in_cms: 10,
+    height_in_cms: 5 },
   { name: "Mr. T Costume for Dog",
     description: "Your dog will pity the fool with this totally awesome costume!",
     price: 25.00,
@@ -65,7 +81,11 @@ products = [
     inventory: 58,
     active: true,
     user_id: 2,
-    category_ids: [1, 3] },
+    category_ids: [1, 3],
+    weight_in_gms: 500,
+    length_in_cms: 15,
+    width_in_cms: 8,
+    height_in_cms: 2 },
   { name: "Mr. T Costume for Dog - Large",
     description: "Your dog will pity the fool with this totally awesome costume!",
     price: 35.00,
@@ -73,7 +93,11 @@ products = [
     inventory: 2,
     active: true,
     user_id: 1,
-    category_ids: [1, 3] },
+    category_ids: [1, 3], 
+    weight_in_gms: 1000,
+    length_in_cms: 20,
+    width_in_cms: 8,
+    height_in_cms: 3 },
   { name: "Taco Costume - Large",
     description: "High-quality, one-size-fits-all adult hard-shelled taco costume (beef).",
     price: 40.00,
@@ -81,7 +105,11 @@ products = [
     inventory: 4,
     active: true,
     user_id: 2,
-    category_ids: 2 },
+    category_ids: 2, 
+    weight_in_gms: 1700,
+    length_in_cms: 30,
+    width_in_cms: 10,
+    height_in_cms: 7 },
 ]
 
 products.each do |product|
@@ -94,7 +122,7 @@ orders = [
     address2: "Outer reaches of the solar system",
     city: "Plutotown",
     state: "PA",
-    zipcode: 99999,
+    zip: 99999,
     card_last_4: 9999,
     card_exp: Time.new(2018, 8),
     status: "paid"},
@@ -103,7 +131,7 @@ orders = [
     address2: "Shack #2",
     city: "Caprica",
     state: "NC",
-    zipcode: 77777,
+    zip: 77777,
     card_last_4: 7777,
     card_exp: Time.new(2019, 9),
     status: "pending"},
@@ -113,5 +141,5 @@ orders.each do |order|
   Order.create(order)
 end
 
-order = Order.new(id: 6)
-order.save(validate: false)
+# order = Order.new(id: 6)
+# order.save(validate: false)

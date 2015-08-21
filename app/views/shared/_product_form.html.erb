@@ -1,45 +1,67 @@
 <div class="form">
- <%= form_for [ @user, @product ]  do |f| %>
-   <div class="form-group col-sm-offset-2">
-     <%= f.label :name %>
-     <%= f.text_field :name, required: :true %>
-   </div>
+  <%= form_for [ @user, @product ]  do |f| %>
+    <div class="form-group col-sm-offset-2">
+      <%= f.label :name %>
+      <%= f.text_field :name, required: :true %>
+    </div>
 
-   <div class="form-group col-sm-offset-2">
-     <%= f.label :description %>
-     <%= f.text_field :description %>
-   </div>
+    <div class="form-group col-sm-offset-2">
+      <%= f.label :description %>
+      <%= f.text_field :description %>
+    </div>
 
-   <div class="form-group col-sm-offset-2">
-     <%= f.label :price %>
-     <span class="form-group-addon">$</span><%= f.text_field :price, required: :true, value: number_to_currency(f.object.price, unit: '') %>
-   </div>
+    <div class="form-group col-sm-offset-2">
+      <%= f.label :price %>
+      <span class="form-group-addon">$</span><%= f.text_field :price, required: :true, value: number_to_currency(f.object.price, unit: '') %>
+    </div>
 
-   <div class="form-group col-sm-offset-2">
-     <%= f.label :photo_url %>
-     <%= f.text_field :photo_url, required: :true %>
-   </div>
+    <div class="form-group col-sm-offset-2">
+      <%= f.label :photo_url %>
+      <%= f.text_field :photo_url, required: :true %>
+    </div>
 
-   <div class="form-group col-sm-offset-2">
-     <%= f.label :inventory %>
-     <%= f.number_field :inventory, required: :true %>
-   </div>
+    <div class="form-group col-sm-offset-2">
+      <%= f.label :inventory %>
+      <%= f.number_field :inventory, required: :true %>
+    </div>
 
-   <div class="form-group col-sm-offset-2">
-     <%= f.label :active %>
-     <%= f.radio_button :active, true %>
-     <%= f.label "Inactive" %>
-     <%= f.radio_button :active, false %>
-   </div>
+    <div class="form-group col-sm-offset-2">
+      <%= f.label :active %>
+      <%= f.radio_button :active, true %>
+      <%= f.label "Inactive" %>
+      <%= f.radio_button :active, false %>
+    </div>
 
-   <div class="form-group col-sm-offset-2">
-     <%= f.label :categories %>
-     <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) %>
-   </div>
+    <div class="form-group col-sm-offset-2">
+      <%= f.label :categories %>
+      <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) %>
+    </div>
 
+    <fieldset>
+      <legend class="col-sm-offset-2">Weight and Dimensions</legend>
+      <div class="form-group col-sm-offset-2">
+        <%= f.label :weight_in_gms, "Weight (in grams)" %>
+        <%= f.number_field :weight_in_gms, required: true, min: 0, step: 10 %>
+      </div>
 
-   <div class="form-group col-sm-offset-1">
-     <%= f.submit "Submit", id: session[:user_id], class: "btn btn-primary col-sm-2" %>
-   </div>
- <% end %>
+      <div class="form-group col-sm-offset-2">
+        <%= f.label :length_in_cms, "Length (in centimeters)" %>
+        <%= f.number_field :length_in_cms, required: true, min: 0, step: 1, size: 4 %>
+      </div>
+
+      <div class="form-group col-sm-offset-2">
+        <%= f.label :width_in_cms, "Width (in centimeters)" %>
+        <%= f.number_field :width_in_cms, required: true, min: 0, step: 1, size: 4 %>
+      </div>
+
+      <div class="form-group col-sm-offset-2">
+        <%= f.label :height_in_cms, "Height (in centimeters)" %>
+        <%= f.number_field :height_in_cms, required: true, min: 0, step: 1, size: 4 %>
+      </div>
+    </fieldset>
+
+    <div class="form-group col-sm-offset-1">
+      <%= f.submit "Submit", id: session[:user_id], class: "btn btn-primary col-sm-2" %>
+    </div>
+  <% end %>
 </div>

@@ -1,0 +1,58 @@
+<h2>Select Shipping Option</h2>
+
+<h4>Order Details</h4>
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Qty</th>
+    <th>Total</th>
+  </tr>
+    <% @order_items.each do |item| %>
+      <tr>
+        <% product = Product.find(item.product_id) %>
+        <td> <%= link_to product.name, product_path(product) %> </td>
+        <td> <%= number_to_currency(product.price) %> </td>
+        <td>
+          <%= item.quantity %>
+        </td>
+        <td> <%= number_to_currency(product.price * item.quantity) %> </td>
+  		    <% @subtotal += (product.price * item.quantity) %>
+      </tr>
+    <% end %>
+	<tr>
+		<td colspan="2"></td>
+		<td>Subtotal:</td>
+		<td>
+			<%= number_to_currency(@subtotal) %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td>Shipping:</td>
+		<td>
+			<%= display_dollars(@shipping_cost) %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td>Total:</td>
+		<td>
+			<%= display_dollars(@subtotal*100.0 + @shipping_cost) %>
+		</td>
+	</tr>
+</table>
+
+<h4>Shipping Options</h4>
+
+<% @calculated_rates.each do |rate| %>
+  <%= form_tag update_total_path, options: {class: "form-inline", role:"form"} do %>
+    <div class="form-group">
+      <%= label_tag :shipping_option, shipping_option_label(rate) %>
+      <%= hidden_field_tag :shipping_option, rate %>
+      <%= submit_tag "Choose", class: "btn btn-default" %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= link_to "Finalize Order", finalize_path, method: :put, class: finalize_button %>

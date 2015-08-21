@@ -3,30 +3,28 @@ require 'rails_helper'
 RSpec.describe Order, type: :model do
 
   describe "model validations" do
-    let(:invalid_empty_order) { Order.new(status: nil) } # because status defaults to "pending"
-    let(:invalid_order) { Order.new }
-    let(:valid_order) { Order.new(email: "somedude@someplace.com", address1: "1111 Someplace Ave.", city: "Seattle", state: "WA", zipcode: "55555", card_last_4: "1234", card_exp: Time.new(2017, 11)) }
-
-    required_fields =
-      [:email, :address1, :city, :state, :zipcode,
-       :card_last_4, :card_exp, :status]
-
-    required_fields.each do |field|
-      it "requires #{field}" do
-        expect(invalid_empty_order).to_not be_valid
-        expect(invalid_empty_order.errors.keys).to include(field)
+    required_attributes = [:address1, :city, :state, :zip, :card_exp]
+    required_attributes.each do |attribute|
+      it "requires #{attribute}" do
+        order = build :order
+        order[attribute] = nil
+        order.valid?
+        expect(order.errors.keys).to include(attribute)
       end
     end
-
-    context "status field" do
-      it "defaults to 'pending'" do
-        expect(invalid_order.status).to eq("pending")
-      end
-    end
+    # There is more to validate than only presence with state, zip
 
     context "card_last_4 field" do
-      it "has 4 characters" do
-        expect(valid_order.card_last_4.length).to eq(4)
+      it "requires card_last_4" do
+        order = build :order, card_last_4: nil
+        order.valid?
+        expect(order.errors.keys).to include(:card_last_4)
+      end
+
+      it "requires 4 characters" do
+        order = build :order, card_last_4: 123
+        order.valid?
+        expect(order.errors.keys).to include(:card_last_4)
       end
 
       ["1234", "5678", "9012"].each do |valid_card|
@@ -37,54 +35,66 @@ RSpec.describe Order, type: :model do
 
       ["hihi", "345", 959, 12.3, 12.34].each do |invalid_card|
         it "doesn't validate #{invalid_card} for card_last_4" do
-          new_order = valid_order
-          new_order.card_last_4 = invalid_card
-
-          expect(new_order).to_not be_valid
-          expect(new_order.errors.keys).to include(:card_last_4)
+          order = build :order, card_last_4: invalid_card
+          order.valid?
+          expect(order.errors.keys).to include(:card_last_4)
         end
       end
     end
 
     context "status field" do
-      it "defaults pending" do
-        expect(invalid_order.status).to eq("pending")
+      it "requires status" do
+        order = build :order, status: nil
+        order.valid?
+        expect(order.errors.keys).to include(:status)
+      end
+
+      it "status field defaults to 'pending'" do
+        order = build :order
+        expect(order.status).to eq("pending")
       end
 
       ["pending", "paid", "complete", "cancelled"].each do |valid_status|
         it "only contains valid statuses" do
-          new_order = valid_order
-          new_order.status = valid_status
-          expect(new_order).to be_valid
+          order = build :order, status: valid_status
+          expect(order).to be_valid
         end
       end
 
       ["not awesome", "345", 959, 12.3, 12.34].each do |invalid_status|
-        it "doesn't validate #{invalid_status} for status" do
-          new_order = valid_order
-          new_order.status = invalid_status
-
-          expect(new_order).to_not be_valid
-          expect(new_order.errors.keys).to include(:status)
+        it "does not validate #{invalid_status} for status" do
+          order = build :order, status: invalid_status
+          order.valid?
+          expect(order.errors.messages).to eq(:status => ["#{invalid_status} is not a valid status"])
         end
       end
     end
 
-    # Test status and default should be "pending"!
+    context "email" do
+      it "requires an email" do
+        user = build :order, email: nil
+        user.valid?
+        expect(user.errors.keys).to include(:email)
+      end
 
-    # Check card exp must be in the future.
+      it "requires an email to include '@' and '.'" do
+        user = build :order, email: "hello"
+        user.valid?
+        expect(user.errors.messages).to eq(:email => ["is invalid"])
+      end
+    end
   end
 
-  describe "scope" do
+  describe "scopes" do
     before(:each) do
       # paid
       3.times do
-        Order.create(email: "example@fake.com", address1: "1234 St", address2: "Apt. A", city: "Plainsville", state: "NA", zipcode: "12345", card_number: nil, card_last_4: "0987", card_exp: "05/06", status: "paid" )
+        create :order, status: "paid"
       end
 
       # pending
       3.times do
-        Order.create(email: "example@fake.com", address1: "1234 St", address2: "Apt. A", city: "Plainsville", state: "NA", zipcode: "12345", card_number: nil, card_last_4: "0987", card_exp: "05/06", status: "pending" )
+        create :order
       end
 
       @orders = Order.all

@@ -11,7 +11,7 @@ RSpec.describe OrdersController, type: :controller do
           address2: "Apt Test",
           city: "Testcity",
           state: "WA",
-          zipcode: "55555",
+          zip: "55555",
           card_number: "123456789988",
           card_last_4: "6789",
           card_exp: Time.now
@@ -21,11 +21,11 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   before :each do
-    @order = Order.create!(email: "hi@hi.com", address1: "123 someplace", city: "somewhere", state: "WA", zipcode: "12345", card_last_4: "1234", card_exp: "10-11")
+    @order = Order.create!(email: "hi@hi.com", address1: "123 someplace", city: "somewhere", state: "WA", zip: "12345", card_last_4: "1234", card_exp: "10-11")
 
-    product1 = Product.create!(name: "product1", price: 5, photo_url: "something.com", inventory: 10, user_id: 1)
-    product2 = Product.create!(name: "product2", price: 5, photo_url: "something.com", inventory: 10, user_id: 1)
-    product3 = Product.create!(name: "product3", price: 5, photo_url: "something.com", inventory: 10, user_id: 1)
+    product1 = Product.create!(name: "product1", price: 5, photo_url: "something.com", inventory: 10, user_id: 1, weight_in_gms: 100, length_in_cms: 10, width_in_cms: 5, height_in_cms: 15)
+    product2 = Product.create!(name: "product2", price: 5, photo_url: "something.com", inventory: 10, user_id: 1, weight_in_gms: 100, length_in_cms: 10, width_in_cms: 5, height_in_cms: 15)
+    product3 = Product.create!(name: "product3", price: 5, photo_url: "something.com", inventory: 10, user_id: 1, weight_in_gms: 100, length_in_cms: 10, width_in_cms: 5, height_in_cms: 15)
 
     @orderItem1 = OrderItem.create!(quantity: 1, order_id: 1, product_id: 1)
     @orderItem2 = OrderItem.create!(quantity: 1, order_id: 1, product_id: 2)
@@ -42,7 +42,7 @@ RSpec.describe OrdersController, type: :controller do
   describe "order #destroy action" do
 
     before :each do
-      @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zipcode: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
+      @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zip: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
       @thing = OrderItem.create!(quantity: 2, order_id: 1, product_id: 1)
       @order.order_items << @thing
     end
@@ -63,7 +63,7 @@ RSpec.describe OrdersController, type: :controller do
   # I worked on this for a long time and didn't get it figured out. :( -SM
   # describe "PUT update/:id" do
   #   before :each do
-  #     @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zipcode: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
+  #     @order = Order.create!(email: "email@email.com", address1: "Some place", city: "somewhere", state: "WA", zip: 10000, card_last_4: 1234, card_exp: Time.now, status: "paid")
   #     @thing = OrderItem.create!(quantity: 2, order_id: 2, product_id: 1)
   #     @order.order_items << @thing
   #

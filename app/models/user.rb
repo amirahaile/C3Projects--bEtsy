@@ -8,6 +8,12 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates_format_of :email, with: /\A[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\Z/i #, on: :create
   validates :password, presence: true, confirmation: true
+  validates :zip, presence: true, numericality: true
+
+  required_attributes = [ :city, :state, :country ]
+  required_attributes.each do |attribute|
+    validates attribute, presence: true
+  end
 
 # Scopes -----------------------------------------------------------------------
   def self.product_ids_from_user(user)

@@ -1,42 +1,7 @@
+<%= link_to "Continue Shopping", root_path %>
 <h4>Order Status: <%= @order.status.capitalize %></h4>
-<table class="table">
-  <tr>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Qty</th>
-    <th>Total</th>
-    <th></th>
-  </tr>
 
-  <% @order_items.each do |item| %>
-    <% product = item.product %>
-
-    <% if item.quantity > 0 %>
-      <tr>
-        <td> <%= product.name %> </td>
-        <td> <%= number_to_currency(product.price) %> </td>
-        <td>
-          <% if @order.status == "pending" %>
-            <%= button_to '-', options = { controller: 'order_items', action: "qty_decrease", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline display-inline" } %>
-          <% end %>
-          <%= item.quantity %>
-          <% if @order.status == "pending" %>
-            <%= button_to "+", options = { controller: 'order_items', action: "qty_increase", id: item.id }, html_options = { class: "btn btn-default", form_class: "form-inline display-inline" } %>
-          <% end %>
-        </td>
-
-        <td> <%= number_to_currency(product.price * item.quantity) %> </td>
-        <td>
-          <% if @order.status == "pending" %>
-          <%= button_to("Remove from Cart", order_order_item_path(order_id: @order.id, id: item.id), method: :delete, class: "btn btn-default") %>
-          <% end %>
-        </td>
-      </tr>
-    <% else %>
-      <% item.destroy %>
-    <% end %>
-  <% end %>
-</table>
+<%= render partial: "details" %>
 
 <% if @order.status == "pending" %>
   <%= button_to("Checkout", "/orders/#{@order.id}/payment", method: :get, id: @order, class: "btn btn-primary") %> </td>
