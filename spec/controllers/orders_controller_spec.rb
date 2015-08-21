@@ -108,7 +108,8 @@ RSpec.describe OrdersController, type: :controller do
     end
   end
 
-  # FEDAX API INCORPORATION TESTING
+  # FEDAX API INCORPORATION TESTING --------------------------------------------
+
   describe "GET#estimate" do
     before :each do
       @order = create :order
@@ -148,13 +149,24 @@ RSpec.describe OrdersController, type: :controller do
   describe "PATCH#estimate" do
     before :each do
       user = create :user
+      params = { 
+        order: {
+          email: "email@email.com",
+          address1: "address1",
+          address2: "address2",
+          city: "Dayton",
+          state: "OH",
+          zipcode: "45459",
+          card_number: "12345678912345",
+          card_exp: "10/17"
+          } 
+        }
     end
 
     context "valid params" do
       it "renders the show page" do
         VCR.use_cassette 'FEDAX_response' do
           @order  = create :order
-          # session[:order_id] = @order.id
           patch :estimate, id: @order.id, 
           order: { 
           city: "Dayton",
@@ -166,6 +178,21 @@ RSpec.describe OrdersController, type: :controller do
         expect(response).to be_success
         expect(response).to have_http_status(200)
         expect(response).to render_template(:show)
+      end
+
+      it "flashes an error for a bad request" do
+        VCR.use_cassette 'wrong_zip_FEDAX' do
+          @order  = create :order
+          patch :estimate, id: @order.id, 
+            order: {
+            city: "Dayton",
+            state: "OH",
+            zipcode: "12345"
+          }
+        end
+
+        expect(flash[:error]).to_not be(nil)
+        expect(response).to redirect_to(order_path(@order.id, status: 'estimate'))
       end
     end
   end

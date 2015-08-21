@@ -60,23 +60,6 @@ FactoryGirl.define do
     card_exp "10/17"
   end
 
-  factory :wrong_zip, class: Order do
-    email "email@example.com"
-    address1 "123 Main St."
-    status "pending"
-    country "CA"
-    state "BC"
-    city "Vancouver"
-    zipcode "98109"
-    card_last_4 1234
-    card_exp "10/17"
-    shipping_price 10.99
-    shipping_type "UPS 2Day"
-    delivery_date "9/19/15"
-    carrier "UPS"
-    order_item_ids [1]
-  end
-
   factory :order_item do
     quantity 1
     order_id 1
