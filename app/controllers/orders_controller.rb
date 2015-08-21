@@ -75,7 +75,6 @@ class OrdersController < ApplicationController
 
       services = parsed_response["services"]
       all_merchant_services << services
-
       # assumes all delivery days/times will be the same
       # I'm ok w/ this cause it's only for special delivery at the moment
       @delivery = parsed_response["delivery"]

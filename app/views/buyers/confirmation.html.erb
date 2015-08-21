@@ -11,17 +11,17 @@
           <th class="active text-right">Total</th>
         </tr>
 
+        <% @order_items.each do |order_item| %>
         <tr>
-          <% @order_items.each do |order_item| %>
             <td><%= link_to "#{order_item.product.name}", product_path(order_item.product_id) %></td>
             <td><%= order_item.quantity %></td>
             <td class="text-right"><%= number_to_currency(order_item.total_price) %></td>
-          <% end %>
         </tr>
+        <% end %>
 
         <tr>
           <td colspan="2" class="text-right">
-            <%= @order.service %>
+            <strong>Shipping Method: </strong><%= @order.service %>
           </td>
           <td class="text-right">
             <%= usd_convert(@order.rate) %>
