@@ -4,6 +4,7 @@ RSpec.describe UsersController, type: :controller do
   it_behaves_like "a show controller"
   it_behaves_like "a new controller"
   it_behaves_like "a create controller"
+  let(:user) { create :user }
   let(:params) do # Ugliest params ever...
     {
       valid: {
@@ -11,7 +12,10 @@ RSpec.describe UsersController, type: :controller do
           username: "Testwoman",
           email: "test@testing.com",
           password: "test",
-          password_confirmation: "test"
+          password_confirmation: "test",
+          state: "OH",
+          city: "Cincinnati",
+          zip: "45206"
         }
       },
       create_user: false,
@@ -22,12 +26,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe "#new" do
     it "will redirect a signed in user back to the home page" do
-      User.create!(
-        username: "Test",
-        email: "test@test.com",
-        password: "test",
-        password_confirmation: "test"
-      )
+      user
       session[:user_id] = 1
       get :new
 
@@ -35,12 +34,7 @@ RSpec.describe UsersController, type: :controller do
     end
 
     it "throw a flash error if signed in user" do
-      User.create!(
-        username: "Test",
-        email: "test@test.com",
-        password: "test",
-        password_confirmation: "test"
-      )
+      user
       session[:user_id] = 1
       get :new
 

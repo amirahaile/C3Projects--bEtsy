@@ -107,4 +107,67 @@ RSpec.describe OrdersController, type: :controller do
       expect(response).to redirect_to(order_confirmation_path(@order))
     end
   end
+
+  # FEDAX API INCORPORATION TESTING
+  describe "GET#estimate" do
+    before :each do
+      @order = create :order
+      session[:order_id] = @order.id
+    end
+
+    let(:params) { { order: {
+        email: "email@email.com",
+        address1: "address1",
+        address2: "address2",
+        city: "Dayton",
+        state: "OH",
+        zipcode: "45459",
+        card_number: "12345678912345",
+        card_exp: "10/17"
+      } }
+    }
+
+    context "valid params" do
+      it "renders the order estimate view" do
+        get :show, id: @order.id, status: 'estimate', params: params
+        expect(response).to render_template(:show)
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context "empty cart" do
+      it "redirects to home page" do
+        session[:order_id] = nil
+        get :show, id: @order.id, status: 'estimate'
+        expect(response).to redirect_to(root_path)
+        expect(response).to have_http_status(302)
+      end
+    end
+  end
+
+  describe "PATCH#estimate" do
+    before :each do
+      user = create :user
+    end
+
+    context "valid params" do
+      it "renders the show page" do
+        VCR.use_cassette 'FEDAX_response' do
+          @order  = create :order
+          # session[:order_id] = @order.id
+          patch :estimate, id: @order.id, 
+          order: { 
+          city: "Dayton",
+          state: "OH",
+          zipcode: "45459" 
+          }
+        end
+
+        expect(response).to be_success
+        expect(response).to have_http_status(200)
+        expect(response).to render_template(:show)
+      end
+    end
+  end
+
 end
