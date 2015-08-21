@@ -71,12 +71,14 @@ class PenguinShipperInterface
     calculated_rates
   end
 
-  def self.process_order(order_items)
-    grouped_items = @order_items.group_by { |order_item| order_item.product.user }
+  def self.process_order(order)
+    order_items = order.order_items
+
+    grouped_items = order_items.group_by { |order_item| order_item.product.user }
 
     origin_package_pairs = make_packages(grouped_items)
 
-    destination = create_location(@order)
+    destination = create_location(order)
 
     all_rates = request_rates_for_packages(origin_package_pairs, destination)
 
