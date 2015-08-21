@@ -37,28 +37,24 @@
     <% else %>
       <% item.destroy %>
     <% end %>
-    <tr>
-      <td colspan="2"></td>
-      <td class="text-right"><%= fa_icon "truck" %> Shipping:</td>
-      <td colspan="2">
-        <% if @order.shipping %>
+    <% if @order.shipping %>
+      <tr>
+        <td colspan="2"></td>
+        <td class="text-right"><%= fa_icon "truck" %> Shipping:</td>
+        <td colspan="2">
           <%= number_to_currency(@order.shipping / 100) %>
-        <% else %>
-          <%= link_to "select shipment method", order_path(status: 'estimate') %>
-        <% end %>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2"></td>
-      <td class="text-right">Subtotal:</td>
-      <td colspan="2" class="text-left">
-        <% if @order.shipping %>
+        </td>
+      </tr>
+    <% end %>
+    <% if @order.shipping %>
+      <tr>
+        <td colspan="2"></td>
+        <td class="text-right">Subtotal:</td>
+        <td colspan="2" class="text-left">
           <%= number_to_currency(@order.shipping / 100) %>
-        <% else %>
-          <%= link_to "select shipment method", order_path(status: 'estimate') %>
-        <% end %>
-      </td>
-    </tr>
+        </td>
+      </tr>
+    <% end %>
 
   <% end %>
 </table>
