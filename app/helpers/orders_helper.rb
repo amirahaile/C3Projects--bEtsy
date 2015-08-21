@@ -5,7 +5,6 @@ module OrdersHelper
     @total_quantity = items.sum
   end
 
-  # TODO: Pad with zeros!
   def usd_convert(cents)
     dollars = cents / 100
     cents = (cents % 100).to_s
