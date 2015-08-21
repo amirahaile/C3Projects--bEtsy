@@ -65,6 +65,8 @@
   <% if @order.shipping_price %>
     <%= link_to("Checkout", "/orders/#{@order.id}/payment", method: :get, 
     id: @order, class: "btn btn-primary") %>
+    <%= link_to("Select Shipping", order_path(status: 'estimate'), 
+      class: "btn btn-info") %>
   <% else %>
     <%= link_to("Select Shipping", order_path(status: 'estimate'), 
       class: "btn btn-info") %>
