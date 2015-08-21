@@ -2,7 +2,7 @@ class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
 
   PENGUIN_LOG_CHOICE_URI  = Rails.env.production? ?
-    "http://https://whispering-shore-8365.herokuapp.com/log_shipping_choice" :
+    "http://whispering-shore-8365.herokuapp.com/log_shipping_choice" :
     "http://localhost:4000/log_shipping_choice"
 
   def find_order
