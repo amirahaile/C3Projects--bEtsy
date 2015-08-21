@@ -101,3 +101,18 @@ p.text-field-error {
 .payment-form {
   width: 0 auto;
 }
+
+/* SHIPPING API DISPLAY ----------------------------------------------------- */
+.service_type {
+  font-weight: bold;
+}
+
+.ship_price {
+  color: #158a00;
+  font-style: italic;
+  margin-left: 5px;
+}
+
+.ship-estimate {
+  margin-bottom: 25px;
+}

@@ -1,25 +1,18 @@
 <div class="row col-md-4 col-md-offset-4">
   <%= form_for @order, url: estimate_path do |f| %>
-
   <h3>Where is this order going?</h3>
     <fieldset>
       <div class="form-group">
       <%= f.label :city %>
       <%= f.text_field :city, class: "form-control" %>
-
       <br>
-      
       <%= f.label :state %>
       <%= f.select :state, us_states, include_blank: "--Select a State--", class: "form-control" %>
-
       <br><br>
-
       <%= f.label :zipcode, "Zip Code" %>
       <%= f.text_field :zipcode, class: "form-control" %>
       </div>
     </fieldset>
-
     <%= f.submit "Estimate!", class: "btn btn-success" %>
-
   <% end %>
 </div>

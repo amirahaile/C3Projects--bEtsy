@@ -8,7 +8,7 @@ module OrdersHelper
   end
 
   def pretty_date(datetime)
-    Date.parse(datetime).strftime("%A %B %d, %Y")
+    Date.parse(datetime).strftime("%a %B %d, %Y")
   end
 
 end
