@@ -27,7 +27,7 @@ class OrderItemsController < ApplicationController
 
     # handling for updating a shipping estimate
     if @order.order_items.count >= 2 && @order.shipping_price
-      update_shipping
+      return unless update_shipping
     end
 
     redirect_to order_path(@order), method: :get
@@ -39,7 +39,7 @@ class OrderItemsController < ApplicationController
 
     # handling for updating a shipping estimate
     if @order && @order.order_items.count >= 1 && @order.shipping_price
-      update_shipping
+      return unless update_shipping
     end
 
     redirect_to order_path(@order)
@@ -67,11 +67,18 @@ class OrderItemsController < ApplicationController
     # query the fedax api for updated shipping info & save to order
     response = fed_ax_quote_update_request
 
-    # using update_attribute to bypass validations
-    price = response["quote"]["total_price"]
-    date = response["quote"]["delivery_date"]
-    @order.update_attribute("shipping_price", price)
-    @order.update_attribute("delivery_date", date)
+    if response.nil?
+      @order.update_attribute("shipping_price", nil)
+      return false
+    else
+      # using update_attribute to bypass validations
+      price = response["quote"]["total_price"]
+      date = response["quote"]["delivery_date"]
+      @order.update_attribute("shipping_price", price)
+      @order.update_attribute("delivery_date", date)
+
+      return true
+    end
   end
 
   def self.model

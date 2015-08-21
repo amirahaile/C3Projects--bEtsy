@@ -106,16 +106,18 @@ class OrdersController < ApplicationController
     # query api
     response = fed_ax_quote_request
 
-    if response["message"]
-      flash[:error] = response["message"]
-      return redirect_to order_path(status: 'estimate')
-    else
-      @quotes = (response["quotes"]["ups"] + response["quotes"]["usps"])
-      @quotes = @quotes.sort_by { |k| k["total_price"] }
-    end
+    unless response.nil?
+      if response["message"]
+        flash[:error] = response["message"]
+        return redirect_to order_path(status: 'estimate')
+      else
+        @quotes = (response["quotes"]["ups"] + response["quotes"]["usps"])
+        @quotes = @quotes.sort_by { |k| k["total_price"] }
+      end
 
-    params[:status] = 'shipping'
-    render :show
+      params[:status] = 'shipping'
+      render :show
+    end
   end
 
   def ship_update
