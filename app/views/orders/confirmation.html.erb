@@ -49,14 +49,14 @@
 		<td colspan="2"></td>
 		<td>Shipping:</td>
 		<td>
-			<%= number_to_currency(@order.shipping_cost) %>
+			<%= display_dollars(@order.shipping_cost) %>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2"></td>
 		<td>Total:</td>
 		<td>
-			<%= number_to_currency(@subtotal + @order.shipping_cost) %>
+			<%= display_dollars(@subtotal*100.0 + @order.shipping_cost) %>
 		</td>
 	</tr>
 </table>

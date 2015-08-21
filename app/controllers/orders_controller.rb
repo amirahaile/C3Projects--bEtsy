@@ -70,7 +70,8 @@ class OrdersController < ApplicationController
 
     if @calculated_rates.first.keys.length > 1
       @subtotal = 0
-      @shipping_cost = session[:shipping_option] ? session[:shipping_option]["total_price"]/100.0 : 0
+      @shipping_cost = session[:shipping_option] ? 
+        session[:shipping_option]["total_price"] : 0
       render :shipping
     elsif @calculated_rates.first.values.first == "422"
       redirect_to :shipping, notice: "Error in shipping choice. Please try again."
@@ -99,7 +100,7 @@ class OrdersController < ApplicationController
     if @enough_inventory
       shipping_option = session[:shipping_option]
       @order.shipping_service = shipping_option["service_name"]
-      @order.shipping_cost = shipping_option["total_price"]/100.0
+      @order.shipping_cost = shipping_option["total_price"]
 
       @order.status = "paid"
 
@@ -109,7 +110,7 @@ class OrdersController < ApplicationController
         shipping_choice["shipping_choice"] = {} # create wrapper for JSON
         shipping_choice["shipping_choice"]["shipping_service"] = @order.shipping_service
         # multiply by 100 since PenguinShipper stores costs in cents
-        shipping_choice["shipping_choice"]["shipping_cost"] = @order.shipping_cost * 100
+        shipping_choice["shipping_choice"]["shipping_cost"] = @order.shipping_cost
         shipping_choice["shipping_choice"]["order_id"] = @order.id
         shipping_choice = shipping_choice.to_json
 
@@ -138,7 +139,6 @@ class OrdersController < ApplicationController
     @subtotal = 0
     @purchase_time = Time.now
     @order_items = @order.order_items
-
     render :confirmation
   end
 
