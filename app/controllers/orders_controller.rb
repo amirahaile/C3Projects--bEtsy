@@ -74,9 +74,9 @@ class OrdersController < ApplicationController
         session[:shipping_option]["total_price"] : 0
       render :shipping
     elsif @calculated_rates.first.values.first == "422"
-      redirect_to root_path, notice: "Error in shipping choice. Please try again."
+      redirect_to :shipping, notice: "Error in shipping choice. Please try again."
     elsif @calculated_rates.first.values.first == "408"
-      redirect_to :shipping, notice: "We could not process your request in a timely manner. Please try again later."
+      redirect_to root_path, notice: "We could not process your request in a timely manner. Please try again later."
     elsif @calculated_rates.first.values.first == "bad"
       redirect_to :shipping, notice: "NOPE. Please try again."
     end
