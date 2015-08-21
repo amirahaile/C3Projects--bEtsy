@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in
-    @user = User.find(session[:user_id]) unless session[:user_id].nil?
+    @user = User.find_by(session[:user_id]) unless session[:user_id].nil?
 
     # guards from errors when order hasn't been initalized yet
     if session[:order_id] != nil
