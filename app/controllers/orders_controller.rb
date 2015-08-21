@@ -1,7 +1,6 @@
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
 
-  # PENGUIN_ALL_RATES_URI   = "http://localhost:4000/get_all_rates"
   PENGUIN_LOG_CHOICE_URI  = "http://localhost:4000/log_shipping_choice"
 
   def find_order
@@ -174,23 +173,4 @@ class OrdersController < ApplicationController
       product.save
     end
   end
-
-  # def create_location(object)
-  #   location = {}
-  #   location["country"] = COUNTRY
-  #   location["state"] = object.state
-  #   location["city"] = object.city
-  #   location["zip"] = object.zip
-  #   return location
-  # end
-
-  # def create_package(item)
-  #   package = {}
-  #   product = item.product
-  #   package["weight"] = product.weight_in_gms
-
-  #   dimensions = [product.length_in_cms, product.width_in_cms, product.height_in_cms]
-  #   package["dimensions"] = dimensions
-  #   return package
-  # end
 end
