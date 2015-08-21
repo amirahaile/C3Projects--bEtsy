@@ -197,4 +197,29 @@ RSpec.describe OrdersController, type: :controller do
     end
   end
 
+  describe "patch#ship_update" do
+    before :each do
+      @order = create :order, shipping_price: nil, carrier: nil
+    end
+
+    it "updates the existing order" do
+      patch :ship_update, id: @order.id
+
+      expect(@order.shipping_price).to eq(14.55)
+      expect(@order.carrier).to eq("UPS")
+    end
+
+    it "renders the :show view" do
+      patch :ship_update, id: @order.id, 
+      order: {
+        shipping_price: 14.55,
+        shipping_type: "UPS 2Day",
+        delivery_date: "09/19/15",
+        carrier: "UPS"
+      }
+
+      expect(response).to render_template(:show)
+    end
+  end
+
 end

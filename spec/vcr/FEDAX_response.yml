@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://fedax.herokuapp.com/quote
+    body:
+      encoding: UTF-8
+      string: packages[][weight]=32.5&packages[][height]=4.3&packages[][width]=10.0&packages[][product_id]=1&origin[city]=Dayton&origin[state]=OH&origin[country]=US&origin[zip]=45459&destination[country]=US&destination[state]=OH&destination[city]=Dayton&destination[zip]=45459&destination[order_id]=2
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"dcf2057e5d8c48732708ebade3a6a74a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 30fd3cfe-7d93-41d5-8e80-63d93ed9ecf2
+      X-Runtime:
+      - '1.178564'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.0.0/2015-04-13)
+      Date:
+      - Fri, 21 Aug 2015 21:04:50 GMT
+      Content-Length:
+      - '878'
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"quotes":{"ups":[{"carrier":"UPS","total_price":1022,"service_type":"UPS
+        Ground","expected_delivery":null},{"carrier":"UPS","total_price":1267,"service_type":"UPS
+        Three-Day Select","expected_delivery":"2015-08-26T00:00:00.000+00:00"},{"carrier":"UPS","total_price":1901,"service_type":"UPS
+        Second Day Air","expected_delivery":"2015-08-25T00:00:00.000+00:00"},{"carrier":"UPS","total_price":2697,"service_type":"UPS
+        Next Day Air Saver","expected_delivery":"2015-08-24T00:00:00.000+00:00"},{"carrier":"UPS","total_price":6144,"service_type":"UPS
+        Next Day Air Early A.M.","expected_delivery":"2015-08-24T00:00:00.000+00:00"},{"carrier":"UPS","total_price":3001,"service_type":"UPS
+        Next Day Air","expected_delivery":"2015-08-24T00:00:00.000+00:00"}],"usps":[{"carrier":"USPS","total_price":254,"service_type":"USPS
+        First-Class Mail Parcel","expected_delivery":null}]},"status":200}'
+    http_version: 
+  recorded_at: Fri, 21 Aug 2015 21:04:51 GMT
+recorded_with: VCR 2.9.3

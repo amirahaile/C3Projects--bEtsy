@@ -102,7 +102,6 @@ class OrdersController < ApplicationController
     @order.update_attribute("city", city)
     @order.update_attribute("state", state)
     @order.update_attribute("zipcode", zip)
-
     # query api
     response = fed_ax_quote_request
 
