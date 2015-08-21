@@ -26,7 +26,7 @@
           <% end %>
         </td>
 
-        <td> 
+        <td>
           <%= number_to_currency(product.price * item.quantity) %>
           <% subtotal += (product.price * item.quantity) %>
         </td>
@@ -39,36 +39,35 @@
     <% else %>
       <% item.destroy %>
     <% end %>
-    <% if @order.shipping_price %>
-      <tr>
-        <td colspan="2"></td>
-        <td class="text-right"><%= fa_icon "truck" %> Shipping:</td>
-        <td colspan="2">
-          <%= number_to_currency(@order.shipping_price / 100) %>
-        </td>
-      </tr>
-    <% end %>
-    <% if @order.shipping_price %>
-      <tr>
-        <td colspan="2"></td>
-        <td class="text-right">Total:</td>
-        <td colspan="2" class="text-left">
-          <%= number_to_currency((@order.shipping_price / 100) + subtotal) %>
-        </td>
-      </tr>
-    <% end %>
-
+  <% end %>
+  <% if @order.shipping_price %>
+    <tr>
+      <td colspan="2"></td>
+      <td class="text-right"><%= fa_icon "truck" %> Shipping:</td>
+      <td colspan="2">
+        <%= number_to_currency(@order.shipping_price / 100) %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @order.shipping_price %>
+    <tr>
+      <td colspan="2"></td>
+      <td class="text-right">Total:</td>
+      <td colspan="2" class="text-left">
+        <%= number_to_currency((@order.shipping_price / 100) + subtotal) %>
+      </td>
+    </tr>
   <% end %>
 </table>
 
 <% if @order.status == "pending" %>
   <% if @order.shipping_price %>
-    <%= link_to("Checkout", "/orders/#{@order.id}/payment", method: :get, 
+    <%= link_to("Checkout", "/orders/#{@order.id}/payment", method: :get,
     id: @order, class: "btn btn-primary") %>
-    <%= link_to("Select Shipping", order_path(status: 'estimate'), 
+    <%= link_to("Select Shipping", order_path(status: 'estimate'),
       class: "btn btn-info") %>
   <% else %>
-    <%= link_to("Select Shipping", order_path(status: 'estimate'), 
+    <%= link_to("Select Shipping", order_path(status: 'estimate'),
       class: "btn btn-info") %>
   <% end %>
   </td>

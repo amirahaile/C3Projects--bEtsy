@@ -1,9 +1,7 @@
 require 'httparty'
 
 class OrdersController < ApplicationController
-  before_action :find_order, except: [ :index, :new, :create, :empty]
-
-  CALLBACK_URL = "http://fedax.herokuapp.com/quote"
+  before_action :find_order, except: [:index, :new, :create, :empty]
 
   def find_order
     @order = Order.find(params[:id])
@@ -98,41 +96,65 @@ class OrdersController < ApplicationController
   def shipping; end
 
   def estimate
-    packages, origin, destination = prepare_request
-    @order_items = @order.order_items
+    # update order with customer's location selections
+    # using update_attribute to bypass validations
+    city, state, zip = prepare_estimate
+    @order.update_attribute("city", city)
+    @order.update_attribute("state", state)
+    @order.update_attribute("zipcode", zip)
 
-    response = HTTParty.get(CALLBACK_URL,
-      body: { packages: packages, 
-              origin: origin, 
-              destination: destination, 
-            } 
-          )
+    # query api
+    response = fed_ax_quote_request
 
-    if response["message"]
-      flash[:error] = response["message"]
-      return redirect_to order_path(status: 'estimate')
-    else
-      @quotes = (response["quotes"]["ups"] + response["quotes"]["usps"])
-      @quotes = @quotes.sort_by { |k| k["total_price"] }
+    unless response.nil?
+      if response["message"]
+        flash[:error] = response["message"]
+        return redirect_to order_path(status: 'estimate')
+      else
+        @quotes = (response["quotes"]["ups"] + response["quotes"]["usps"])
+        @quotes = @quotes.sort_by { |k| k["total_price"] }
+      end
+
+      params[:status] = 'shipping'
+      render :show
     end
-
-    params[:status] = 'shipping'
-    render :show
   end
 
   def ship_update
     @order_items = @order.order_items
-    @order.update(
-      shipping_price: params[:order][:shipping_price],
-      shipping_type: params[:order][:shipping_type],
-      delivery_date: params[:order][:delivery_date],
-      carrier: params[:order][:carrier]
-      )
-    @order.save(validate: false)
+    price, type, date, carrier = prepare_ship_update
+
+    # update order with customer's shipping selection
+    # using update_attribute to bypass validations
+    @order.update_attribute("shipping_price", price)
+    @order.update_attribute("shipping_type", type)
+    @order.update_attribute("delivery_date", date)
+    @order.update_attribute("carrier", carrier)
+
     render :show
   end
 
   private
+
+  def prepare_estimate
+    city = params.require(:order).require(:city)
+    state = params.require(:order).require(:state)
+    zip = params.require(:order).require(:zipcode)
+
+    return city, state, zip
+  end
+
+  def prepare_ship_update
+    content = params.require(:order).require(:shipping_type)
+    content = eval(content.gsub(/\"/, "'")) # FIXME: this is extremely unsafe
+
+    price = content["total_price"]
+    type = content["service_type"]
+    date = content["delivery_date"]
+    carrier = content["carrier"]
+
+    return price, type, date, carrier
+  end
 
   def self.model
     Order
@@ -156,37 +178,5 @@ class OrdersController < ApplicationController
       product.inventory -= order_item.quantity
       product.save
     end
-  end
-
-  def prepare_request
-    @order_items = @order.order_items
-    products = []
-    @order_items.each { |item| products << Product.find_by(id: item.product_id) }
-
-    packages = []
-    origin = {}
-    products.each do |product|
-      packages <<
-      {
-        weight: product.weight,
-        height: product.height,
-        width: product.width
-      }
-
-      user = User.find_by(id: product.user_id)
-
-      origin[:city] = user.city
-      origin[:state] = user.state
-      origin[:country] = user.country
-      origin[:zip] = user.zip
-    end
-
-    destination = {}
-    destination[:country] = "US"
-    destination[:state] = params[:order][:state]
-    destination[:city] = params[:order][:city]
-    destination[:zip] = params[:order][:zipcode]
-    
-    return packages, origin, destination
   end
 end
