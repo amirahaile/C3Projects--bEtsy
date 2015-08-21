@@ -21,6 +21,12 @@
 
         <tr>
           <td colspan="2" class="text-right">
+            <strong>Subtotal: </strong>
+          </td>
+          <td colspan="3" class="text-right"> <%= number_to_currency(@order.subtotal) %> </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="text-right">
             <strong>Shipping Method: </strong><%= @order.service %>
           </td>
           <td class="text-right">
@@ -28,7 +34,10 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" class="text-right"> <%= number_to_currency(@total) %> </td>
+          <td colspan="2" class="text-right">
+            <strong>Total: </strong>
+          </td>
+          <td class="text-right"> <%= number_to_currency(@total) %> </td>
         </tr>
         <td colspan="3" class="text-right"> <%= @order.status.capitalize %></td>
       </table>

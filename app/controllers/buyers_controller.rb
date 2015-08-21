@@ -43,6 +43,7 @@ class BuyersController < ApplicationController
 
   def confirmation
     @order = Order.find(session[:order_id])
+    @total = @order.subtotal + (@order.rate.to_f / 100)
     transaction # application helper
   end
 
