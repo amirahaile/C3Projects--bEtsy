@@ -3,7 +3,7 @@ require 'httparty'
 class OrdersController < ApplicationController
   before_action :find_order, except: [ :index, :new, :create, :empty]
 
-  CALLBACK_URL = "http://localhost:3000/quote"
+  CALLBACK_URL = "http://fedax.herokuapp.com/quote"
 
   def find_order
     @order = Order.find(params[:id])
