@@ -4,6 +4,14 @@
   </div>
 </div>
 
+<% if params[:shipper] == 'ups' %>
+  <div class="alert alert-warning col-sm-8 no-float center-block">
+    <p class="text-center">
+    You've currently selected <strong><%= @order.service %></strong> for <strong><%= usd_convert(@order.rate) %></strong>.
+    </p>
+  </div>
+<% end %>
+
 <div class="col-md-8 no-float center-block">
   <%= form_for @order do |f| %>
     <% @parsed_response.each do |service| %>
