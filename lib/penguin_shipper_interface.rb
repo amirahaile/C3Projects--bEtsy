@@ -45,13 +45,10 @@ class PenguinShipperInterface
       return response.parsed_response
     when 422
       return [{error: "422"}]
-      # redirect_to :shipping, notice: "Error in shipping choice. Please try again."
     when 408
       return [{error: "408"}]
-      # redirect_to :shipping, notice: "We could not process your request in a timely manner. Please try again later."
     else
       return [{error: "bad"}]
-      # redirect_to :shipping, notice: "NOPE. Please try again."
     end
   end
 
