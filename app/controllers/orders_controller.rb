@@ -151,7 +151,7 @@ class OrdersController < ApplicationController
 
   def prepare_ship_update
     content = params.require(:order).require(:shipping_type)
-    content = eval(content.gsub(/\"/, "'")) # FIXME: this is extremely unsafe
+    content = JSON.parse content
 
     price = content["total_price"]
     type = content["service_type"]

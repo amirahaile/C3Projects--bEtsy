@@ -2,7 +2,7 @@
 <%= form_for @order, url: ship_update_path do |f| %>
   <% @quotes.each do |quote| %>
     <p>
-      <%= f.radio_button :shipping_type, quote, checked: (quote["service_type"] == @order.shipping_type) %>
+      <%= f.radio_button :shipping_type, quote.to_json, checked: (quote["service_type"] == @order.shipping_type) %>
       <span class="service_type">
         <%= quote["service_type"] %>
       </span>

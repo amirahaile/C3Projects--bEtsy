@@ -1,4 +1,14 @@
-Anita + Jeri FedAx API <-> bEtsy
+Anita & Jeri - Team FedAx
+
+> ## heroku URLs
+
+FedAx API
+- http://fedax.herokuapp.com
+- shipping quote endpoint: GET http://fedax.herokuapp.com/quote
+- shipping finalization endpoint: POST http://fedax.herokuapp.com/ship
+
+CosMade (bEtsy) online retailer (version that works with FedAx API)
+- http://cosmade.herokuapp.com
 
 # C3Projects--bEtsy
 [b]Etsy will be an online store where a wide variety of products can be listed and sold by any user. In this project we will focus on reinforcing the major components of Rails, Model Validation, as well as introducing some more complex logic such as user authentication.
